@@ -1,0 +1,32 @@
+<launch>
+
+    <node name="fake_odom" pkg="fake_odom" type="fake_odom_node" output="screen">
+      <param name="active" value="true"/>
+      <param name="publish_pose" value="false"/>
+      <param name="publish_odom" value="true"/>
+      <param name="publish_tf" value="false"/>
+
+      <param name="frequency" value="100"/>
+      <param name="init_pose_x" value="0.81"/>
+      <param name="init_pose_y" value="2.65"/>
+      <param name="init_pose_yaw" value="$(eval 0 * 3.1415 / 180.0)"/>
+      <param name="cov_vx" value="4"/>
+      <param name="cov_vy" value="4"/>
+      <param name="cov_vyaw" value="10"/>
+  
+      <param name="odom_topic" value="odom"/>
+      <param name="pose_topic" value="odom_pose"/>
+      <param name="fixed_frame_id" value="odom"/>
+      <param name="target_frame_id" value="base_footprint"/>
+
+      <remap from="cmd_vel" to="Toposition"/>
+
+    </node>
+
+    <!-- <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen" clear_params="true">
+      <param name="speed" value="0.5"/>
+      <param name="turn" value="1"/>
+      <param name="repeat_rate" value="30"/>
+      <param name="key_timeout" value="0.0"/>
+    </node> -->
+  </launch>
