@@ -2,18 +2,10 @@
 
 <launch>
 
-  #### Nodelet manager ######################################################
+  <node pkg="nodelet" type="nodelet" name="imu_manager" args="manager" output="screen" />
 
-  <node pkg="nodelet" type="nodelet" name="imu_manager"
-    args="manager" output="screen" />
-
-  #### Spatial Driver #######################################################
-
-  <node pkg="nodelet" type="nodelet" name="PhidgetsSpatialNodelet"
-    args="load phidgets_spatial/PhidgetsSpatialNodelet imu_manager"
+  <node pkg="nodelet" type="nodelet" name="PhidgetsSpatialNodelet" args="load phidgets_spatial/PhidgetsSpatialNodelet imu_manager"
     output="screen">
-
-    # See README.md for more information on the parameters
 
     # optional param serial, default is -1
     <!-- <param name="serial" value="123456"/> -->
@@ -83,11 +75,20 @@
 
   #### IMU Orientation Filter ###############################################
 
-  <node pkg="nodelet" type="nodelet" name="ImuFilterNodelet"
-    args="load imu_filter_madgwick/ImuFilterNodelet imu_manager"
+  <node pkg="nodelet" type="nodelet" name="ImuFilterNodelet" args="load imu_filter_madgwick/ImuFilterNodelet imu_manager"
     output="screen">
 
-    <param name="use_mag" value="true"/>
+    <param name="use_mag" value="false"/>
+	<param name="publish_tf" value="false"/>
+	<param name="remove_gravity_vector" value="true"/>
+	<param name="orientation_stddev" value="0.1"/>
+
+
+		<!-- <remap from="imu/data" to="mpu9250_imu"/> -->
+
   </node>
+
+  #### IMU static transform ###############################################
+<node name="base_footprint_to_mpu9250" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 1 base_footprint imu_link" />
 
 </launch>
