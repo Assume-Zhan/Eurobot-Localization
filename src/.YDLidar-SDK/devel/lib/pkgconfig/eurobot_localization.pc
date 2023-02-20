@@ -1,0 +1,8 @@
+prefix=/home/assume/Localization2023_ws/src/.YDLidar-SDK/devel
+
+Name: eurobot_localization
+Description: Description of eurobot_localization
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
