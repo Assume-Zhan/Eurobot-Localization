@@ -14,5 +14,9 @@ mv ~/Localization2023_ws/src/YDLidar-SDK ~/Localization2023_ws/src/.YDLidar-SDK
 
 echo "source ~/Localization2023_ws/devel/setup.bash" >> ~/.bashrc
 roscd && cd ..
+
+roscd phidgets_api
+sudo cp debian/udev /etc/udev/rules.d/99-phidgets.rules
+sudo udevadm control --reload-rules
 chmod 777 src/ydlidar_ros_driver/startup/*
 sudo sh src/ydlidar_ros_driver/startup/initenv.sh
