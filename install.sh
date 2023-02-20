@@ -1,6 +1,7 @@
 mv ~/Eurobot-Localization ~/Localization2023_ws
 mv ~/Localization2023_ws/src/.YDLidar-SDK ~/Localization2023_ws/src/YDLidar-SDK
 cd ~/Localization2023_ws/src/YDLidar-SDK/build
+make clean
 cmake ..
 make
 sudo make install
