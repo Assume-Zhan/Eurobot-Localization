@@ -43,21 +43,21 @@ odom0_nodelay: true
 
 odom0_twist_rejection_threshold: 100
 
-#imu0: imu/data
-#imu0_config: [false, false, false,
-#              false, false, false,
-#              false, false, false,
-#              false, false, true,
-#              true, true,  false]
-#imu0_queue_size: 100
-#imu0_differential: false
-#imu0_relative: false
-#imu0_nodelay: true
-#
-#imu0_twist_rejection_threshold: 1000000000000.0
-#imu0_linear_acceleration_rejection_threshold: 1000000000000.0
-#
-#imu0_remove_gravitational_acceleration: false
+imu0: imu/data
+imu0_config: [false, false, false,
+              false, false, false,
+              false, false, false,
+              false, false, true,
+              true, true,  false]
+imu0_queue_size: 100
+imu0_differential: false
+imu0_relative: false
+imu0_nodelay: true
+
+imu0_twist_rejection_threshold: 1000000000000.0
+imu0_linear_acceleration_rejection_threshold: 1000000000000.0
+
+imu0_remove_gravitational_acceleration: false
 
 # control
 # acc_config: [x., y., z., r., p., y.]
@@ -77,28 +77,28 @@ process_noise_covariance: [0.005, 0,     0,    0,    0,    0,     0,     0,     
                            0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0,    0,    0,
                            0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0,    0,    0,
                            0,     0,     0,    0,    0,    0.006, 0,     0,     0,    0,    0,    0,    0,    0,    0,
-                           0,     0,     0,    0,    0,    0,     0.25,  0,     0,    0,    0,    0,    0,    0,    0,
-                           0,     0,     0,    0,    0,    0,     0,     0.25,  0,    0,    0,    0,    0,    0,    0,
+                           0,     0,     0,    0,    0,    0,     0.7,  0,     0,    0,    0,    0,    0,    0,    0,
+                           0,     0,     0,    0,    0,    0,     0,     0.7,  0,    0,    0,    0,    0,    0,    0,
                            0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0,    0,    0,
                            0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0,    0,    0,
                            0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0,    0,    0,
-                           0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    6.0,  0,    0,    0,
-                           0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0.01, 0,    0,
-                           0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0,    0.01, 0,
+                           0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0.6,  0,    0,    0,
+                           0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0.5, 0,    0,
+                           0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0,    0.5, 0,
                            0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0,    0,    0]
                            
-initial_estimate_covariance: [0.01, 0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
-                              0,    0.01, 0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+initial_estimate_covariance: [1e-9, 0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    1e-9, 0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
                               0,    0,    1e-9, 0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
                               0,    0,    0,    1e-9, 0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
                               0,    0,    0,    0,    1e-9, 0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
-                              0,    0,    0,    0,    0,    0.1,  0,    0,    0,    0,     0,     0,     0,    0,    0,
-                              0,    0,    0,    0,    0,    0,    0.01, 0,    0,    0,     0,     0,     0,    0,    0,
-                              0,    0,    0,    0,    0,    0,    0,    0.01, 0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    1e-9,  0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    1e-9, 0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    1e-9, 0,    0,     0,     0,     0,    0,    0,
                               0,    0,    0,    0,    0,    0,    0,    0,    1e-9, 0,     0,     0,     0,    0,    0,
                               0,    0,    0,    0,    0,    0,    0,    0,    0,    1e-9,  0,     0,     0,    0,    0,
                               0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     1e-9,  0,     0,    0,    0,
-                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0.1,   0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     1e-9,   0,    0,    0,
                               0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     1e-9, 0,    0,
                               0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    1e-9, 0,
                               0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    1e-9]
