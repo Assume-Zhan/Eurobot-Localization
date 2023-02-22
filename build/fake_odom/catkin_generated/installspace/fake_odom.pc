@@ -1,0 +1,8 @@
+prefix=/home/ubuntu/Localization2023_ws/install
+
+Name: fake_odom
+Description: Description of fake_odom
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lfake_odom
+Requires: roscpp std_msgs geometry_msgs tf2 tf2_ros

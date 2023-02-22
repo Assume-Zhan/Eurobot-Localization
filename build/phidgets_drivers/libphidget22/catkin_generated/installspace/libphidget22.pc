@@ -1,0 +1,8 @@
+prefix=/home/ubuntu/Localization2023_ws/install
+
+Name: libphidget22
+Description: Description of libphidget22
+Version: 1.0.6
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

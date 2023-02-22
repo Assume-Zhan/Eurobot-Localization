@@ -1,0 +1,13 @@
+# Target labels
+ EP_libphidget22
+# Source files and their labels
+/home/ubuntu/Localization2023_ws/build/phidgets_drivers/libphidget22/CMakeFiles/EP_libphidget22
+/home/ubuntu/Localization2023_ws/build/phidgets_drivers/libphidget22/CMakeFiles/EP_libphidget22.rule
+/home/ubuntu/Localization2023_ws/build/phidgets_drivers/libphidget22/CMakeFiles/EP_libphidget22-complete.rule
+/home/ubuntu/Localization2023_ws/build/phidgets_drivers/libphidget22/EP_libphidget22-prefix/src/EP_libphidget22-stamp/EP_libphidget22-install.rule
+/home/ubuntu/Localization2023_ws/build/phidgets_drivers/libphidget22/EP_libphidget22-prefix/src/EP_libphidget22-stamp/EP_libphidget22-mkdir.rule
+/home/ubuntu/Localization2023_ws/build/phidgets_drivers/libphidget22/EP_libphidget22-prefix/src/EP_libphidget22-stamp/EP_libphidget22-download.rule
+/home/ubuntu/Localization2023_ws/build/phidgets_drivers/libphidget22/EP_libphidget22-prefix/src/EP_libphidget22-stamp/EP_libphidget22-update.rule
+/home/ubuntu/Localization2023_ws/build/phidgets_drivers/libphidget22/EP_libphidget22-prefix/src/EP_libphidget22-stamp/EP_libphidget22-patch.rule
+/home/ubuntu/Localization2023_ws/build/phidgets_drivers/libphidget22/EP_libphidget22-prefix/src/EP_libphidget22-stamp/EP_libphidget22-configure.rule
+/home/ubuntu/Localization2023_ws/build/phidgets_drivers/libphidget22/EP_libphidget22-prefix/src/EP_libphidget22-stamp/EP_libphidget22-build.rule
