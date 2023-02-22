@@ -18,6 +18,6 @@ cd ~/Localization2023_ws
 
 chmod 777 src/ydlidar_ros_driver/startup/*
 sudo sh src/ydlidar_ros_driver/startup/initenv.sh
-roscd phidgets_api
+cd ~/Localization2023_ws/src/phidgets_drivers/phidgets_api
 sudo cp debian/udev /etc/udev/rules.d/99-phidgets.rules
 sudo udevadm control --reload-rules
