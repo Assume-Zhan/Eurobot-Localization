@@ -7,7 +7,7 @@
 sh install.sh
 ```
 
-## Current kaunch file : 
+## Current launch file : 
 ```bash=1
 roslaunch eurobot_localization eurobot_localization.launch
 ```
