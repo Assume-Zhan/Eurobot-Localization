@@ -75,8 +75,8 @@ imu1_linear_acceleration_rejection_threshold: 100.0
 
 imu1_remove_gravitational_acceleration: false
 
-initial_state: [0.56,  0.15,  0.0,
-                0.0,   0.0,   1.57,
+initial_state: [0.0,  0.0,  0.0,
+                0.0,   0.0,   0.0,
                 0.0,   0.0,   0.0,
                 0.0,   0.0,   0.0,
                 0.0,   0.0,   0.0]
