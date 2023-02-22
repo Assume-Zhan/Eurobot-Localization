@@ -2,5 +2,6 @@
 
 	<include file="$(find fake_odom)/launch/fake_odom.launch"/>
 	<include file="$(find eurobot_localization)/launch/rosserial/comm.launch"/>
+	<include file="$(find eurobot_localization)/launch/imu/spatial.launch"/>
 
 </launch>
