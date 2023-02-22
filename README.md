@@ -5,6 +5,7 @@
 ```bash=1
 # Move in ws
 sh install.sh
+source ~/.bashrc
 ```
 
 ## Current launch file : 
