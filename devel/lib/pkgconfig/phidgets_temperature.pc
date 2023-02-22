@@ -1,8 +1,0 @@
-prefix=/home/ubuntu/Localization2023_ws/devel
-
-Name: phidgets_temperature
-Description: Description of phidgets_temperature
-Version: 1.0.6
-Cflags: -I/home/ubuntu/Localization2023_ws/src/phidgets_drivers/phidgets_temperature/include
-Libs: -L${prefix}/lib -lphidgets_temperature
-Requires: nodelet phidgets_api roscpp std_msgs

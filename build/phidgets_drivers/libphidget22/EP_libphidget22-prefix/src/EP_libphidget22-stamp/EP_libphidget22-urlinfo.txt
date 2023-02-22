@@ -1,3 +1,0 @@
-repository='external project URL'
-module='https://www.phidgets.com/downloads/phidget22/libraries/linux/libphidget22/libphidget22-1.13.20230109.tar.gz'
-tag='MD5=972c3b87d31c015482f85ed32e68e641'

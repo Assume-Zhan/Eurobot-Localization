@@ -1,8 +1,0 @@
-prefix=/home/ubuntu/Localization2023_ws/install
-
-Name: phidgets_gyroscope
-Description: Description of phidgets_gyroscope
-Version: 1.0.6
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib -lphidgets_gyroscope
-Requires: nodelet phidgets_api roscpp sensor_msgs std_msgs std_srvs

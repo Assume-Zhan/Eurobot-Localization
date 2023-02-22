@@ -1,8 +1,0 @@
-prefix=/home/ubuntu/Localization2023_ws/install
-
-Name: phidgets_magnetometer
-Description: Description of phidgets_magnetometer
-Version: 1.0.6
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib -lphidgets_magnetometer
-Requires: nodelet phidgets_api roscpp sensor_msgs

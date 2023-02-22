@@ -1,2 +1,0 @@
-eurobot_localization:fake_odom:lidar_localization:obstacle_detector:phidgets_drivers/libphidget22:phidgets_drivers/phidgets_api:phidgets_drivers/phidgets_drivers:phidgets_drivers/phidgets_msgs:phidgets_drivers/phidgets_spatial:rosserial_server:ydlidar_ros_driver
--DCATKIN_DEVEL_PREFIX=/home/ubuntu/Localization2023_ws/devel -DCMAKE_INSTALL_PREFIX=/home/ubuntu/Localization2023_ws/install -G Unix Makefiles

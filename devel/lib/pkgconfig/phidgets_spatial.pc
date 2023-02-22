@@ -1,8 +1,0 @@
-prefix=/home/ubuntu/Localization2023_ws/devel
-
-Name: phidgets_spatial
-Description: Description of phidgets_spatial
-Version: 1.0.6
-Cflags: -I/home/ubuntu/Localization2023_ws/src/phidgets_drivers/phidgets_spatial/include
-Libs: -L${prefix}/lib -lphidgets_spatial
-Requires: nodelet pluginlib phidgets_api roscpp sensor_msgs std_msgs std_srvs
