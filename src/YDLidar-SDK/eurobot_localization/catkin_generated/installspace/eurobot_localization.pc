@@ -1,8 +1,0 @@
-prefix=/usr/local
-
-Name: eurobot_localization
-Description: Description of eurobot_localization
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
