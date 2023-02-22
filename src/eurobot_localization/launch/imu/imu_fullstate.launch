@@ -1,0 +1,4 @@
+<launch>
+	<include file="$(find eurobot_localization)/launch/imu/spatial.launch"/>
+	<include file="$(find eurobot_localization)/launch/imu/imu_ekf.launch"/>
+</launch>
