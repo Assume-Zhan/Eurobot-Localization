@@ -571,30 +571,17 @@ phidgets_msgs_geneus/fast:
 .PHONY : phidgets_msgs_geneus/fast
 
 #=============================================================================
-# Target rules for targets named roscpp_generate_messages_lisp
+# Target rules for targets named rosserial_msgs_generate_messages_lisp
 
 # Build rule for target.
-roscpp_generate_messages_lisp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 roscpp_generate_messages_lisp
-.PHONY : roscpp_generate_messages_lisp
+rosserial_msgs_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rosserial_msgs_generate_messages_lisp
+.PHONY : rosserial_msgs_generate_messages_lisp
 
 # fast build rule for target.
-roscpp_generate_messages_lisp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/roscpp_generate_messages_lisp.dir/build
-.PHONY : roscpp_generate_messages_lisp/fast
-
-#=============================================================================
-# Target rules for targets named nodelet_generate_messages_eus
-
-# Build rule for target.
-nodelet_generate_messages_eus: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 nodelet_generate_messages_eus
-.PHONY : nodelet_generate_messages_eus
-
-# fast build rule for target.
-nodelet_generate_messages_eus/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/nodelet_generate_messages_eus.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/nodelet_generate_messages_eus.dir/build
-.PHONY : nodelet_generate_messages_eus/fast
+rosserial_msgs_generate_messages_lisp/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_lisp.dir/build.make rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_lisp.dir/build
+.PHONY : rosserial_msgs_generate_messages_lisp/fast
 
 #=============================================================================
 # Target rules for targets named rosgraph_msgs_generate_messages_py
@@ -606,385 +593,8 @@ rosgraph_msgs_generate_messages_py: cmake_check_build_system
 
 # fast build rule for target.
 rosgraph_msgs_generate_messages_py/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
+	$(MAKE) -f rosserial_server/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make rosserial_server/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
 .PHONY : rosgraph_msgs_generate_messages_py/fast
-
-#=============================================================================
-# Target rules for targets named roscpp_generate_messages_eus
-
-# Build rule for target.
-roscpp_generate_messages_eus: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 roscpp_generate_messages_eus
-.PHONY : roscpp_generate_messages_eus
-
-# fast build rule for target.
-roscpp_generate_messages_eus/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/roscpp_generate_messages_eus.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/roscpp_generate_messages_eus.dir/build
-.PHONY : roscpp_generate_messages_eus/fast
-
-#=============================================================================
-# Target rules for targets named nodelet_generate_messages_lisp
-
-# Build rule for target.
-nodelet_generate_messages_lisp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 nodelet_generate_messages_lisp
-.PHONY : nodelet_generate_messages_lisp
-
-# fast build rule for target.
-nodelet_generate_messages_lisp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/nodelet_generate_messages_lisp.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/nodelet_generate_messages_lisp.dir/build
-.PHONY : nodelet_generate_messages_lisp/fast
-
-#=============================================================================
-# Target rules for targets named roscpp_generate_messages_cpp
-
-# Build rule for target.
-roscpp_generate_messages_cpp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 roscpp_generate_messages_cpp
-.PHONY : roscpp_generate_messages_cpp
-
-# fast build rule for target.
-roscpp_generate_messages_cpp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/roscpp_generate_messages_cpp.dir/build
-.PHONY : roscpp_generate_messages_cpp/fast
-
-#=============================================================================
-# Target rules for targets named bond_generate_messages_lisp
-
-# Build rule for target.
-bond_generate_messages_lisp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 bond_generate_messages_lisp
-.PHONY : bond_generate_messages_lisp
-
-# fast build rule for target.
-bond_generate_messages_lisp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/bond_generate_messages_lisp.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/bond_generate_messages_lisp.dir/build
-.PHONY : bond_generate_messages_lisp/fast
-
-#=============================================================================
-# Target rules for targets named nodelet_generate_messages_py
-
-# Build rule for target.
-nodelet_generate_messages_py: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 nodelet_generate_messages_py
-.PHONY : nodelet_generate_messages_py
-
-# fast build rule for target.
-nodelet_generate_messages_py/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/nodelet_generate_messages_py.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/nodelet_generate_messages_py.dir/build
-.PHONY : nodelet_generate_messages_py/fast
-
-#=============================================================================
-# Target rules for targets named _run_tests_phidgets_temperature_roslaunch-check_launch
-
-# Build rule for target.
-_run_tests_phidgets_temperature_roslaunch-check_launch: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_temperature_roslaunch-check_launch
-.PHONY : _run_tests_phidgets_temperature_roslaunch-check_launch
-
-# fast build rule for target.
-_run_tests_phidgets_temperature_roslaunch-check_launch/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/_run_tests_phidgets_temperature_roslaunch-check_launch.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/_run_tests_phidgets_temperature_roslaunch-check_launch.dir/build
-.PHONY : _run_tests_phidgets_temperature_roslaunch-check_launch/fast
-
-#=============================================================================
-# Target rules for targets named roscpp_generate_messages_nodejs
-
-# Build rule for target.
-roscpp_generate_messages_nodejs: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 roscpp_generate_messages_nodejs
-.PHONY : roscpp_generate_messages_nodejs
-
-# fast build rule for target.
-roscpp_generate_messages_nodejs/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/roscpp_generate_messages_nodejs.dir/build
-.PHONY : roscpp_generate_messages_nodejs/fast
-
-#=============================================================================
-# Target rules for targets named rosgraph_msgs_generate_messages_cpp
-
-# Build rule for target.
-rosgraph_msgs_generate_messages_cpp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rosgraph_msgs_generate_messages_cpp
-.PHONY : rosgraph_msgs_generate_messages_cpp
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_cpp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
-.PHONY : rosgraph_msgs_generate_messages_cpp/fast
-
-#=============================================================================
-# Target rules for targets named bond_generate_messages_py
-
-# Build rule for target.
-bond_generate_messages_py: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 bond_generate_messages_py
-.PHONY : bond_generate_messages_py
-
-# fast build rule for target.
-bond_generate_messages_py/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/bond_generate_messages_py.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/bond_generate_messages_py.dir/build
-.PHONY : bond_generate_messages_py/fast
-
-#=============================================================================
-# Target rules for targets named rosgraph_msgs_generate_messages_nodejs
-
-# Build rule for target.
-rosgraph_msgs_generate_messages_nodejs: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rosgraph_msgs_generate_messages_nodejs
-.PHONY : rosgraph_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_nodejs/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
-.PHONY : rosgraph_msgs_generate_messages_nodejs/fast
-
-#=============================================================================
-# Target rules for targets named bond_generate_messages_nodejs
-
-# Build rule for target.
-bond_generate_messages_nodejs: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 bond_generate_messages_nodejs
-.PHONY : bond_generate_messages_nodejs
-
-# fast build rule for target.
-bond_generate_messages_nodejs/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/bond_generate_messages_nodejs.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/bond_generate_messages_nodejs.dir/build
-.PHONY : bond_generate_messages_nodejs/fast
-
-#=============================================================================
-# Target rules for targets named nodelet_generate_messages_nodejs
-
-# Build rule for target.
-nodelet_generate_messages_nodejs: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 nodelet_generate_messages_nodejs
-.PHONY : nodelet_generate_messages_nodejs
-
-# fast build rule for target.
-nodelet_generate_messages_nodejs/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/nodelet_generate_messages_nodejs.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/nodelet_generate_messages_nodejs.dir/build
-.PHONY : nodelet_generate_messages_nodejs/fast
-
-#=============================================================================
-# Target rules for targets named nodelet_generate_messages_cpp
-
-# Build rule for target.
-nodelet_generate_messages_cpp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 nodelet_generate_messages_cpp
-.PHONY : nodelet_generate_messages_cpp
-
-# fast build rule for target.
-nodelet_generate_messages_cpp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/nodelet_generate_messages_cpp.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/nodelet_generate_messages_cpp.dir/build
-.PHONY : nodelet_generate_messages_cpp/fast
-
-#=============================================================================
-# Target rules for targets named roscpp_generate_messages_py
-
-# Build rule for target.
-roscpp_generate_messages_py: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 roscpp_generate_messages_py
-.PHONY : roscpp_generate_messages_py
-
-# fast build rule for target.
-roscpp_generate_messages_py/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/roscpp_generate_messages_py.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/roscpp_generate_messages_py.dir/build
-.PHONY : roscpp_generate_messages_py/fast
-
-#=============================================================================
-# Target rules for targets named rosgraph_msgs_generate_messages_eus
-
-# Build rule for target.
-rosgraph_msgs_generate_messages_eus: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rosgraph_msgs_generate_messages_eus
-.PHONY : rosgraph_msgs_generate_messages_eus
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_eus/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
-.PHONY : rosgraph_msgs_generate_messages_eus/fast
-
-#=============================================================================
-# Target rules for targets named bond_generate_messages_cpp
-
-# Build rule for target.
-bond_generate_messages_cpp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 bond_generate_messages_cpp
-.PHONY : bond_generate_messages_cpp
-
-# fast build rule for target.
-bond_generate_messages_cpp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/bond_generate_messages_cpp.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/bond_generate_messages_cpp.dir/build
-.PHONY : bond_generate_messages_cpp/fast
-
-#=============================================================================
-# Target rules for targets named bond_generate_messages_eus
-
-# Build rule for target.
-bond_generate_messages_eus: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 bond_generate_messages_eus
-.PHONY : bond_generate_messages_eus
-
-# fast build rule for target.
-bond_generate_messages_eus/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/bond_generate_messages_eus.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/bond_generate_messages_eus.dir/build
-.PHONY : bond_generate_messages_eus/fast
-
-#=============================================================================
-# Target rules for targets named run_tests_phidgets_temperature_roslaunch-check_launch
-
-# Build rule for target.
-run_tests_phidgets_temperature_roslaunch-check_launch: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_temperature_roslaunch-check_launch
-.PHONY : run_tests_phidgets_temperature_roslaunch-check_launch
-
-# fast build rule for target.
-run_tests_phidgets_temperature_roslaunch-check_launch/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/run_tests_phidgets_temperature_roslaunch-check_launch.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/run_tests_phidgets_temperature_roslaunch-check_launch.dir/build
-.PHONY : run_tests_phidgets_temperature_roslaunch-check_launch/fast
-
-#=============================================================================
-# Target rules for targets named rosgraph_msgs_generate_messages_lisp
-
-# Build rule for target.
-rosgraph_msgs_generate_messages_lisp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rosgraph_msgs_generate_messages_lisp
-.PHONY : rosgraph_msgs_generate_messages_lisp
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_lisp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
-.PHONY : rosgraph_msgs_generate_messages_lisp/fast
-
-#=============================================================================
-# Target rules for targets named run_tests_phidgets_temperature
-
-# Build rule for target.
-run_tests_phidgets_temperature: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_temperature
-.PHONY : run_tests_phidgets_temperature
-
-# fast build rule for target.
-run_tests_phidgets_temperature/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/run_tests_phidgets_temperature.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/run_tests_phidgets_temperature.dir/build
-.PHONY : run_tests_phidgets_temperature/fast
-
-#=============================================================================
-# Target rules for targets named run_tests_phidgets_temperature_roslaunch-check
-
-# Build rule for target.
-run_tests_phidgets_temperature_roslaunch-check: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_temperature_roslaunch-check
-.PHONY : run_tests_phidgets_temperature_roslaunch-check
-
-# fast build rule for target.
-run_tests_phidgets_temperature_roslaunch-check/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/run_tests_phidgets_temperature_roslaunch-check.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/run_tests_phidgets_temperature_roslaunch-check.dir/build
-.PHONY : run_tests_phidgets_temperature_roslaunch-check/fast
-
-#=============================================================================
-# Target rules for targets named phidgets_temperature
-
-# Build rule for target.
-phidgets_temperature: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 phidgets_temperature
-.PHONY : phidgets_temperature
-
-# fast build rule for target.
-phidgets_temperature/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/phidgets_temperature.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/phidgets_temperature.dir/build
-.PHONY : phidgets_temperature/fast
-
-#=============================================================================
-# Target rules for targets named _run_tests_phidgets_temperature_roslaunch-check
-
-# Build rule for target.
-_run_tests_phidgets_temperature_roslaunch-check: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_temperature_roslaunch-check
-.PHONY : _run_tests_phidgets_temperature_roslaunch-check
-
-# fast build rule for target.
-_run_tests_phidgets_temperature_roslaunch-check/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/_run_tests_phidgets_temperature_roslaunch-check.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/_run_tests_phidgets_temperature_roslaunch-check.dir/build
-.PHONY : _run_tests_phidgets_temperature_roslaunch-check/fast
-
-#=============================================================================
-# Target rules for targets named phidgets_temperature_nodelet
-
-# Build rule for target.
-phidgets_temperature_nodelet: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 phidgets_temperature_nodelet
-.PHONY : phidgets_temperature_nodelet
-
-# fast build rule for target.
-phidgets_temperature_nodelet/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/phidgets_temperature_nodelet.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/phidgets_temperature_nodelet.dir/build
-.PHONY : phidgets_temperature_nodelet/fast
-
-#=============================================================================
-# Target rules for targets named _run_tests_phidgets_temperature
-
-# Build rule for target.
-_run_tests_phidgets_temperature: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_temperature
-.PHONY : _run_tests_phidgets_temperature
-
-# fast build rule for target.
-_run_tests_phidgets_temperature/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/_run_tests_phidgets_temperature.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/_run_tests_phidgets_temperature.dir/build
-.PHONY : _run_tests_phidgets_temperature/fast
-
-#=============================================================================
-# Target rules for targets named clean_test_results_phidgets_temperature
-
-# Build rule for target.
-clean_test_results_phidgets_temperature: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 clean_test_results_phidgets_temperature
-.PHONY : clean_test_results_phidgets_temperature
-
-# fast build rule for target.
-clean_test_results_phidgets_temperature/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_temperature/CMakeFiles/clean_test_results_phidgets_temperature.dir/build.make phidgets_drivers/phidgets_temperature/CMakeFiles/clean_test_results_phidgets_temperature.dir/build
-.PHONY : clean_test_results_phidgets_temperature/fast
-
-#=============================================================================
-# Target rules for targets named rosserial_server_udp_socket_node
-
-# Build rule for target.
-rosserial_server_udp_socket_node: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rosserial_server_udp_socket_node
-.PHONY : rosserial_server_udp_socket_node
-
-# fast build rule for target.
-rosserial_server_udp_socket_node/fast:
-	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_server_udp_socket_node.dir/build.make rosserial_server/CMakeFiles/rosserial_server_udp_socket_node.dir/build
-.PHONY : rosserial_server_udp_socket_node/fast
-
-#=============================================================================
-# Target rules for targets named topic_tools_generate_messages_eus
-
-# Build rule for target.
-topic_tools_generate_messages_eus: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 topic_tools_generate_messages_eus
-.PHONY : topic_tools_generate_messages_eus
-
-# fast build rule for target.
-topic_tools_generate_messages_eus/fast:
-	$(MAKE) -f rosserial_server/CMakeFiles/topic_tools_generate_messages_eus.dir/build.make rosserial_server/CMakeFiles/topic_tools_generate_messages_eus.dir/build
-.PHONY : topic_tools_generate_messages_eus/fast
-
-#=============================================================================
-# Target rules for targets named rosserial_msgs_generate_messages_nodejs
-
-# Build rule for target.
-rosserial_msgs_generate_messages_nodejs: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rosserial_msgs_generate_messages_nodejs
-.PHONY : rosserial_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-rosserial_msgs_generate_messages_nodejs/fast:
-	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_nodejs.dir/build.make rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_nodejs.dir/build
-.PHONY : rosserial_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
 # Target rules for targets named topic_tools_generate_messages_cpp
@@ -1000,19 +610,6 @@ topic_tools_generate_messages_cpp/fast:
 .PHONY : topic_tools_generate_messages_cpp/fast
 
 #=============================================================================
-# Target rules for targets named rosserial_msgs_generate_messages_lisp
-
-# Build rule for target.
-rosserial_msgs_generate_messages_lisp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rosserial_msgs_generate_messages_lisp
-.PHONY : rosserial_msgs_generate_messages_lisp
-
-# fast build rule for target.
-rosserial_msgs_generate_messages_lisp/fast:
-	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_lisp.dir/build.make rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_lisp.dir/build
-.PHONY : rosserial_msgs_generate_messages_lisp/fast
-
-#=============================================================================
 # Target rules for targets named rosserial_msgs_generate_messages_cpp
 
 # Build rule for target.
@@ -1024,6 +621,58 @@ rosserial_msgs_generate_messages_cpp: cmake_check_build_system
 rosserial_msgs_generate_messages_cpp/fast:
 	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_cpp.dir/build.make rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_cpp.dir/build
 .PHONY : rosserial_msgs_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named rosgraph_msgs_generate_messages_lisp
+
+# Build rule for target.
+rosgraph_msgs_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rosgraph_msgs_generate_messages_lisp
+.PHONY : rosgraph_msgs_generate_messages_lisp
+
+# fast build rule for target.
+rosgraph_msgs_generate_messages_lisp/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make rosserial_server/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
+.PHONY : rosgraph_msgs_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named rosgraph_msgs_generate_messages_eus
+
+# Build rule for target.
+rosgraph_msgs_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rosgraph_msgs_generate_messages_eus
+.PHONY : rosgraph_msgs_generate_messages_eus
+
+# fast build rule for target.
+rosgraph_msgs_generate_messages_eus/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make rosserial_server/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
+.PHONY : rosgraph_msgs_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named topic_tools_generate_messages_eus
+
+# Build rule for target.
+topic_tools_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 topic_tools_generate_messages_eus
+.PHONY : topic_tools_generate_messages_eus
+
+# fast build rule for target.
+topic_tools_generate_messages_eus/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/topic_tools_generate_messages_eus.dir/build.make rosserial_server/CMakeFiles/topic_tools_generate_messages_eus.dir/build
+.PHONY : topic_tools_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named roscpp_generate_messages_nodejs
+
+# Build rule for target.
+roscpp_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roscpp_generate_messages_nodejs
+.PHONY : roscpp_generate_messages_nodejs
+
+# fast build rule for target.
+roscpp_generate_messages_nodejs/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make rosserial_server/CMakeFiles/roscpp_generate_messages_nodejs.dir/build
+.PHONY : roscpp_generate_messages_nodejs/fast
 
 #=============================================================================
 # Target rules for targets named topic_tools_generate_messages_py
@@ -1039,56 +688,30 @@ topic_tools_generate_messages_py/fast:
 .PHONY : topic_tools_generate_messages_py/fast
 
 #=============================================================================
-# Target rules for targets named rosserial_msgs_generate_messages_py
+# Target rules for targets named roscpp_generate_messages_py
 
 # Build rule for target.
-rosserial_msgs_generate_messages_py: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rosserial_msgs_generate_messages_py
-.PHONY : rosserial_msgs_generate_messages_py
+roscpp_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roscpp_generate_messages_py
+.PHONY : roscpp_generate_messages_py
 
 # fast build rule for target.
-rosserial_msgs_generate_messages_py/fast:
-	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_py.dir/build.make rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_py.dir/build
-.PHONY : rosserial_msgs_generate_messages_py/fast
+roscpp_generate_messages_py/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/roscpp_generate_messages_py.dir/build.make rosserial_server/CMakeFiles/roscpp_generate_messages_py.dir/build
+.PHONY : roscpp_generate_messages_py/fast
 
 #=============================================================================
-# Target rules for targets named topic_tools_generate_messages_lisp
+# Target rules for targets named rosgraph_msgs_generate_messages_nodejs
 
 # Build rule for target.
-topic_tools_generate_messages_lisp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 topic_tools_generate_messages_lisp
-.PHONY : topic_tools_generate_messages_lisp
+rosgraph_msgs_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rosgraph_msgs_generate_messages_nodejs
+.PHONY : rosgraph_msgs_generate_messages_nodejs
 
 # fast build rule for target.
-topic_tools_generate_messages_lisp/fast:
-	$(MAKE) -f rosserial_server/CMakeFiles/topic_tools_generate_messages_lisp.dir/build.make rosserial_server/CMakeFiles/topic_tools_generate_messages_lisp.dir/build
-.PHONY : topic_tools_generate_messages_lisp/fast
-
-#=============================================================================
-# Target rules for targets named rosserial_server_serial_node
-
-# Build rule for target.
-rosserial_server_serial_node: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rosserial_server_serial_node
-.PHONY : rosserial_server_serial_node
-
-# fast build rule for target.
-rosserial_server_serial_node/fast:
-	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_server_serial_node.dir/build.make rosserial_server/CMakeFiles/rosserial_server_serial_node.dir/build
-.PHONY : rosserial_server_serial_node/fast
-
-#=============================================================================
-# Target rules for targets named rosserial_msgs_generate_messages_eus
-
-# Build rule for target.
-rosserial_msgs_generate_messages_eus: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rosserial_msgs_generate_messages_eus
-.PHONY : rosserial_msgs_generate_messages_eus
-
-# fast build rule for target.
-rosserial_msgs_generate_messages_eus/fast:
-	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_eus.dir/build.make rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_eus.dir/build
-.PHONY : rosserial_msgs_generate_messages_eus/fast
+rosgraph_msgs_generate_messages_nodejs/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make rosserial_server/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
+.PHONY : rosgraph_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
 # Target rules for targets named topic_tools_generate_messages_nodejs
@@ -1104,17 +727,17 @@ topic_tools_generate_messages_nodejs/fast:
 .PHONY : topic_tools_generate_messages_nodejs/fast
 
 #=============================================================================
-# Target rules for targets named rosserial_server_lookup
+# Target rules for targets named roscpp_generate_messages_eus
 
 # Build rule for target.
-rosserial_server_lookup: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 rosserial_server_lookup
-.PHONY : rosserial_server_lookup
+roscpp_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roscpp_generate_messages_eus
+.PHONY : roscpp_generate_messages_eus
 
 # fast build rule for target.
-rosserial_server_lookup/fast:
-	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_server_lookup.dir/build.make rosserial_server/CMakeFiles/rosserial_server_lookup.dir/build
-.PHONY : rosserial_server_lookup/fast
+roscpp_generate_messages_eus/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/roscpp_generate_messages_eus.dir/build.make rosserial_server/CMakeFiles/roscpp_generate_messages_eus.dir/build
+.PHONY : roscpp_generate_messages_eus/fast
 
 #=============================================================================
 # Target rules for targets named rosserial_server_socket_node
@@ -1130,602 +753,147 @@ rosserial_server_socket_node/fast:
 .PHONY : rosserial_server_socket_node/fast
 
 #=============================================================================
-# Target rules for targets named clean_test_results_phidgets_accelerometer
+# Target rules for targets named topic_tools_generate_messages_lisp
 
 # Build rule for target.
-clean_test_results_phidgets_accelerometer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 clean_test_results_phidgets_accelerometer
-.PHONY : clean_test_results_phidgets_accelerometer
+topic_tools_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 topic_tools_generate_messages_lisp
+.PHONY : topic_tools_generate_messages_lisp
 
 # fast build rule for target.
-clean_test_results_phidgets_accelerometer/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/clean_test_results_phidgets_accelerometer.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/clean_test_results_phidgets_accelerometer.dir/build
-.PHONY : clean_test_results_phidgets_accelerometer/fast
+topic_tools_generate_messages_lisp/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/topic_tools_generate_messages_lisp.dir/build.make rosserial_server/CMakeFiles/topic_tools_generate_messages_lisp.dir/build
+.PHONY : topic_tools_generate_messages_lisp/fast
 
 #=============================================================================
-# Target rules for targets named _run_tests_phidgets_accelerometer_roslaunch-check_launch
+# Target rules for targets named rosserial_msgs_generate_messages_nodejs
 
 # Build rule for target.
-_run_tests_phidgets_accelerometer_roslaunch-check_launch: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_accelerometer_roslaunch-check_launch
-.PHONY : _run_tests_phidgets_accelerometer_roslaunch-check_launch
+rosserial_msgs_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rosserial_msgs_generate_messages_nodejs
+.PHONY : rosserial_msgs_generate_messages_nodejs
 
 # fast build rule for target.
-_run_tests_phidgets_accelerometer_roslaunch-check_launch/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/_run_tests_phidgets_accelerometer_roslaunch-check_launch.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/_run_tests_phidgets_accelerometer_roslaunch-check_launch.dir/build
-.PHONY : _run_tests_phidgets_accelerometer_roslaunch-check_launch/fast
+rosserial_msgs_generate_messages_nodejs/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_nodejs.dir/build.make rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_nodejs.dir/build
+.PHONY : rosserial_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
-# Target rules for targets named run_tests_phidgets_accelerometer_roslaunch-check_launch
+# Target rules for targets named rosserial_msgs_generate_messages_eus
 
 # Build rule for target.
-run_tests_phidgets_accelerometer_roslaunch-check_launch: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_accelerometer_roslaunch-check_launch
-.PHONY : run_tests_phidgets_accelerometer_roslaunch-check_launch
+rosserial_msgs_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rosserial_msgs_generate_messages_eus
+.PHONY : rosserial_msgs_generate_messages_eus
 
 # fast build rule for target.
-run_tests_phidgets_accelerometer_roslaunch-check_launch/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/run_tests_phidgets_accelerometer_roslaunch-check_launch.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/run_tests_phidgets_accelerometer_roslaunch-check_launch.dir/build
-.PHONY : run_tests_phidgets_accelerometer_roslaunch-check_launch/fast
+rosserial_msgs_generate_messages_eus/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_eus.dir/build.make rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_eus.dir/build
+.PHONY : rosserial_msgs_generate_messages_eus/fast
 
 #=============================================================================
-# Target rules for targets named _run_tests_phidgets_accelerometer_roslaunch-check
+# Target rules for targets named roscpp_generate_messages_lisp
 
 # Build rule for target.
-_run_tests_phidgets_accelerometer_roslaunch-check: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_accelerometer_roslaunch-check
-.PHONY : _run_tests_phidgets_accelerometer_roslaunch-check
+roscpp_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roscpp_generate_messages_lisp
+.PHONY : roscpp_generate_messages_lisp
 
 # fast build rule for target.
-_run_tests_phidgets_accelerometer_roslaunch-check/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/_run_tests_phidgets_accelerometer_roslaunch-check.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/_run_tests_phidgets_accelerometer_roslaunch-check.dir/build
-.PHONY : _run_tests_phidgets_accelerometer_roslaunch-check/fast
+roscpp_generate_messages_lisp/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make rosserial_server/CMakeFiles/roscpp_generate_messages_lisp.dir/build
+.PHONY : roscpp_generate_messages_lisp/fast
 
 #=============================================================================
-# Target rules for targets named run_tests_phidgets_accelerometer_roslaunch-check
+# Target rules for targets named rosserial_msgs_generate_messages_py
 
 # Build rule for target.
-run_tests_phidgets_accelerometer_roslaunch-check: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_accelerometer_roslaunch-check
-.PHONY : run_tests_phidgets_accelerometer_roslaunch-check
+rosserial_msgs_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rosserial_msgs_generate_messages_py
+.PHONY : rosserial_msgs_generate_messages_py
 
 # fast build rule for target.
-run_tests_phidgets_accelerometer_roslaunch-check/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/run_tests_phidgets_accelerometer_roslaunch-check.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/run_tests_phidgets_accelerometer_roslaunch-check.dir/build
-.PHONY : run_tests_phidgets_accelerometer_roslaunch-check/fast
+rosserial_msgs_generate_messages_py/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_py.dir/build.make rosserial_server/CMakeFiles/rosserial_msgs_generate_messages_py.dir/build
+.PHONY : rosserial_msgs_generate_messages_py/fast
 
 #=============================================================================
-# Target rules for targets named _run_tests_phidgets_accelerometer
+# Target rules for targets named roscpp_generate_messages_cpp
 
 # Build rule for target.
-_run_tests_phidgets_accelerometer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_accelerometer
-.PHONY : _run_tests_phidgets_accelerometer
+roscpp_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roscpp_generate_messages_cpp
+.PHONY : roscpp_generate_messages_cpp
 
 # fast build rule for target.
-_run_tests_phidgets_accelerometer/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/_run_tests_phidgets_accelerometer.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/_run_tests_phidgets_accelerometer.dir/build
-.PHONY : _run_tests_phidgets_accelerometer/fast
+roscpp_generate_messages_cpp/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make rosserial_server/CMakeFiles/roscpp_generate_messages_cpp.dir/build
+.PHONY : roscpp_generate_messages_cpp/fast
 
 #=============================================================================
-# Target rules for targets named sensor_msgs_generate_messages_cpp
+# Target rules for targets named rosserial_server_lookup
 
 # Build rule for target.
-sensor_msgs_generate_messages_cpp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_cpp
-.PHONY : sensor_msgs_generate_messages_cpp
+rosserial_server_lookup: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rosserial_server_lookup
+.PHONY : rosserial_server_lookup
 
 # fast build rule for target.
-sensor_msgs_generate_messages_cpp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build
-.PHONY : sensor_msgs_generate_messages_cpp/fast
+rosserial_server_lookup/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_server_lookup.dir/build.make rosserial_server/CMakeFiles/rosserial_server_lookup.dir/build
+.PHONY : rosserial_server_lookup/fast
 
 #=============================================================================
-# Target rules for targets named sensor_msgs_generate_messages_eus
+# Target rules for targets named rosserial_server_serial_node
 
 # Build rule for target.
-sensor_msgs_generate_messages_eus: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_eus
-.PHONY : sensor_msgs_generate_messages_eus
+rosserial_server_serial_node: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rosserial_server_serial_node
+.PHONY : rosserial_server_serial_node
 
 # fast build rule for target.
-sensor_msgs_generate_messages_eus/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build
-.PHONY : sensor_msgs_generate_messages_eus/fast
+rosserial_server_serial_node/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_server_serial_node.dir/build.make rosserial_server/CMakeFiles/rosserial_server_serial_node.dir/build
+.PHONY : rosserial_server_serial_node/fast
 
 #=============================================================================
-# Target rules for targets named phidgets_accelerometer_nodelet
+# Target rules for targets named rosserial_server_udp_socket_node
 
 # Build rule for target.
-phidgets_accelerometer_nodelet: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 phidgets_accelerometer_nodelet
-.PHONY : phidgets_accelerometer_nodelet
+rosserial_server_udp_socket_node: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rosserial_server_udp_socket_node
+.PHONY : rosserial_server_udp_socket_node
 
 # fast build rule for target.
-phidgets_accelerometer_nodelet/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/phidgets_accelerometer_nodelet.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/phidgets_accelerometer_nodelet.dir/build
-.PHONY : phidgets_accelerometer_nodelet/fast
+rosserial_server_udp_socket_node/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/rosserial_server_udp_socket_node.dir/build.make rosserial_server/CMakeFiles/rosserial_server_udp_socket_node.dir/build
+.PHONY : rosserial_server_udp_socket_node/fast
 
 #=============================================================================
-# Target rules for targets named geometry_msgs_generate_messages_eus
+# Target rules for targets named rosgraph_msgs_generate_messages_cpp
 
 # Build rule for target.
-geometry_msgs_generate_messages_eus: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 geometry_msgs_generate_messages_eus
-.PHONY : geometry_msgs_generate_messages_eus
+rosgraph_msgs_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rosgraph_msgs_generate_messages_cpp
+.PHONY : rosgraph_msgs_generate_messages_cpp
 
 # fast build rule for target.
-geometry_msgs_generate_messages_eus/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build
-.PHONY : geometry_msgs_generate_messages_eus/fast
+rosgraph_msgs_generate_messages_cpp/fast:
+	$(MAKE) -f rosserial_server/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make rosserial_server/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
+.PHONY : rosgraph_msgs_generate_messages_cpp/fast
 
 #=============================================================================
-# Target rules for targets named geometry_msgs_generate_messages_lisp
+# Target rules for targets named clean_test_results_phidgets_spatial
 
 # Build rule for target.
-geometry_msgs_generate_messages_lisp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 geometry_msgs_generate_messages_lisp
-.PHONY : geometry_msgs_generate_messages_lisp
+clean_test_results_phidgets_spatial: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 clean_test_results_phidgets_spatial
+.PHONY : clean_test_results_phidgets_spatial
 
 # fast build rule for target.
-geometry_msgs_generate_messages_lisp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build
-.PHONY : geometry_msgs_generate_messages_lisp/fast
-
-#=============================================================================
-# Target rules for targets named sensor_msgs_generate_messages_lisp
-
-# Build rule for target.
-sensor_msgs_generate_messages_lisp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_lisp
-.PHONY : sensor_msgs_generate_messages_lisp
-
-# fast build rule for target.
-sensor_msgs_generate_messages_lisp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build
-.PHONY : sensor_msgs_generate_messages_lisp/fast
-
-#=============================================================================
-# Target rules for targets named sensor_msgs_generate_messages_nodejs
-
-# Build rule for target.
-sensor_msgs_generate_messages_nodejs: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_nodejs
-.PHONY : sensor_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-sensor_msgs_generate_messages_nodejs/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build
-.PHONY : sensor_msgs_generate_messages_nodejs/fast
-
-#=============================================================================
-# Target rules for targets named geometry_msgs_generate_messages_py
-
-# Build rule for target.
-geometry_msgs_generate_messages_py: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 geometry_msgs_generate_messages_py
-.PHONY : geometry_msgs_generate_messages_py
-
-# fast build rule for target.
-geometry_msgs_generate_messages_py/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/geometry_msgs_generate_messages_py.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/geometry_msgs_generate_messages_py.dir/build
-.PHONY : geometry_msgs_generate_messages_py/fast
-
-#=============================================================================
-# Target rules for targets named phidgets_accelerometer
-
-# Build rule for target.
-phidgets_accelerometer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 phidgets_accelerometer
-.PHONY : phidgets_accelerometer
-
-# fast build rule for target.
-phidgets_accelerometer/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/phidgets_accelerometer.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/phidgets_accelerometer.dir/build
-.PHONY : phidgets_accelerometer/fast
-
-#=============================================================================
-# Target rules for targets named sensor_msgs_generate_messages_py
-
-# Build rule for target.
-sensor_msgs_generate_messages_py: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_py
-.PHONY : sensor_msgs_generate_messages_py
-
-# fast build rule for target.
-sensor_msgs_generate_messages_py/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/sensor_msgs_generate_messages_py.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/sensor_msgs_generate_messages_py.dir/build
-.PHONY : sensor_msgs_generate_messages_py/fast
-
-#=============================================================================
-# Target rules for targets named geometry_msgs_generate_messages_cpp
-
-# Build rule for target.
-geometry_msgs_generate_messages_cpp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 geometry_msgs_generate_messages_cpp
-.PHONY : geometry_msgs_generate_messages_cpp
-
-# fast build rule for target.
-geometry_msgs_generate_messages_cpp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build
-.PHONY : geometry_msgs_generate_messages_cpp/fast
-
-#=============================================================================
-# Target rules for targets named geometry_msgs_generate_messages_nodejs
-
-# Build rule for target.
-geometry_msgs_generate_messages_nodejs: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 geometry_msgs_generate_messages_nodejs
-.PHONY : geometry_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-geometry_msgs_generate_messages_nodejs/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build
-.PHONY : geometry_msgs_generate_messages_nodejs/fast
-
-#=============================================================================
-# Target rules for targets named run_tests_phidgets_accelerometer
-
-# Build rule for target.
-run_tests_phidgets_accelerometer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_accelerometer
-.PHONY : run_tests_phidgets_accelerometer
-
-# fast build rule for target.
-run_tests_phidgets_accelerometer/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_accelerometer/CMakeFiles/run_tests_phidgets_accelerometer.dir/build.make phidgets_drivers/phidgets_accelerometer/CMakeFiles/run_tests_phidgets_accelerometer.dir/build
-.PHONY : run_tests_phidgets_accelerometer/fast
-
-#=============================================================================
-# Target rules for targets named std_srvs_generate_messages_cpp
-
-# Build rule for target.
-std_srvs_generate_messages_cpp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_cpp
-.PHONY : std_srvs_generate_messages_cpp
-
-# fast build rule for target.
-std_srvs_generate_messages_cpp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/std_srvs_generate_messages_cpp.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/std_srvs_generate_messages_cpp.dir/build
-.PHONY : std_srvs_generate_messages_cpp/fast
-
-#=============================================================================
-# Target rules for targets named phidgets_gyroscope_nodelet
-
-# Build rule for target.
-phidgets_gyroscope_nodelet: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 phidgets_gyroscope_nodelet
-.PHONY : phidgets_gyroscope_nodelet
-
-# fast build rule for target.
-phidgets_gyroscope_nodelet/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/phidgets_gyroscope_nodelet.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/phidgets_gyroscope_nodelet.dir/build
-.PHONY : phidgets_gyroscope_nodelet/fast
-
-#=============================================================================
-# Target rules for targets named std_srvs_generate_messages_eus
-
-# Build rule for target.
-std_srvs_generate_messages_eus: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_eus
-.PHONY : std_srvs_generate_messages_eus
-
-# fast build rule for target.
-std_srvs_generate_messages_eus/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/std_srvs_generate_messages_eus.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/std_srvs_generate_messages_eus.dir/build
-.PHONY : std_srvs_generate_messages_eus/fast
-
-#=============================================================================
-# Target rules for targets named std_srvs_generate_messages_lisp
-
-# Build rule for target.
-std_srvs_generate_messages_lisp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_lisp
-.PHONY : std_srvs_generate_messages_lisp
-
-# fast build rule for target.
-std_srvs_generate_messages_lisp/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/std_srvs_generate_messages_lisp.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/std_srvs_generate_messages_lisp.dir/build
-.PHONY : std_srvs_generate_messages_lisp/fast
-
-#=============================================================================
-# Target rules for targets named clean_test_results_phidgets_gyroscope
-
-# Build rule for target.
-clean_test_results_phidgets_gyroscope: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 clean_test_results_phidgets_gyroscope
-.PHONY : clean_test_results_phidgets_gyroscope
-
-# fast build rule for target.
-clean_test_results_phidgets_gyroscope/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/clean_test_results_phidgets_gyroscope.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/clean_test_results_phidgets_gyroscope.dir/build
-.PHONY : clean_test_results_phidgets_gyroscope/fast
-
-#=============================================================================
-# Target rules for targets named std_srvs_generate_messages_nodejs
-
-# Build rule for target.
-std_srvs_generate_messages_nodejs: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_nodejs
-.PHONY : std_srvs_generate_messages_nodejs
-
-# fast build rule for target.
-std_srvs_generate_messages_nodejs/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build
-.PHONY : std_srvs_generate_messages_nodejs/fast
-
-#=============================================================================
-# Target rules for targets named std_srvs_generate_messages_py
-
-# Build rule for target.
-std_srvs_generate_messages_py: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_py
-.PHONY : std_srvs_generate_messages_py
-
-# fast build rule for target.
-std_srvs_generate_messages_py/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/std_srvs_generate_messages_py.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/std_srvs_generate_messages_py.dir/build
-.PHONY : std_srvs_generate_messages_py/fast
-
-#=============================================================================
-# Target rules for targets named _run_tests_phidgets_gyroscope_roslaunch-check_launch
-
-# Build rule for target.
-_run_tests_phidgets_gyroscope_roslaunch-check_launch: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_gyroscope_roslaunch-check_launch
-.PHONY : _run_tests_phidgets_gyroscope_roslaunch-check_launch
-
-# fast build rule for target.
-_run_tests_phidgets_gyroscope_roslaunch-check_launch/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/_run_tests_phidgets_gyroscope_roslaunch-check_launch.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/_run_tests_phidgets_gyroscope_roslaunch-check_launch.dir/build
-.PHONY : _run_tests_phidgets_gyroscope_roslaunch-check_launch/fast
-
-#=============================================================================
-# Target rules for targets named phidgets_gyroscope
-
-# Build rule for target.
-phidgets_gyroscope: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 phidgets_gyroscope
-.PHONY : phidgets_gyroscope
-
-# fast build rule for target.
-phidgets_gyroscope/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/phidgets_gyroscope.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/phidgets_gyroscope.dir/build
-.PHONY : phidgets_gyroscope/fast
-
-#=============================================================================
-# Target rules for targets named _run_tests_phidgets_gyroscope
-
-# Build rule for target.
-_run_tests_phidgets_gyroscope: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_gyroscope
-.PHONY : _run_tests_phidgets_gyroscope
-
-# fast build rule for target.
-_run_tests_phidgets_gyroscope/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/_run_tests_phidgets_gyroscope.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/_run_tests_phidgets_gyroscope.dir/build
-.PHONY : _run_tests_phidgets_gyroscope/fast
-
-#=============================================================================
-# Target rules for targets named run_tests_phidgets_gyroscope
-
-# Build rule for target.
-run_tests_phidgets_gyroscope: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_gyroscope
-.PHONY : run_tests_phidgets_gyroscope
-
-# fast build rule for target.
-run_tests_phidgets_gyroscope/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/run_tests_phidgets_gyroscope.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/run_tests_phidgets_gyroscope.dir/build
-.PHONY : run_tests_phidgets_gyroscope/fast
-
-#=============================================================================
-# Target rules for targets named run_tests_phidgets_gyroscope_roslaunch-check
-
-# Build rule for target.
-run_tests_phidgets_gyroscope_roslaunch-check: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_gyroscope_roslaunch-check
-.PHONY : run_tests_phidgets_gyroscope_roslaunch-check
-
-# fast build rule for target.
-run_tests_phidgets_gyroscope_roslaunch-check/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/run_tests_phidgets_gyroscope_roslaunch-check.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/run_tests_phidgets_gyroscope_roslaunch-check.dir/build
-.PHONY : run_tests_phidgets_gyroscope_roslaunch-check/fast
-
-#=============================================================================
-# Target rules for targets named _run_tests_phidgets_gyroscope_roslaunch-check
-
-# Build rule for target.
-_run_tests_phidgets_gyroscope_roslaunch-check: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_gyroscope_roslaunch-check
-.PHONY : _run_tests_phidgets_gyroscope_roslaunch-check
-
-# fast build rule for target.
-_run_tests_phidgets_gyroscope_roslaunch-check/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/_run_tests_phidgets_gyroscope_roslaunch-check.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/_run_tests_phidgets_gyroscope_roslaunch-check.dir/build
-.PHONY : _run_tests_phidgets_gyroscope_roslaunch-check/fast
-
-#=============================================================================
-# Target rules for targets named run_tests_phidgets_gyroscope_roslaunch-check_launch
-
-# Build rule for target.
-run_tests_phidgets_gyroscope_roslaunch-check_launch: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_gyroscope_roslaunch-check_launch
-.PHONY : run_tests_phidgets_gyroscope_roslaunch-check_launch
-
-# fast build rule for target.
-run_tests_phidgets_gyroscope_roslaunch-check_launch/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_gyroscope/CMakeFiles/run_tests_phidgets_gyroscope_roslaunch-check_launch.dir/build.make phidgets_drivers/phidgets_gyroscope/CMakeFiles/run_tests_phidgets_gyroscope_roslaunch-check_launch.dir/build
-.PHONY : run_tests_phidgets_gyroscope_roslaunch-check_launch/fast
-
-#=============================================================================
-# Target rules for targets named phidgets_magnetometer
-
-# Build rule for target.
-phidgets_magnetometer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 phidgets_magnetometer
-.PHONY : phidgets_magnetometer
-
-# fast build rule for target.
-phidgets_magnetometer/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_magnetometer/CMakeFiles/phidgets_magnetometer.dir/build.make phidgets_drivers/phidgets_magnetometer/CMakeFiles/phidgets_magnetometer.dir/build
-.PHONY : phidgets_magnetometer/fast
-
-#=============================================================================
-# Target rules for targets named run_tests_phidgets_magnetometer_roslaunch-check
-
-# Build rule for target.
-run_tests_phidgets_magnetometer_roslaunch-check: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_magnetometer_roslaunch-check
-.PHONY : run_tests_phidgets_magnetometer_roslaunch-check
-
-# fast build rule for target.
-run_tests_phidgets_magnetometer_roslaunch-check/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_magnetometer/CMakeFiles/run_tests_phidgets_magnetometer_roslaunch-check.dir/build.make phidgets_drivers/phidgets_magnetometer/CMakeFiles/run_tests_phidgets_magnetometer_roslaunch-check.dir/build
-.PHONY : run_tests_phidgets_magnetometer_roslaunch-check/fast
-
-#=============================================================================
-# Target rules for targets named _run_tests_phidgets_magnetometer
-
-# Build rule for target.
-_run_tests_phidgets_magnetometer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_magnetometer
-.PHONY : _run_tests_phidgets_magnetometer
-
-# fast build rule for target.
-_run_tests_phidgets_magnetometer/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_magnetometer/CMakeFiles/_run_tests_phidgets_magnetometer.dir/build.make phidgets_drivers/phidgets_magnetometer/CMakeFiles/_run_tests_phidgets_magnetometer.dir/build
-.PHONY : _run_tests_phidgets_magnetometer/fast
-
-#=============================================================================
-# Target rules for targets named phidgets_magnetometer_nodelet
-
-# Build rule for target.
-phidgets_magnetometer_nodelet: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 phidgets_magnetometer_nodelet
-.PHONY : phidgets_magnetometer_nodelet
-
-# fast build rule for target.
-phidgets_magnetometer_nodelet/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_magnetometer/CMakeFiles/phidgets_magnetometer_nodelet.dir/build.make phidgets_drivers/phidgets_magnetometer/CMakeFiles/phidgets_magnetometer_nodelet.dir/build
-.PHONY : phidgets_magnetometer_nodelet/fast
-
-#=============================================================================
-# Target rules for targets named _run_tests_phidgets_magnetometer_roslaunch-check
-
-# Build rule for target.
-_run_tests_phidgets_magnetometer_roslaunch-check: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_magnetometer_roslaunch-check
-.PHONY : _run_tests_phidgets_magnetometer_roslaunch-check
-
-# fast build rule for target.
-_run_tests_phidgets_magnetometer_roslaunch-check/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_magnetometer/CMakeFiles/_run_tests_phidgets_magnetometer_roslaunch-check.dir/build.make phidgets_drivers/phidgets_magnetometer/CMakeFiles/_run_tests_phidgets_magnetometer_roslaunch-check.dir/build
-.PHONY : _run_tests_phidgets_magnetometer_roslaunch-check/fast
-
-#=============================================================================
-# Target rules for targets named run_tests_phidgets_magnetometer_roslaunch-check_launch
-
-# Build rule for target.
-run_tests_phidgets_magnetometer_roslaunch-check_launch: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_magnetometer_roslaunch-check_launch
-.PHONY : run_tests_phidgets_magnetometer_roslaunch-check_launch
-
-# fast build rule for target.
-run_tests_phidgets_magnetometer_roslaunch-check_launch/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_magnetometer/CMakeFiles/run_tests_phidgets_magnetometer_roslaunch-check_launch.dir/build.make phidgets_drivers/phidgets_magnetometer/CMakeFiles/run_tests_phidgets_magnetometer_roslaunch-check_launch.dir/build
-.PHONY : run_tests_phidgets_magnetometer_roslaunch-check_launch/fast
-
-#=============================================================================
-# Target rules for targets named _run_tests_phidgets_magnetometer_roslaunch-check_launch
-
-# Build rule for target.
-_run_tests_phidgets_magnetometer_roslaunch-check_launch: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_magnetometer_roslaunch-check_launch
-.PHONY : _run_tests_phidgets_magnetometer_roslaunch-check_launch
-
-# fast build rule for target.
-_run_tests_phidgets_magnetometer_roslaunch-check_launch/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_magnetometer/CMakeFiles/_run_tests_phidgets_magnetometer_roslaunch-check_launch.dir/build.make phidgets_drivers/phidgets_magnetometer/CMakeFiles/_run_tests_phidgets_magnetometer_roslaunch-check_launch.dir/build
-.PHONY : _run_tests_phidgets_magnetometer_roslaunch-check_launch/fast
-
-#=============================================================================
-# Target rules for targets named run_tests_phidgets_magnetometer
-
-# Build rule for target.
-run_tests_phidgets_magnetometer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_magnetometer
-.PHONY : run_tests_phidgets_magnetometer
-
-# fast build rule for target.
-run_tests_phidgets_magnetometer/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_magnetometer/CMakeFiles/run_tests_phidgets_magnetometer.dir/build.make phidgets_drivers/phidgets_magnetometer/CMakeFiles/run_tests_phidgets_magnetometer.dir/build
-.PHONY : run_tests_phidgets_magnetometer/fast
-
-#=============================================================================
-# Target rules for targets named clean_test_results_phidgets_magnetometer
-
-# Build rule for target.
-clean_test_results_phidgets_magnetometer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 clean_test_results_phidgets_magnetometer
-.PHONY : clean_test_results_phidgets_magnetometer
-
-# fast build rule for target.
-clean_test_results_phidgets_magnetometer/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_magnetometer/CMakeFiles/clean_test_results_phidgets_magnetometer.dir/build.make phidgets_drivers/phidgets_magnetometer/CMakeFiles/clean_test_results_phidgets_magnetometer.dir/build
-.PHONY : clean_test_results_phidgets_magnetometer/fast
-
-#=============================================================================
-# Target rules for targets named phidgets_spatial
-
-# Build rule for target.
-phidgets_spatial: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 phidgets_spatial
-.PHONY : phidgets_spatial
-
-# fast build rule for target.
-phidgets_spatial/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/phidgets_spatial.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/phidgets_spatial.dir/build
-.PHONY : phidgets_spatial/fast
-
-#=============================================================================
-# Target rules for targets named phidgets_spatial_nodelet
-
-# Build rule for target.
-phidgets_spatial_nodelet: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 phidgets_spatial_nodelet
-.PHONY : phidgets_spatial_nodelet
-
-# fast build rule for target.
-phidgets_spatial_nodelet/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/phidgets_spatial_nodelet.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/phidgets_spatial_nodelet.dir/build
-.PHONY : phidgets_spatial_nodelet/fast
-
-#=============================================================================
-# Target rules for targets named run_tests_phidgets_spatial
-
-# Build rule for target.
-run_tests_phidgets_spatial: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_spatial
-.PHONY : run_tests_phidgets_spatial
-
-# fast build rule for target.
-run_tests_phidgets_spatial/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/run_tests_phidgets_spatial.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/run_tests_phidgets_spatial.dir/build
-.PHONY : run_tests_phidgets_spatial/fast
-
-#=============================================================================
-# Target rules for targets named _run_tests_phidgets_spatial
-
-# Build rule for target.
-_run_tests_phidgets_spatial: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_spatial
-.PHONY : _run_tests_phidgets_spatial
-
-# fast build rule for target.
-_run_tests_phidgets_spatial/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/_run_tests_phidgets_spatial.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/_run_tests_phidgets_spatial.dir/build
-.PHONY : _run_tests_phidgets_spatial/fast
+clean_test_results_phidgets_spatial/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/clean_test_results_phidgets_spatial.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/clean_test_results_phidgets_spatial.dir/build
+.PHONY : clean_test_results_phidgets_spatial/fast
 
 #=============================================================================
 # Target rules for targets named run_tests_phidgets_spatial_roslaunch-check_launch
@@ -1754,6 +922,305 @@ run_tests_phidgets_spatial_roslaunch-check/fast:
 .PHONY : run_tests_phidgets_spatial_roslaunch-check/fast
 
 #=============================================================================
+# Target rules for targets named sensor_msgs_generate_messages_eus
+
+# Build rule for target.
+sensor_msgs_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_eus
+.PHONY : sensor_msgs_generate_messages_eus
+
+# fast build rule for target.
+sensor_msgs_generate_messages_eus/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build
+.PHONY : sensor_msgs_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named sensor_msgs_generate_messages_cpp
+
+# Build rule for target.
+sensor_msgs_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_cpp
+.PHONY : sensor_msgs_generate_messages_cpp
+
+# fast build rule for target.
+sensor_msgs_generate_messages_cpp/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build
+.PHONY : sensor_msgs_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named nodelet_generate_messages_py
+
+# Build rule for target.
+nodelet_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 nodelet_generate_messages_py
+.PHONY : nodelet_generate_messages_py
+
+# fast build rule for target.
+nodelet_generate_messages_py/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/nodelet_generate_messages_py.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/nodelet_generate_messages_py.dir/build
+.PHONY : nodelet_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named geometry_msgs_generate_messages_lisp
+
+# Build rule for target.
+geometry_msgs_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 geometry_msgs_generate_messages_lisp
+.PHONY : geometry_msgs_generate_messages_lisp
+
+# fast build rule for target.
+geometry_msgs_generate_messages_lisp/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build
+.PHONY : geometry_msgs_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named bond_generate_messages_lisp
+
+# Build rule for target.
+bond_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bond_generate_messages_lisp
+.PHONY : bond_generate_messages_lisp
+
+# fast build rule for target.
+bond_generate_messages_lisp/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/bond_generate_messages_lisp.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/bond_generate_messages_lisp.dir/build
+.PHONY : bond_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named sensor_msgs_generate_messages_lisp
+
+# Build rule for target.
+sensor_msgs_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_lisp
+.PHONY : sensor_msgs_generate_messages_lisp
+
+# fast build rule for target.
+sensor_msgs_generate_messages_lisp/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build
+.PHONY : sensor_msgs_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named bond_generate_messages_cpp
+
+# Build rule for target.
+bond_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bond_generate_messages_cpp
+.PHONY : bond_generate_messages_cpp
+
+# fast build rule for target.
+bond_generate_messages_cpp/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/bond_generate_messages_cpp.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/bond_generate_messages_cpp.dir/build
+.PHONY : bond_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named bond_generate_messages_eus
+
+# Build rule for target.
+bond_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bond_generate_messages_eus
+.PHONY : bond_generate_messages_eus
+
+# fast build rule for target.
+bond_generate_messages_eus/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/bond_generate_messages_eus.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/bond_generate_messages_eus.dir/build
+.PHONY : bond_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named sensor_msgs_generate_messages_nodejs
+
+# Build rule for target.
+sensor_msgs_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_nodejs
+.PHONY : sensor_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+sensor_msgs_generate_messages_nodejs/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build
+.PHONY : sensor_msgs_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named std_srvs_generate_messages_cpp
+
+# Build rule for target.
+std_srvs_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_cpp
+.PHONY : std_srvs_generate_messages_cpp
+
+# fast build rule for target.
+std_srvs_generate_messages_cpp/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/std_srvs_generate_messages_cpp.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/std_srvs_generate_messages_cpp.dir/build
+.PHONY : std_srvs_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named nodelet_generate_messages_lisp
+
+# Build rule for target.
+nodelet_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 nodelet_generate_messages_lisp
+.PHONY : nodelet_generate_messages_lisp
+
+# fast build rule for target.
+nodelet_generate_messages_lisp/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/nodelet_generate_messages_lisp.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/nodelet_generate_messages_lisp.dir/build
+.PHONY : nodelet_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named nodelet_generate_messages_eus
+
+# Build rule for target.
+nodelet_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 nodelet_generate_messages_eus
+.PHONY : nodelet_generate_messages_eus
+
+# fast build rule for target.
+nodelet_generate_messages_eus/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/nodelet_generate_messages_eus.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/nodelet_generate_messages_eus.dir/build
+.PHONY : nodelet_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named geometry_msgs_generate_messages_py
+
+# Build rule for target.
+geometry_msgs_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 geometry_msgs_generate_messages_py
+.PHONY : geometry_msgs_generate_messages_py
+
+# fast build rule for target.
+geometry_msgs_generate_messages_py/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/geometry_msgs_generate_messages_py.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/geometry_msgs_generate_messages_py.dir/build
+.PHONY : geometry_msgs_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named sensor_msgs_generate_messages_py
+
+# Build rule for target.
+sensor_msgs_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_py
+.PHONY : sensor_msgs_generate_messages_py
+
+# fast build rule for target.
+sensor_msgs_generate_messages_py/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/sensor_msgs_generate_messages_py.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/sensor_msgs_generate_messages_py.dir/build
+.PHONY : sensor_msgs_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named geometry_msgs_generate_messages_cpp
+
+# Build rule for target.
+geometry_msgs_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 geometry_msgs_generate_messages_cpp
+.PHONY : geometry_msgs_generate_messages_cpp
+
+# fast build rule for target.
+geometry_msgs_generate_messages_cpp/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build
+.PHONY : geometry_msgs_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named geometry_msgs_generate_messages_nodejs
+
+# Build rule for target.
+geometry_msgs_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 geometry_msgs_generate_messages_nodejs
+.PHONY : geometry_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+geometry_msgs_generate_messages_nodejs/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build
+.PHONY : geometry_msgs_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named bond_generate_messages_py
+
+# Build rule for target.
+bond_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bond_generate_messages_py
+.PHONY : bond_generate_messages_py
+
+# fast build rule for target.
+bond_generate_messages_py/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/bond_generate_messages_py.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/bond_generate_messages_py.dir/build
+.PHONY : bond_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named _run_tests_phidgets_spatial
+
+# Build rule for target.
+_run_tests_phidgets_spatial: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 _run_tests_phidgets_spatial
+.PHONY : _run_tests_phidgets_spatial
+
+# fast build rule for target.
+_run_tests_phidgets_spatial/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/_run_tests_phidgets_spatial.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/_run_tests_phidgets_spatial.dir/build
+.PHONY : _run_tests_phidgets_spatial/fast
+
+#=============================================================================
+# Target rules for targets named bond_generate_messages_nodejs
+
+# Build rule for target.
+bond_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bond_generate_messages_nodejs
+.PHONY : bond_generate_messages_nodejs
+
+# fast build rule for target.
+bond_generate_messages_nodejs/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/bond_generate_messages_nodejs.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/bond_generate_messages_nodejs.dir/build
+.PHONY : bond_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named nodelet_generate_messages_nodejs
+
+# Build rule for target.
+nodelet_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 nodelet_generate_messages_nodejs
+.PHONY : nodelet_generate_messages_nodejs
+
+# fast build rule for target.
+nodelet_generate_messages_nodejs/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/nodelet_generate_messages_nodejs.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/nodelet_generate_messages_nodejs.dir/build
+.PHONY : nodelet_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named nodelet_generate_messages_cpp
+
+# Build rule for target.
+nodelet_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 nodelet_generate_messages_cpp
+.PHONY : nodelet_generate_messages_cpp
+
+# fast build rule for target.
+nodelet_generate_messages_cpp/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/nodelet_generate_messages_cpp.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/nodelet_generate_messages_cpp.dir/build
+.PHONY : nodelet_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named geometry_msgs_generate_messages_eus
+
+# Build rule for target.
+geometry_msgs_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 geometry_msgs_generate_messages_eus
+.PHONY : geometry_msgs_generate_messages_eus
+
+# fast build rule for target.
+geometry_msgs_generate_messages_eus/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build
+.PHONY : geometry_msgs_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named phidgets_spatial
+
+# Build rule for target.
+phidgets_spatial: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 phidgets_spatial
+.PHONY : phidgets_spatial
+
+# fast build rule for target.
+phidgets_spatial/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/phidgets_spatial.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/phidgets_spatial.dir/build
+.PHONY : phidgets_spatial/fast
+
+#=============================================================================
 # Target rules for targets named _run_tests_phidgets_spatial_roslaunch-check
 
 # Build rule for target.
@@ -1765,6 +1232,32 @@ _run_tests_phidgets_spatial_roslaunch-check: cmake_check_build_system
 _run_tests_phidgets_spatial_roslaunch-check/fast:
 	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/_run_tests_phidgets_spatial_roslaunch-check.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/_run_tests_phidgets_spatial_roslaunch-check.dir/build
 .PHONY : _run_tests_phidgets_spatial_roslaunch-check/fast
+
+#=============================================================================
+# Target rules for targets named std_srvs_generate_messages_eus
+
+# Build rule for target.
+std_srvs_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_eus
+.PHONY : std_srvs_generate_messages_eus
+
+# fast build rule for target.
+std_srvs_generate_messages_eus/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/std_srvs_generate_messages_eus.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/std_srvs_generate_messages_eus.dir/build
+.PHONY : std_srvs_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named std_srvs_generate_messages_lisp
+
+# Build rule for target.
+std_srvs_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_lisp
+.PHONY : std_srvs_generate_messages_lisp
+
+# fast build rule for target.
+std_srvs_generate_messages_lisp/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/std_srvs_generate_messages_lisp.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/std_srvs_generate_messages_lisp.dir/build
+.PHONY : std_srvs_generate_messages_lisp/fast
 
 #=============================================================================
 # Target rules for targets named _run_tests_phidgets_spatial_roslaunch-check_launch
@@ -1780,17 +1273,56 @@ _run_tests_phidgets_spatial_roslaunch-check_launch/fast:
 .PHONY : _run_tests_phidgets_spatial_roslaunch-check_launch/fast
 
 #=============================================================================
-# Target rules for targets named clean_test_results_phidgets_spatial
+# Target rules for targets named run_tests_phidgets_spatial
 
 # Build rule for target.
-clean_test_results_phidgets_spatial: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 clean_test_results_phidgets_spatial
-.PHONY : clean_test_results_phidgets_spatial
+run_tests_phidgets_spatial: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 run_tests_phidgets_spatial
+.PHONY : run_tests_phidgets_spatial
 
 # fast build rule for target.
-clean_test_results_phidgets_spatial/fast:
-	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/clean_test_results_phidgets_spatial.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/clean_test_results_phidgets_spatial.dir/build
-.PHONY : clean_test_results_phidgets_spatial/fast
+run_tests_phidgets_spatial/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/run_tests_phidgets_spatial.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/run_tests_phidgets_spatial.dir/build
+.PHONY : run_tests_phidgets_spatial/fast
+
+#=============================================================================
+# Target rules for targets named std_srvs_generate_messages_nodejs
+
+# Build rule for target.
+std_srvs_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_nodejs
+.PHONY : std_srvs_generate_messages_nodejs
+
+# fast build rule for target.
+std_srvs_generate_messages_nodejs/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build
+.PHONY : std_srvs_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named std_srvs_generate_messages_py
+
+# Build rule for target.
+std_srvs_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 std_srvs_generate_messages_py
+.PHONY : std_srvs_generate_messages_py
+
+# fast build rule for target.
+std_srvs_generate_messages_py/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/std_srvs_generate_messages_py.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/std_srvs_generate_messages_py.dir/build
+.PHONY : std_srvs_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named phidgets_spatial_nodelet
+
+# Build rule for target.
+phidgets_spatial_nodelet: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 phidgets_spatial_nodelet
+.PHONY : phidgets_spatial_nodelet
+
+# fast build rule for target.
+phidgets_spatial_nodelet/fast:
+	$(MAKE) -f phidgets_drivers/phidgets_spatial/CMakeFiles/phidgets_spatial_nodelet.dir/build.make phidgets_drivers/phidgets_spatial/CMakeFiles/phidgets_spatial_nodelet.dir/build
+.PHONY : phidgets_spatial_nodelet/fast
 
 #=============================================================================
 # Target rules for targets named fake_odom_node
@@ -2837,100 +2369,64 @@ help:
 	@echo "... phidgets_msgs_generate_messages_py"
 	@echo "... std_msgs_generate_messages_nodejs"
 	@echo "... phidgets_msgs_geneus"
-	@echo "... roscpp_generate_messages_lisp"
-	@echo "... nodelet_generate_messages_eus"
+	@echo "... rosserial_msgs_generate_messages_lisp"
 	@echo "... rosgraph_msgs_generate_messages_py"
-	@echo "... roscpp_generate_messages_eus"
-	@echo "... nodelet_generate_messages_lisp"
-	@echo "... roscpp_generate_messages_cpp"
-	@echo "... bond_generate_messages_lisp"
-	@echo "... nodelet_generate_messages_py"
-	@echo "... _run_tests_phidgets_temperature_roslaunch-check_launch"
-	@echo "... roscpp_generate_messages_nodejs"
-	@echo "... rosgraph_msgs_generate_messages_cpp"
-	@echo "... bond_generate_messages_py"
-	@echo "... rosgraph_msgs_generate_messages_nodejs"
-	@echo "... bond_generate_messages_nodejs"
-	@echo "... nodelet_generate_messages_nodejs"
-	@echo "... nodelet_generate_messages_cpp"
-	@echo "... roscpp_generate_messages_py"
+	@echo "... topic_tools_generate_messages_cpp"
+	@echo "... rosserial_msgs_generate_messages_cpp"
+	@echo "... rosgraph_msgs_generate_messages_lisp"
 	@echo "... rosgraph_msgs_generate_messages_eus"
+	@echo "... topic_tools_generate_messages_eus"
+	@echo "... roscpp_generate_messages_nodejs"
+	@echo "... topic_tools_generate_messages_py"
+	@echo "... roscpp_generate_messages_py"
+	@echo "... rosgraph_msgs_generate_messages_nodejs"
+	@echo "... topic_tools_generate_messages_nodejs"
+	@echo "... roscpp_generate_messages_eus"
+	@echo "... rosserial_server_socket_node"
+	@echo "... topic_tools_generate_messages_lisp"
+	@echo "... rosserial_msgs_generate_messages_nodejs"
+	@echo "... rosserial_msgs_generate_messages_eus"
+	@echo "... roscpp_generate_messages_lisp"
+	@echo "... rosserial_msgs_generate_messages_py"
+	@echo "... roscpp_generate_messages_cpp"
+	@echo "... rosserial_server_lookup"
+	@echo "... rosserial_server_serial_node"
+	@echo "... rosserial_server_udp_socket_node"
+	@echo "... rosgraph_msgs_generate_messages_cpp"
+	@echo "... clean_test_results_phidgets_spatial"
+	@echo "... run_tests_phidgets_spatial_roslaunch-check_launch"
+	@echo "... run_tests_phidgets_spatial_roslaunch-check"
+	@echo "... sensor_msgs_generate_messages_eus"
+	@echo "... sensor_msgs_generate_messages_cpp"
+	@echo "... nodelet_generate_messages_py"
+	@echo "... geometry_msgs_generate_messages_lisp"
+	@echo "... bond_generate_messages_lisp"
+	@echo "... sensor_msgs_generate_messages_lisp"
 	@echo "... bond_generate_messages_cpp"
 	@echo "... bond_generate_messages_eus"
-	@echo "... run_tests_phidgets_temperature_roslaunch-check_launch"
-	@echo "... rosgraph_msgs_generate_messages_lisp"
-	@echo "... run_tests_phidgets_temperature"
-	@echo "... run_tests_phidgets_temperature_roslaunch-check"
-	@echo "... phidgets_temperature"
-	@echo "... _run_tests_phidgets_temperature_roslaunch-check"
-	@echo "... phidgets_temperature_nodelet"
-	@echo "... _run_tests_phidgets_temperature"
-	@echo "... clean_test_results_phidgets_temperature"
-	@echo "... rosserial_server_udp_socket_node"
-	@echo "... topic_tools_generate_messages_eus"
-	@echo "... rosserial_msgs_generate_messages_nodejs"
-	@echo "... topic_tools_generate_messages_cpp"
-	@echo "... rosserial_msgs_generate_messages_lisp"
-	@echo "... rosserial_msgs_generate_messages_cpp"
-	@echo "... topic_tools_generate_messages_py"
-	@echo "... rosserial_msgs_generate_messages_py"
-	@echo "... topic_tools_generate_messages_lisp"
-	@echo "... rosserial_server_serial_node"
-	@echo "... rosserial_msgs_generate_messages_eus"
-	@echo "... topic_tools_generate_messages_nodejs"
-	@echo "... rosserial_server_lookup"
-	@echo "... rosserial_server_socket_node"
-	@echo "... clean_test_results_phidgets_accelerometer"
-	@echo "... _run_tests_phidgets_accelerometer_roslaunch-check_launch"
-	@echo "... run_tests_phidgets_accelerometer_roslaunch-check_launch"
-	@echo "... _run_tests_phidgets_accelerometer_roslaunch-check"
-	@echo "... run_tests_phidgets_accelerometer_roslaunch-check"
-	@echo "... _run_tests_phidgets_accelerometer"
-	@echo "... sensor_msgs_generate_messages_cpp"
-	@echo "... sensor_msgs_generate_messages_eus"
-	@echo "... phidgets_accelerometer_nodelet"
-	@echo "... geometry_msgs_generate_messages_eus"
-	@echo "... geometry_msgs_generate_messages_lisp"
-	@echo "... sensor_msgs_generate_messages_lisp"
 	@echo "... sensor_msgs_generate_messages_nodejs"
+	@echo "... std_srvs_generate_messages_cpp"
+	@echo "... nodelet_generate_messages_lisp"
+	@echo "... nodelet_generate_messages_eus"
 	@echo "... geometry_msgs_generate_messages_py"
-	@echo "... phidgets_accelerometer"
 	@echo "... sensor_msgs_generate_messages_py"
 	@echo "... geometry_msgs_generate_messages_cpp"
 	@echo "... geometry_msgs_generate_messages_nodejs"
-	@echo "... run_tests_phidgets_accelerometer"
-	@echo "... std_srvs_generate_messages_cpp"
-	@echo "... phidgets_gyroscope_nodelet"
+	@echo "... bond_generate_messages_py"
+	@echo "... _run_tests_phidgets_spatial"
+	@echo "... bond_generate_messages_nodejs"
+	@echo "... nodelet_generate_messages_nodejs"
+	@echo "... nodelet_generate_messages_cpp"
+	@echo "... geometry_msgs_generate_messages_eus"
+	@echo "... phidgets_spatial"
+	@echo "... _run_tests_phidgets_spatial_roslaunch-check"
 	@echo "... std_srvs_generate_messages_eus"
 	@echo "... std_srvs_generate_messages_lisp"
-	@echo "... clean_test_results_phidgets_gyroscope"
+	@echo "... _run_tests_phidgets_spatial_roslaunch-check_launch"
+	@echo "... run_tests_phidgets_spatial"
 	@echo "... std_srvs_generate_messages_nodejs"
 	@echo "... std_srvs_generate_messages_py"
-	@echo "... _run_tests_phidgets_gyroscope_roslaunch-check_launch"
-	@echo "... phidgets_gyroscope"
-	@echo "... _run_tests_phidgets_gyroscope"
-	@echo "... run_tests_phidgets_gyroscope"
-	@echo "... run_tests_phidgets_gyroscope_roslaunch-check"
-	@echo "... _run_tests_phidgets_gyroscope_roslaunch-check"
-	@echo "... run_tests_phidgets_gyroscope_roslaunch-check_launch"
-	@echo "... phidgets_magnetometer"
-	@echo "... run_tests_phidgets_magnetometer_roslaunch-check"
-	@echo "... _run_tests_phidgets_magnetometer"
-	@echo "... phidgets_magnetometer_nodelet"
-	@echo "... _run_tests_phidgets_magnetometer_roslaunch-check"
-	@echo "... run_tests_phidgets_magnetometer_roslaunch-check_launch"
-	@echo "... _run_tests_phidgets_magnetometer_roslaunch-check_launch"
-	@echo "... run_tests_phidgets_magnetometer"
-	@echo "... clean_test_results_phidgets_magnetometer"
-	@echo "... phidgets_spatial"
 	@echo "... phidgets_spatial_nodelet"
-	@echo "... run_tests_phidgets_spatial"
-	@echo "... _run_tests_phidgets_spatial"
-	@echo "... run_tests_phidgets_spatial_roslaunch-check_launch"
-	@echo "... run_tests_phidgets_spatial_roslaunch-check"
-	@echo "... _run_tests_phidgets_spatial_roslaunch-check"
-	@echo "... _run_tests_phidgets_spatial_roslaunch-check_launch"
-	@echo "... clean_test_results_phidgets_spatial"
 	@echo "... fake_odom_node"
 	@echo "... actionlib_generate_messages_py"
 	@echo "... actionlib_generate_messages_nodejs"

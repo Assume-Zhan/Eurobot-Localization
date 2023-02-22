@@ -19,7 +19,7 @@ add_custom_target(obstacle_detector_generate_messages ALL)
 
 get_filename_component(_filename "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg" NAME_WE)
 add_custom_target(_obstacle_detector_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "obstacle_detector" "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg" "geometry_msgs/Point:geometry_msgs/Vector3"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "obstacle_detector" "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg" "geometry_msgs/Vector3:geometry_msgs/Point"
 )
 
 get_filename_component(_filename "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg" NAME_WE)
@@ -29,7 +29,7 @@ add_custom_target(_obstacle_detector_generate_messages_check_deps_${_filename}
 
 get_filename_component(_filename "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/Obstacles.msg" NAME_WE)
 add_custom_target(_obstacle_detector_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "obstacle_detector" "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/Obstacles.msg" "geometry_msgs/Vector3:geometry_msgs/Point:obstacle_detector/CircleObstacle:std_msgs/Header:obstacle_detector/SegmentObstacle"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "obstacle_detector" "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/Obstacles.msg" "geometry_msgs/Vector3:obstacle_detector/SegmentObstacle:std_msgs/Header:obstacle_detector/CircleObstacle:geometry_msgs/Point"
 )
 
 #
@@ -41,7 +41,7 @@ add_custom_target(_obstacle_detector_generate_messages_check_deps_${_filename}
 _generate_msg_cpp(obstacle_detector
   "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/obstacle_detector
 )
 _generate_msg_cpp(obstacle_detector
@@ -53,7 +53,7 @@ _generate_msg_cpp(obstacle_detector
 _generate_msg_cpp(obstacle_detector
   "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/Obstacles.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/obstacle_detector
 )
 
@@ -90,7 +90,7 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS obstacle_detector_generate_messages
 _generate_msg_eus(obstacle_detector
   "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/obstacle_detector
 )
 _generate_msg_eus(obstacle_detector
@@ -102,7 +102,7 @@ _generate_msg_eus(obstacle_detector
 _generate_msg_eus(obstacle_detector
   "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/Obstacles.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/obstacle_detector
 )
 
@@ -139,7 +139,7 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS obstacle_detector_generate_messages
 _generate_msg_lisp(obstacle_detector
   "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/obstacle_detector
 )
 _generate_msg_lisp(obstacle_detector
@@ -151,7 +151,7 @@ _generate_msg_lisp(obstacle_detector
 _generate_msg_lisp(obstacle_detector
   "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/Obstacles.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/obstacle_detector
 )
 
@@ -188,7 +188,7 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS obstacle_detector_generate_messages
 _generate_msg_nodejs(obstacle_detector
   "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/obstacle_detector
 )
 _generate_msg_nodejs(obstacle_detector
@@ -200,7 +200,7 @@ _generate_msg_nodejs(obstacle_detector
 _generate_msg_nodejs(obstacle_detector
   "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/Obstacles.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/obstacle_detector
 )
 
@@ -237,7 +237,7 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS obstacle_detector_generate_messages
 _generate_msg_py(obstacle_detector
   "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/obstacle_detector
 )
 _generate_msg_py(obstacle_detector
@@ -249,7 +249,7 @@ _generate_msg_py(obstacle_detector
 _generate_msg_py(obstacle_detector
   "/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/Obstacles.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg;/opt/ros/noetic/share/std_msgs/cmake/../msg/Header.msg;/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/obstacle_detector
 )
 

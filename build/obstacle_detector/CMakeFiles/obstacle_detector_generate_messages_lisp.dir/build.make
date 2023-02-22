@@ -60,8 +60,8 @@ obstacle_detector/CMakeFiles/obstacle_detector_generate_messages_lisp: /home/ubu
 
 /home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/CircleObstacle.lisp: /opt/ros/noetic/lib/genlisp/gen_lisp.py
 /home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/CircleObstacle.lisp: /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg
-/home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/CircleObstacle.lisp: /opt/ros/noetic/share/geometry_msgs/msg/Point.msg
 /home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/CircleObstacle.lisp: /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg
+/home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/CircleObstacle.lisp: /opt/ros/noetic/share/geometry_msgs/msg/Point.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/ubuntu/Localization2023_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Lisp code from obstacle_detector/CircleObstacle.msg"
 	cd /home/ubuntu/Localization2023_ws/build/obstacle_detector && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg -Iobstacle_detector:/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p obstacle_detector -o /home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg
 
@@ -74,10 +74,10 @@ obstacle_detector/CMakeFiles/obstacle_detector_generate_messages_lisp: /home/ubu
 /home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/Obstacles.lisp: /opt/ros/noetic/lib/genlisp/gen_lisp.py
 /home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/Obstacles.lisp: /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/Obstacles.msg
 /home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/Obstacles.lisp: /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg
-/home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/Obstacles.lisp: /opt/ros/noetic/share/geometry_msgs/msg/Point.msg
-/home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/Obstacles.lisp: /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg
-/home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/Obstacles.lisp: /opt/ros/noetic/share/std_msgs/msg/Header.msg
 /home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/Obstacles.lisp: /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg
+/home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/Obstacles.lisp: /opt/ros/noetic/share/std_msgs/msg/Header.msg
+/home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/Obstacles.lisp: /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg
+/home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg/Obstacles.lisp: /opt/ros/noetic/share/geometry_msgs/msg/Point.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/ubuntu/Localization2023_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating Lisp code from obstacle_detector/Obstacles.msg"
 	cd /home/ubuntu/Localization2023_ws/build/obstacle_detector && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/Obstacles.msg -Iobstacle_detector:/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p obstacle_detector -o /home/ubuntu/Localization2023_ws/devel/share/common-lisp/ros/obstacle_detector/msg
 

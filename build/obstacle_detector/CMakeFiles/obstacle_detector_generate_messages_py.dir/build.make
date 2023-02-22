@@ -61,8 +61,8 @@ obstacle_detector/CMakeFiles/obstacle_detector_generate_messages_py: /home/ubunt
 
 /home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_CircleObstacle.py: /opt/ros/noetic/lib/genpy/genmsg_py.py
 /home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_CircleObstacle.py: /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg
-/home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_CircleObstacle.py: /opt/ros/noetic/share/geometry_msgs/msg/Point.msg
 /home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_CircleObstacle.py: /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg
+/home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_CircleObstacle.py: /opt/ros/noetic/share/geometry_msgs/msg/Point.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/ubuntu/Localization2023_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Python from MSG obstacle_detector/CircleObstacle"
 	cd /home/ubuntu/Localization2023_ws/build/obstacle_detector && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg -Iobstacle_detector:/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p obstacle_detector -o /home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg
 
@@ -75,10 +75,10 @@ obstacle_detector/CMakeFiles/obstacle_detector_generate_messages_py: /home/ubunt
 /home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_Obstacles.py: /opt/ros/noetic/lib/genpy/genmsg_py.py
 /home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_Obstacles.py: /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/Obstacles.msg
 /home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_Obstacles.py: /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg
-/home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_Obstacles.py: /opt/ros/noetic/share/geometry_msgs/msg/Point.msg
-/home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_Obstacles.py: /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg
-/home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_Obstacles.py: /opt/ros/noetic/share/std_msgs/msg/Header.msg
 /home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_Obstacles.py: /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/SegmentObstacle.msg
+/home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_Obstacles.py: /opt/ros/noetic/share/std_msgs/msg/Header.msg
+/home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_Obstacles.py: /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/CircleObstacle.msg
+/home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg/_Obstacles.py: /opt/ros/noetic/share/geometry_msgs/msg/Point.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/ubuntu/Localization2023_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating Python from MSG obstacle_detector/Obstacles"
 	cd /home/ubuntu/Localization2023_ws/build/obstacle_detector && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/ubuntu/Localization2023_ws/src/obstacle_detector/msg/Obstacles.msg -Iobstacle_detector:/home/ubuntu/Localization2023_ws/src/obstacle_detector/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p obstacle_detector -o /home/ubuntu/Localization2023_ws/devel/lib/python3/dist-packages/obstacle_detector/msg
 
