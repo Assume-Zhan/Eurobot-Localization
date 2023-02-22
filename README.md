@@ -9,6 +9,5 @@ sh install.sh
 
 ## Current kaunch file : 
 ```bash=1
-roslaunch eurobot_localization lidar_G6.launch
-roslaunch eurobot_localization ekf_fullstate_new.launch
+roslaunch eurobot_localization eurobot_localization.launch
 ```
