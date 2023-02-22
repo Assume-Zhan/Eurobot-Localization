@@ -1,8 +1,0 @@
-prefix=/home/assume/Localization2023_ws/install
-
-Name: phidgets_msgs
-Description: Description of phidgets_msgs
-Version: 1.0.6
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib 
-Requires: message_runtime std_msgs

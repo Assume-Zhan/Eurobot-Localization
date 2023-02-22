@@ -1,8 +1,0 @@
-prefix=/home/assume/Localization2023_ws/devel
-
-Name: fake_odom
-Description: Description of fake_odom
-Version: 0.0.0
-Cflags: -I/home/assume/Localization2023_ws/src/fake_odom/include
-Libs: -L${prefix}/lib -lfake_odom
-Requires: roscpp std_msgs geometry_msgs tf2 tf2_ros
