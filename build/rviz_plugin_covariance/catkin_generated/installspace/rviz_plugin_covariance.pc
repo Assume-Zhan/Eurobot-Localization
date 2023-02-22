@@ -1,0 +1,8 @@
+prefix=/home/assume/Localization2023_ws/install
+
+Name: rviz_plugin_covariance
+Description: Description of rviz_plugin_covariance
+Version: 0.1.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

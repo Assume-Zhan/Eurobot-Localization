@@ -1,0 +1,8 @@
+prefix=/home/assume/Localization2023_ws/install
+
+Name: lidar_localization
+Description: Description of lidar_localization
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -llidar_localization -llidar_localization_nodelets -lbeacon_scan_tracker -larea_obstacles_extractor
+Requires: roscpp rviz std_msgs geometry_msgs sensor_msgs tf2 tf2_ros laser_geometry nodelet obstacle_detector

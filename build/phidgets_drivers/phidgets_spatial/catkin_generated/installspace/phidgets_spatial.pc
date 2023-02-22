@@ -1,0 +1,8 @@
+prefix=/home/assume/Localization2023_ws/install
+
+Name: phidgets_spatial
+Description: Description of phidgets_spatial
+Version: 1.0.6
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lphidgets_spatial
+Requires: nodelet pluginlib phidgets_api roscpp sensor_msgs std_msgs std_srvs
