@@ -7,7 +7,7 @@ sudo make install
 sudo apt update
 sudo apt install ros-noetic-costmap-converter -y
 sudo apt install ros-noetic-robot-localization -y
-sudo apt install ros-noetic-imu-tools
+sudo apt install ros-noetic-imu-tools -y
 cd ~/Localization2023_ws
 catkin_make
 mv ~/Localization2023_ws/src/YDLidar-SDK ~/Localization2023_ws/src/.YDLidar-SDK
