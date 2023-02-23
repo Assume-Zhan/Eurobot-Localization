@@ -10,9 +10,9 @@
       <param name="init_pose_x" value="0.81"/>
       <param name="init_pose_y" value="2.65"/>
       <param name="init_pose_yaw" value="$(eval 0 * 3.1415 / 180.0)"/>
-      <param name="cov_vx" value="4"/>
-      <param name="cov_vy" value="4"/>
-      <param name="cov_vyaw" value="10"/>
+      <param name="cov_vx" value="0.4"/>
+      <param name="cov_vy" value="0.4"/>
+      <param name="cov_vyaw" value="1.0"/>
   
       <param name="odom_topic" value="odom"/>
       <param name="pose_topic" value="odom_pose"/>

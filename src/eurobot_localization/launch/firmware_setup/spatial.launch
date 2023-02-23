@@ -37,10 +37,10 @@
     <!-- <param name="heating_enabled" value="false"/> -->
 
     # optional param linear_acceleration_stdev, default is 280ug
-    <!-- <param name="linear_acceleration_stdev" value="0.002745862"/> -->
+    <param name="linear_acceleration_stdev" value="0.002745862"/>
 
     # optional param angular_velocity_stdev, default is 0.095 deg/s
-    <!-- <param name="angular_velocity_stdev" value="0.000349" /> -->
+    <param name="angular_velocity_stdev" value="0.000349" />
 
     # optional param magnetic_field_stdev, default is 1.1 milligauss
     <!-- <param name="magnetic_field_stdev" type="double" value="1.1e-7" /> -->
@@ -78,10 +78,11 @@
   <node pkg="nodelet" type="nodelet" name="ImuFilterNodelet" args="load imu_filter_madgwick/ImuFilterNodelet imu_manager"
     output="screen">
 
-    <param name="use_mag" value="false"/>
+	<param name="use_mag" value="false"/>
 	<param name="publish_tf" value="false"/>
 	<param name="remove_gravity_vector" value="true"/>
-	<param name="orientation_stddev" value="0.1"/>
+	<param name="orientation_stddev" value="0.05"/>
+	<param name="world_frame" value="enu"/>
 
 
 		<!-- <remap from="imu/data" to="mpu9250_imu"/> -->
