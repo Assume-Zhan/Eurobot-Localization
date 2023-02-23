@@ -4,7 +4,8 @@
 ## Install
 ```bash=1
 # Move in ws
-sh install.sh
+chmod 777 install.sh
+./install.sh
 source ~/.bashrc
 ```
 
