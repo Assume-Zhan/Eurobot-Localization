@@ -9,9 +9,9 @@ beacon_cy: 2.09646
 
 odom_freq: 100
 # initial pose
-initial_x: 1.5
-initial_y: 1.0
-initial_theta: 90
+initial_x: 0
+initial_y: 0
+initial_theta: 0
 
 # differential drive model const.
 predict_cov_a1: 1.5
