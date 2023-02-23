@@ -1,5 +1,5 @@
 # Install basic package
-sudo apt update
+sudo apt update -y
 sudo apt install ros-noetic-costmap-converter -y
 sudo apt install ros-noetic-robot-localization -y
 sudo apt install ros-noetic-imu-tools -y
