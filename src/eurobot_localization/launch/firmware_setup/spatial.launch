@@ -23,7 +23,7 @@
     <!-- <param name="spatial_algorithm" value="ahrs"/> -->
 
     # optional ahrs parameters
-    <param name="ahrs_angular_velocity_threshold" value="0.35"/>
+	<!-- <param name="ahrs_angular_velocity_threshold" value="0.35"/>
 	<param name="ahrs_angular_velocity_delta_threshold" value="0.3"/>
 	<param name="ahrs_acceleration_threshold" value="0.01"/>
 	<param name="ahrs_mag_time" value="10.0"/>
@@ -37,7 +37,7 @@
     <!-- <param name="heating_enabled" value="false"/> -->
 
     # optional param linear_acceleration_stdev, default is 280ug
-    <param name="linear_acceleration_stdev" value="0.002745862"/>
+    <param name="linear_acceleration_stdev" value="0.280"/>
 
     # optional param angular_velocity_stdev, default is 0.095 deg/s
     <param name="angular_velocity_stdev" value="0.000349" />
@@ -46,7 +46,10 @@
     <!-- <param name="magnetic_field_stdev" type="double" value="1.1e-7" /> -->
 
     # supported data rates: 4 8 16 24 32 40 ... 1000 (in ms)
-    <param name="data_interval_ms" value="4"/>
+    <param name="data_interval_ms" value="8"/>
+
+	# Reasynchronize
+    <param name="time_resynchronization_interval_ms" value="2500"/>
 
     # optional param publish_rate, defaults to 0
     <!-- <param name="publish_rate" value="0" /> -->
