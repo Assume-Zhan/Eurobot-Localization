@@ -1,0 +1,7 @@
+<launch>
+
+	<include file="$(find fake_odom)/launch/fake_odom.launch"/>
+	<include file="$(find eurobot_localization)/launch/firmware_setup/comm.launch"/>
+	<include file="$(find eurobot_localization)/launch/firmware_setup/spatial.launch"/>
+
+</launch>

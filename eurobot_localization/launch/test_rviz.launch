@@ -1,0 +1,10 @@
+<launch>
+    <!-- map -->
+    <arg name="map_file" default="$(find stage_simulation)/maps/eurobot_map/empty_map.yaml"/>
+    <!-- Run the map server -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+    <include file="$(find obstacle_detector)/launch/nodes.launch"/>
+
+    <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find eurobot_localization)/rviz/robot1_dit_test.rviz" /> -->
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find eurobot_localization)/rviz/stage.rviz" />
+</launch>
