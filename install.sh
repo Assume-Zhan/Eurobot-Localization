@@ -25,8 +25,8 @@ catkin_make
 
 # USB driver setup
 cd $NEW_WS_PATH
-chmod 777 ydlidar_ros_driver/startup/*
-sudo sh ydlidar_ros_driver/startup/initenv.sh
-cd $NEW_WS_PATH/phidgets_drivers/phidgets_api
+chmod 777 firmware/ydlidar_ros_driver/startup/*
+sudo sh firmware/ydlidar_ros_driver/startup/initenv.sh
+cd $NEW_WS_PATH/firmware/phidgets_drivers/phidgets_api
 sudo cp debian/udev /etc/udev/rules.d/99-phidgets.rules
 sudo udevadm control --reload-rules
