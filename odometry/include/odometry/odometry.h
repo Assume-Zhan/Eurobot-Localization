@@ -6,6 +6,7 @@
 #include "geometry_msgs/Twist.h"
 #include "ros/service_client.h"
 #include "std_srvs/Empty.h"
+#include "std_msgs/Float64.h"
 
 class Odometry {
 
@@ -43,6 +44,8 @@ private :
     bool p_active_;
     bool p_publish_;
     bool p_update_params_;
+
+    double p_covariance_;
 
     std::string p_fixed_frame_;
     std::string p_target_frame_;
