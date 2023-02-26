@@ -37,7 +37,7 @@
     <!-- <param name="heating_enabled" value="false"/> -->
 
     # optional param linear_acceleration_stdev, default is 280ug
-    <param name="linear_acceleration_stdev" value="0.280"/>
+    <param name="linear_acceleration_stdev" value="0.0280"/>
 
     # optional param angular_velocity_stdev, default is 0.095 deg/s
     <param name="angular_velocity_stdev" value="0.000349" />
