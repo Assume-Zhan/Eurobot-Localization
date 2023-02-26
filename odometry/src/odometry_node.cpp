@@ -2,28 +2,28 @@
 
 int main(int argc, char** argv){
 
-	ros::init(argc, argv, "odometry_node");
+    ros::init(argc, argv, "odometry_node");
 
-	ros::NodeHandle nh("");
-	ros::NodeHandle nh_local("~");
+    ros::NodeHandle nh("");
+    ros::NodeHandle nh_local("~");
 
-	try {
+    try {
 
-		ROS_INFO("[Odometry] : Initializing odometry");
-		Odometry odometry(nh, nh_local);
-		ros::spin();
+        ROS_INFO("[Odometry] : Initializing odometry");
+        Odometry odometry(nh, nh_local);
+        ros::spin();
   	
-	}
-  	catch (const char* s) {
+    }
+    catch (const char* s) {
     	
-		ROS_FATAL_STREAM("[Odometry] : " << s);
+        ROS_FATAL_STREAM("[Odometry] : " << s);
   	
-	}
-  	catch (...)	{
+    }
+    catch (...)	{
     	
-		ROS_FATAL_STREAM("[Odometry] : Unexpected error");
-  	
-	}
+        ROS_FATAL_STREAM("[Odometry] : Unexpected error");
 
-	return 0;
+    }
+
+    return 0;
 }

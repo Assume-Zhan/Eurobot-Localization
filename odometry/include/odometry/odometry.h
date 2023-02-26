@@ -10,41 +10,41 @@
 class Odometry {
 
 public :
-	
-	Odometry(ros::NodeHandle &nh, ros::NodeHandle &nh_local);
+
+    Odometry(ros::NodeHandle &nh, ros::NodeHandle &nh_local);
 
 private :
 	
-	/* Function - for initialize params */
-	void Initialize();
+    /* Function - for initialize params */
+    void Initialize();
 
-	/* Function - for update params */
-	bool UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res);
+    /* Function - for update params */
+    bool UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res);
 
-	/* Function - for twist callback */
-	void TwistCallback(const geometry_msgs::Twist::ConstPtr &msg);
+    /* Function - for twist callback */
+    void TwistCallback(const geometry_msgs::Twist::ConstPtr &msg);
 
-	/* Function publish sth we need */
-	void publish();
+    /* Function publish sth we need */
+    void publish();
 	
-	/** -- Node Handles -- **/
-	ros::NodeHandle nh_;
-	ros::NodeHandle nh_local_;
+    /** -- Node Handles -- **/
+    ros::NodeHandle nh_;
+    ros::NodeHandle nh_local_;
 
-	/** -- Advertise -- **/
-	ros::Subscriber twist_sub_;
-	ros::Publisher odom_pub_;
-	ros::ServiceServer param_srv_;
+    /** -- Advertise -- **/
+    ros::Subscriber twist_sub_;
+    ros::Publisher odom_pub_;
+    ros::ServiceServer param_srv_;
 
-	/** -- Msgs to pub -- **/
-	nav_msgs::Odometry odometry_output_;
+    /** -- Msgs to pub -- **/
+    nav_msgs::Odometry odometry_output_;
 
-	/** -- Parameters -- **/
-	bool p_active_;
-	bool p_publish_;
-	
-	std::string p_twist_topic_;
-	std::string p_odom_topic_;
+    /** -- Parameters -- **/
+    bool p_active_;
+    bool p_publish_;
+    
+    std::string p_twist_topic_;
+    std::string p_odom_topic_;
 
 };
 
