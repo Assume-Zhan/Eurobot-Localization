@@ -9,7 +9,7 @@ int main(int argc, char** argv){
 
     try {
 
-        ROS_INFO("[Odometry] : Initializing odometry");
+        ROS_INFO_STREAM("[Odometry] : Initializing odometry");
         Odometry odometry(nh, nh_local);
         ros::spin();
   	

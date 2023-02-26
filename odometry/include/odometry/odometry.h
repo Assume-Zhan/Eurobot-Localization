@@ -34,7 +34,7 @@ private :
     /** -- Advertise -- **/
     ros::Subscriber twist_sub_;
     ros::Publisher odom_pub_;
-    ros::ServiceServer param_srv_;
+    ros::ServiceServer param_srv_; // Service for update param ( call by other nodes )
 
     /** -- Msgs to pub -- **/
     nav_msgs::Odometry odometry_output_;
@@ -42,6 +42,10 @@ private :
     /** -- Parameters -- **/
     bool p_active_;
     bool p_publish_;
+    bool p_update_params_;
+
+    std::string p_fixed_frame_;
+    std::string p_target_frame_;
     
     std::string p_twist_topic_;
     std::string p_odom_topic_;
