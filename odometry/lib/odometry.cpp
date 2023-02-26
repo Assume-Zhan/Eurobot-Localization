@@ -1,5 +1,6 @@
 #include "odometry/odometry.h"
 #include "ros/time.h"
+#include "std_msgs/Float64.h"
 
 Odometry::Odometry (ros::NodeHandle &nh, ros::NodeHandle &nh_local){
 
@@ -57,6 +58,35 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
         ROS_INFO_STREAM("[Odometry] : update params set to " << p_update_params_); 
     }
     
+    if(this->nh_local_.param<double>("covariance_x", p_covariance_, 0.)){
+        ROS_INFO_STREAM("[Odometry] : x covariance set to " << p_covariance_);
+        this->odometry_output_.twist.covariance[0] = p_covariance_;
+    }
+
+    if(this->nh_local_.param<double>("covariance_y", p_covariance_, 0.)){
+        ROS_INFO_STREAM("[Odometry] : y covariance set to " << p_covariance_);
+        this->odometry_output_.twist.covariance[7] = p_covariance_;
+    }
+
+    if(this->nh_local_.param<double>("covariance_z", p_covariance_, 0.)){
+        ROS_INFO_STREAM("[Odometry] : z covariance set to " << p_covariance_); 
+        this->odometry_output_.twist.covariance[14] = p_covariance_;
+    }
+
+    if(this->nh_local_.param<double>("covariance_vx", p_covariance_, 0.)){
+        ROS_INFO_STREAM("[Odometry] : vx covariance set to " << p_covariance_); 
+        this->odometry_output_.twist.covariance[21] = p_covariance_;
+    }
+
+    if(this->nh_local_.param<double>("covariance_vy", p_covariance_, 0.)){
+        ROS_INFO_STREAM("[Odometry] : vy covariance set to " << p_covariance_); 
+        this->odometry_output_.twist.covariance[28] = p_covariance_;
+    }
+
+    if(this->nh_local_.param<double>("covariance_vz", p_covariance_, 0.)){
+        ROS_INFO_STREAM("[Odometry] : vz covariance set to " << p_covariance_); 
+        this->odometry_output_.twist.covariance[35] = p_covariance_;
+    }
 
     if(p_active_ != prev_active) {
 
@@ -74,8 +104,17 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
         else {
             this->twist_sub_.shutdown();
             this->odom_pub_.shutdown();
+
+            if(this->p_update_params_){
+                this->param_srv_.shutdown();
+            }
         }
     }
+
+
+    /* -- Set basic variables -- */
+    this->odometry_output_.header.frame_id = this->p_fixed_frame_;
+    this->odometry_output_.child_frame_id = this->p_target_frame_;
 
     return true;
 
@@ -88,9 +127,6 @@ void Odometry::TwistCallback(const geometry_msgs::Twist::ConstPtr &msg){
 
     this->odometry_output_.header.seq = sequence;
     this->odometry_output_.header.stamp = ros::Time::now();
-    this->odometry_output_.header.frame_id = this->p_fixed_frame_;
-
-    this->odometry_output_.child_frame_id = this->p_target_frame_;
 
     this->odometry_output_.twist.twist = *msg;
 
@@ -103,8 +139,4 @@ void Odometry::publish(){
     this->odom_pub_.publish(this->odometry_output_);	
 
 }
-
-
-
-
 
