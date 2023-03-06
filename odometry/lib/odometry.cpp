@@ -88,6 +88,10 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
         this->odometry_output_.twist.covariance[35] = p_covariance_;
     }
 
+    if(this->nh_local_.param<bool>("using_nav_vel_cb", p_sub_from_nav_, 0.)){
+        ROS_INFO_STREAM("[Odometry] : current subscribe from nav cmd_vel is set to " << p_sub_from_nav_); 
+	}
+
     if(p_active_ != prev_active) {
 
         if (p_active_) {
@@ -95,6 +99,13 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
             ROS_INFO_STREAM("[Odometry] : active node");
             this->twist_sub_ = nh_.subscribe(p_twist_topic_, 10, &Odometry::TwistCallback, this);
             this->odom_pub_ = nh_.advertise<nav_msgs::Odometry>(p_odom_topic_, 10);
+
+			if(this->p_sub_from_nav_){
+            	this->vel_sub_ = nh_.subscribe("/cmd_vel", 10, &Odometry::P_VelocityCallback, this);
+			}
+			else{
+            	this->vel_sub_ = nh_.subscribe("/ekf_pose", 10, &Odometry::VelocityCallback, this);
+			}
 
             if(this->p_update_params_){
                 this->param_srv_ = nh_local_.advertiseService("params", &Odometry::UpdateParams, this);
@@ -104,6 +115,7 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
         else {
             this->twist_sub_.shutdown();
             this->odom_pub_.shutdown();
+			this->vel_sub_.shutdown();
 
             if(this->p_update_params_){
                 this->param_srv_.shutdown();
@@ -112,6 +124,9 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
     }
 
 
+	/* -- Backup covariance -- */
+	this->odometry_output_backup_ = this->odometry_output_;
+		
     /* -- Set basic variables -- */
     this->odometry_output_.header.frame_id = this->p_fixed_frame_;
     this->odometry_output_.child_frame_id = this->p_target_frame_;
@@ -131,6 +146,39 @@ void Odometry::TwistCallback(const geometry_msgs::Twist::ConstPtr &msg){
     this->odometry_output_.twist.twist = *msg;
 
     if(this->p_publish_) this->publish();
+
+}
+
+
+void Odometry::P_VelocityCallback(const geometry_msgs::Twist::ConstPtr &msg){
+
+	static double magnification;
+
+	magnification = msg->linear.x + 1;
+	
+	this->odometry_output_.twist.covariance[0] = this->odometry_output_backup_.twist.covariance[0] * magnification;
+	this->odometry_output_.twist.covariance[7] = this->odometry_output_backup_.twist.covariance[7] * magnification;
+	this->odometry_output_.twist.covariance[14] = this->odometry_output_backup_.twist.covariance[14] * magnification;
+	this->odometry_output_.twist.covariance[21] = this->odometry_output_backup_.twist.covariance[21] * magnification;
+	this->odometry_output_.twist.covariance[28] = this->odometry_output_backup_.twist.covariance[28] * magnification;
+	this->odometry_output_.twist.covariance[35] = this->odometry_output_backup_.twist.covariance[35] * magnification;
+
+}
+
+
+void Odometry::VelocityCallback(const geometry_msgs::TwistWithCovariance::ConstPtr &msg){
+
+	
+	static double magnification;
+
+	magnification = msg->twist.linear.x + 1;
+	
+	this->odometry_output_.twist.covariance[0] = this->odometry_output_backup_.twist.covariance[0] * magnification;
+	this->odometry_output_.twist.covariance[7] = this->odometry_output_backup_.twist.covariance[7] * magnification;
+	this->odometry_output_.twist.covariance[14] = this->odometry_output_backup_.twist.covariance[14] * magnification;
+	this->odometry_output_.twist.covariance[21] = this->odometry_output_backup_.twist.covariance[21] * magnification;
+	this->odometry_output_.twist.covariance[28] = this->odometry_output_backup_.twist.covariance[28] * magnification;
+	this->odometry_output_.twist.covariance[35] = this->odometry_output_backup_.twist.covariance[35] * magnification;
 
 }
 

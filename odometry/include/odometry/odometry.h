@@ -1,10 +1,8 @@
 #pragma once
 
-#include "ros/node_handle.h"
 #include "ros/ros.h"
 #include "nav_msgs/Odometry.h"
 #include "geometry_msgs/Twist.h"
-#include "ros/service_client.h"
 #include "std_srvs/Empty.h"
 #include "std_msgs/Float64.h"
 
@@ -25,6 +23,12 @@ private :
     /* Function - for twist callback */
     void TwistCallback(const geometry_msgs::Twist::ConstPtr &msg);
 
+	/* Function -> for geometry_msgs::Twist ( cmd_vel ) */
+	void P_VelocityCallback(const geometry_msgs::Twist::ConstPtr &msg);
+
+	/* Function -> for geometry_msgs::TwistWithCovariance ( ekf_pose ) */
+	void VelocityCallback(const geometry_msgs::TwistWithCovariance::ConstPtr &msg);
+
     /* Function publish sth we need */
     void publish();
 	
@@ -34,16 +38,19 @@ private :
 
     /** -- Advertise -- **/
     ros::Subscriber twist_sub_;
+	ros::Subscriber vel_sub_;
     ros::Publisher odom_pub_;
     ros::ServiceServer param_srv_; // Service for update param ( call by other nodes )
 
     /** -- Msgs to pub -- **/
     nav_msgs::Odometry odometry_output_;
+    nav_msgs::Odometry odometry_output_backup_;
 
     /** -- Parameters -- **/
     bool p_active_;
     bool p_publish_;
     bool p_update_params_;
+	bool p_sub_from_nav_;
 
     double p_covariance_;
 

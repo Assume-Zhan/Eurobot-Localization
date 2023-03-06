@@ -15,6 +15,7 @@
         <param name="covariance_vx" value="0.05"/>
         <param name="covariance_vy" value="0.05"/>
         <param name="covariance_vz" value="0.2"/>
+		<param name="using_nav_vel_cb" value="false"/>
 
     </node>
 
