@@ -100,12 +100,12 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
             this->twist_sub_ = nh_.subscribe(p_twist_topic_, 10, &Odometry::TwistCallback, this);
             this->odom_pub_ = nh_.advertise<nav_msgs::Odometry>(p_odom_topic_, 10);
 
-			if(this->p_sub_from_nav_){
-            	this->vel_sub_ = nh_.subscribe("/cmd_vel", 10, &Odometry::P_VelocityCallback, this);
-			}
-			else{
-            	this->vel_sub_ = nh_.subscribe("/ekf_pose", 10, &Odometry::VelocityCallback, this);
-			}
+            if(this->p_sub_from_nav_){
+                this->vel_sub_ = nh_.subscribe("/cmd_vel", 10, &Odometry::P_VelocityCallback, this);
+            }
+            else{
+                this->vel_sub_ = nh_.subscribe("/ekf_pose", 10, &Odometry::VelocityCallback, this);
+            }
 
             if(this->p_update_params_){
                 this->param_srv_ = nh_local_.advertiseService("params", &Odometry::UpdateParams, this);
