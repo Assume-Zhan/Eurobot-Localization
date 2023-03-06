@@ -36,6 +36,8 @@
 
     <param name="frame_id"                value="map"/>
 
+    <remap from="raw_obstacles" to="origin_obstacles"/>
+
   </node>
 
 </launch>
