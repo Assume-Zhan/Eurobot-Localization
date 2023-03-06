@@ -168,17 +168,13 @@ void Odometry::P_VelocityCallback(const geometry_msgs::Twist::ConstPtr &msg){
 
 void Odometry::VelocityCallback(const geometry_msgs::TwistWithCovariance::ConstPtr &msg){
 
-	
-	static double magnification;
+	boost::shared_ptr<geometry_msgs::Twist> twist_ptr(new geometry_msgs::Twist());
 
-	magnification = msg->twist.linear.x + 1;
-	
-	this->odometry_output_.twist.covariance[0] = this->odometry_output_backup_.twist.covariance[0] * magnification;
-	this->odometry_output_.twist.covariance[7] = this->odometry_output_backup_.twist.covariance[7] * magnification;
-	this->odometry_output_.twist.covariance[14] = this->odometry_output_backup_.twist.covariance[14] * magnification;
-	this->odometry_output_.twist.covariance[21] = this->odometry_output_backup_.twist.covariance[21] * magnification;
-	this->odometry_output_.twist.covariance[28] = this->odometry_output_backup_.twist.covariance[28] * magnification;
-	this->odometry_output_.twist.covariance[35] = this->odometry_output_backup_.twist.covariance[35] * magnification;
+	twist_ptr->linear = msg->twist.linear;
+	twist_ptr->angular = msg->twist.angular;
+
+
+	this->P_VelocityCallback(twist_ptr);
 
 }
 
