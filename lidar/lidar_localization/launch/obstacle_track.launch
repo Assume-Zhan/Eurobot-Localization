@@ -15,7 +15,7 @@
     <remap from="tracked_obstacles" to="obstacles"/>
   </node>
 
-  <node name="obstacle_detecter" pkg="obstacle_detector" type="obstacle_extractor_node" >
+  <node name="obstacle_extractor" pkg="obstacle_detector" type="obstacle_extractor_node" >
     <param name="active"                  value="true"/>
 
     <param name="use_scan"                value="true"/>
