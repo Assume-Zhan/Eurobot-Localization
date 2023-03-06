@@ -1,0 +1,22 @@
+active: true
+
+cov_x: 0.1
+cov_y: 0.1
+cov_yaw: 1
+
+beacon_1_x: 1
+beacon_1_y: -0.092
+  
+beacon_2_x: 0.055
+beacon_2_y: 3.1
+  
+beacon_3_x: 1.953
+beacon_3_y: 3.1
+
+theta: 0
+
+obstacle_topic: obstacles_to_base
+beacon_parent_frame_id: map
+beacon_frame_id_prefix: beacon
+robot_parent_frame_id: map
+robot_frame_id: base_footprint
