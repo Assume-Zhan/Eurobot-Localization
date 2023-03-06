@@ -118,7 +118,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -151,6 +151,14 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+
+add_library(imu_drive lib/imu_drive.cpp)
+target_link_libraries(imu_drive ${catkin_LIBRARIES})
+add_dependencies(imu_drive ${catkin_EXPORTED_TARGETS})
+
+
+add_executable(imu_drive_node src/imu_drive_node.cpp)
+target_link_libraries(imu_drive_node imu_drive)
 
 #############
 ## Install ##
