@@ -13,6 +13,21 @@
     <param name="frame_id"                value="map"/>
 
     <remap from="tracked_obstacles" to="obstacles"/>
-    <remap from="raw_obstacles" to="obstacles_to_base"/>
   </node>
+
+  <node name="obstacle_detecter" pkg="obstacle_detector" type="obstacle_extractor_node" >
+    <param name="active"                  value="true"/>
+
+    <param name="loop_rate"               value="100.0"/>
+    <param name="tracking_duration"       value="2.0"/>
+    <param name="min_correspondence_cost" value="0.6"/>
+    <param name="std_correspondence_dev"  value="0.15"/>
+    <param name="process_variance"        value="0.1"/>  
+    <param name="process_rate_variance"   value="0.1"/>  
+    <param name="measurement_variance"    value="1.0"/>  
+
+    <param name="frame_id"                value="map"/>
+
+  </node>
+
 </launch>
