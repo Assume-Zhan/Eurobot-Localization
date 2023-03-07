@@ -18,7 +18,7 @@
                                                                                                                                             
         <param name="active"                  value="true"/>                                                                                    
                                                                                                                                             
-        <param name="loop_rate"               value="100.0"/>                                                                                   
+        <param name="loop_rate"               value="10.0"/>
         <param name="tracking_duration"       value="2.0"/>                                                                                     
         <param name="min_correspondence_cost" value="0.6"/>                                                                                     
         <param name="std_correspondence_dev"  value="0.15"/>                                                                                    
