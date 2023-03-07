@@ -166,13 +166,12 @@ void Odometry::P_VelocityCallback(const geometry_msgs::Twist::ConstPtr &msg){
 }
 
 
-void Odometry::VelocityCallback(const geometry_msgs::TwistWithCovariance::ConstPtr &msg){
+void Odometry::VelocityCallback(const nav_msgs::Odometry::ConstPtr &msg){
 
 	boost::shared_ptr<geometry_msgs::Twist> twist_ptr(new geometry_msgs::Twist());
 
-	twist_ptr->linear = msg->twist.linear;
-	twist_ptr->angular = msg->twist.angular;
-
+	twist_ptr->linear = msg->twist.twist.linear;
+	twist_ptr->angular = msg->twist.twist.angular;
 
 	this->P_VelocityCallback(twist_ptr);
 
