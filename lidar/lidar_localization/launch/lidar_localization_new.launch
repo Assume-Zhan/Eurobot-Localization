@@ -19,10 +19,10 @@
         <param name="active"                  value="true"/>                                                                                    
                                                    
         <param name="loop_rate"               value="10.0"/>
-        <param name="tracking_duration"       value="0.8"/>  
-        <param name="min_correspondence_cost" value="0.6"/>                                                                                     
+        <param name="tracking_duration"       value="0.5"/>  
+        <param name="min_correspondence_cost" value="3"/>                                                                                     
         <param name="std_correspondence_dev"  value="0.15"/>                                                                                    
-        <param name="process_variance"        value="0.1"/>                                                                                     
+        <param name="process_variance"        value="5"/>                                                                                     
         <param name="process_rate_variance"   value="0.1"/>                                                                                     
         <param name="measurement_variance"    value="1.0"/>                                                                                     
                                                                                                                                             
