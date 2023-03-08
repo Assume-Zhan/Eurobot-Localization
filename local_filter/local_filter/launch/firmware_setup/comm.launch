@@ -1,0 +1,15 @@
+<launch>
+    
+    <!-- dp -->
+    <node pkg="rosserial_server" type="serial_node" name="rosserial_server_dp" output="screen">
+      <param name="port" value="/dev/ttyUSB0" />
+      <param name="baud" value="115200" />
+      <rosparam>
+          require:
+              publishers: [ Toposition ]
+              subscribers: [ cmd_vel ]
+      </rosparam>
+    </node>
+
+</launch>
+
