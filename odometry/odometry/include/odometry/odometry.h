@@ -27,7 +27,7 @@ private :
 	void P_VelocityCallback(const geometry_msgs::Twist::ConstPtr &msg);
 
 	/* Function -> for geometry_msgs::TwistWithCovariance ( ekf_pose ) */
-	void VelocityCallback(const geometry_msgs::TwistWithCovariance::ConstPtr &msg);
+	void VelocityCallback(const nav_msgs::Odometry::ConstPtr &msg);
 
     /* Function publish sth we need */
     void publish();

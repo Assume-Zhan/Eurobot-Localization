@@ -46,8 +46,32 @@
 #include <lidar_localization/util/math_util.h>
 #include <obstacle_detector/Obstacles.h>
 
+#define BEACON_NUMBER 3
+
 namespace lidar_localization
 {
+/**
+ * @struct ObstacleCircle
+ * @brief for restore obstacle circles
+ */
+typedef struct ObstacleCircle 
+{
+  /* -- Obstacle center position to base_footprint -- */
+  geometry_msgs::Point center;
+
+  /* -- Obstacle radius -- */
+  double radius;
+
+  /* -- Obstacle Velocity -- */
+  geometry_msgs::Vector3 velocity;
+
+  /* -- Distance between beacons -- */
+  double beacon_distance[BEACON_NUMBER];
+
+} ObstacleCircle;
+
+
+
 /**
  * @class LidarLocalization
  * @brief A class that use obstacles to localize robot position
