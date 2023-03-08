@@ -1,6 +1,6 @@
 <launch>
 
-    <node pkg="imu_drive" type="imu_driver" name="imu_node" output="screen">
+    <node pkg="imu_drive" type="imu_drive_node" name="imu_node" output="screen">
         
         <param name="active" value="true"/>
         <param name="publish" value="true"/>
