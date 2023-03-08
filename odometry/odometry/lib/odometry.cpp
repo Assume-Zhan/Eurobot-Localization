@@ -1,6 +1,4 @@
 #include "odometry/odometry.h"
-#include "ros/time.h"
-#include "std_msgs/Float64.h"
 
 Odometry::Odometry (ros::NodeHandle &nh, ros::NodeHandle &nh_local){
 
