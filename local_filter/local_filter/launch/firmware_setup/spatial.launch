@@ -86,9 +86,11 @@
 	<param name="remove_gravity_vector" value="true"/>
 	<param name="orientation_stddev" value="0.05"/>
 	<param name="world_frame" value="enu"/>
+	<param name="publish_debug_topics" value="true"/>
+	<param name="yaw_offset" value="2.2"/>
 
 
-		<!-- <remap from="imu/data" to="mpu9250_imu"/> -->
+    <!-- <remap from="imu/data" to="mpu9250_imu"/> -->
 
   </node>
 
