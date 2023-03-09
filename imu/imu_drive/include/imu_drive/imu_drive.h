@@ -61,9 +61,9 @@ private :
     bool p_sub_from_nav_;
 
     double p_covariance_;
-    double p_slope_;
     double p_intercept_vel_;
     double p_intercept_accel_;
+    double p_magnitude_;
 
     std::string p_frame_;
 

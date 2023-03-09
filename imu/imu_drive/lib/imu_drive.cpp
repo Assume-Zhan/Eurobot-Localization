@@ -90,6 +90,10 @@ bool IMU::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response 
         ROS_INFO_STREAM("[IMU DRIVE] : intercept_accel set to " << p_intercept_accel_); 
     }
 
+    if(this->nh_local_.param<double>("magnitude", p_magnitude_, 1.0)){
+        ROS_INFO_STREAM("[IMU DRIVE] : magnitude set to " << p_magnitude_); 
+    }
+
     if(this->nh_local_.param<bool>("using_nav_vel_cb", p_sub_from_nav_, 0.)){
         ROS_INFO_STREAM("[Odometry] : current subscribe from nav cmd_vel is set to " << p_sub_from_nav_); 
 	}
@@ -154,7 +158,6 @@ void IMU::P_VelocityCallback(const geometry_msgs::Twist::ConstPtr &msg){
 
 	static double p_slope_vel_;
     static double p_slope_accel_;
-    static double p_magnitude = 0.01;
 
     p_slope_vel_ = msg->linear.x;
     p_slope_accel_ = msg->linear.x;
