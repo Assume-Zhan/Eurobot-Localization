@@ -12,7 +12,6 @@
         <param name="covariance_vy" value="0.05"/>
         <param name="covariance_vz" value="0.1"/>
         <param name="covariance_ax" value="0.05"/>
-        <param name="covariance_ay" value="0.05"/>
         <param name="covariance_az" value="0.2"/>
         <param name="intercept_vel" value="0.0001"/>
         <param name="intercept_accel" value="0.0001"/>
