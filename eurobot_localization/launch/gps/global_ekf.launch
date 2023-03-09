@@ -6,7 +6,7 @@
 
 
 	<include file="$(find eurobot_localization)/launch/firmware_setup/lidar_G6.launch"/>
-	<include file="$(find lidar_localization)/launch/lidar_localization_2023.launch"/>
+	<include file="$(find lidar_localization)/launch/lidar_localization_new.launch"/>
 
     <!-- <node name="area_obstacles_extractor" pkg="lidar_localization" type="area_obstacles_extractor_node" output="screen">
         <remap from="robot_pose" to="ekf_pose_in_odom"/>

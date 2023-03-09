@@ -114,13 +114,26 @@ bool LidarLocalization::updateParams(std_srvs::Empty::Request& req, std_srvs::Em
 
 void LidarLocalization::obstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr)
 {
-  input_circles_.clear();
+  /* Remove previous obstacle circles */
+  realtime_circles_.clear();
+
+  /* Transform beacon to robot frame */
+  getBeacontoRobot();
+
+  /* Restore the obstacle circles */
   for (const obstacle_detector::CircleObstacle& obstacle : ptr->circles)
   {
-    input_circles_.push_back(obstacle);
+    ObstacleCircle obstaclecircle;
+    obstaclecircle.center = obstacle.center;
+    obstaclecircle.radius = obstacle.true_radius;
+    obstaclecircle.velocity = obstacle.velocity;
+    for (int i = 0 ; i < 3 ; i++)
+    {
+      obstaclecircle.beacon_distance[i] = length(obstaclecircle.center, beacon_to_robot_[i]);
+    }
+    realtime_circles_.push_back(obstaclecircle);
   }
 
-  getBeacontoRobot();
   findBeacon();
   getRobotPose();
 }
@@ -281,17 +294,19 @@ void LidarLocalization::findBeacon()
 {
   for (int i = 0; i < 3; ++i)
   {
-    if (input_circles_.size())
+    if (realtime_circles_.empty())
     {
-      double min_distance = length(input_circles_[0].center, beacon_to_robot_[i]);
-      for (auto circle : input_circles_)
+      continue;
+    }
+
+    double min_distance = realtime_circles_[0].beacon_distance[i];
+    for (auto circle : realtime_circles_)
+    {
+      if (circle.beacon_distance[i] <= min_distance)
       {
-        if (length(circle.center, beacon_to_robot_[i]) <= min_distance)
-        {
-          min_distance = length(circle.center, beacon_to_robot_[i]);
-          beacon_found_[i].x = circle.center.x;
-          beacon_found_[i].y = circle.center.y;
-        }
+        min_distance = circle.beacon_distance[i];
+        beacon_found_[i].x = circle.center.x;
+        beacon_found_[i].y = circle.center.y;
       }
     }
   }
