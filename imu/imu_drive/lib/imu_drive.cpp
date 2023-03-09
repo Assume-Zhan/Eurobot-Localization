@@ -84,12 +84,10 @@ bool IMU::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response 
 
     if(this->nh_local_.param<double>("intercept_vel", p_intercept_vel_, 1.0)){
         ROS_INFO_STREAM("[IMU DRIVE] : intercept_vel set to " << p_intercept_vel_); 
-        this->imu_output_.linear_acceleration_covariance[4] = p_covariance_;
     }
 
     if(this->nh_local_.param<double>("intercept_accel", p_intercept_accel_, 1.0)){
         ROS_INFO_STREAM("[IMU DRIVE] : intercept_accel set to " << p_intercept_accel_); 
-        this->imu_output_.linear_acceleration_covariance[4] = p_covariance_;
     }
 
     if(this->nh_local_.param<bool>("using_nav_vel_cb", p_sub_from_nav_, 0.)){
@@ -136,7 +134,7 @@ bool IMU::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response 
 
 }
 
-void IMU::IMUdataCallback(const sensor_msgs::Imu::ConstPtr &msg){
+void IMU::IMUdataCallback(const sensor_msgs::Imu::ConstPtr &msg){  //  from /imu/data
 
     static unsigned int sequence = 0;
     sequence++;
@@ -144,7 +142,9 @@ void IMU::IMUdataCallback(const sensor_msgs::Imu::ConstPtr &msg){
     this->imu_output_.header.seq = sequence;
     this->imu_output_.header.stamp = ros::Time::now();
 
-    this->imu_output_ = *msg;
+    this->imu_output_.orientation = msg->orientation;
+    this->imu_output_.angular_velocity = msg->angular_velocity;
+    this->imu_output_.linear_acceleration = msg->linear_acceleration;
 
     if(this->p_publish_) this->publish();
 
@@ -154,19 +154,24 @@ void IMU::P_VelocityCallback(const geometry_msgs::Twist::ConstPtr &msg){
 
 	static double p_slope_vel_;
     static double p_slope_accel_;
+    static double p_magnitude = 0.01;
 
     p_slope_vel_ = msg->linear.x;
     p_slope_accel_ = msg->linear.x;
 
     /* imu_output_ = slope * original_covariance + intercept */
     
-	this->imu_output_.angular_velocity_covariance[0] = this->imu_output_backup_.angular_velocity_covariance[0] * p_slope_ + p_intercept_vel_;
-	this->imu_output_.angular_velocity_covariance[4] = this->imu_output_backup_.angular_velocity_covariance[4] * p_slope_ + p_intercept_vel_;
-	this->imu_output_.angular_velocity_covariance[8] = this->imu_output_backup_.angular_velocity_covariance[8] * p_slope_ + p_intercept_vel_;
+	// this->imu_output_.angular_velocity_covariance[0] = this->imu_output_backup_.angular_velocity_covariance[0] * p_slope_vel_ + p_intercept_vel_;
+	// this->imu_output_.angular_velocity_covariance[4] = this->imu_output_backup_.angular_velocity_covariance[4] * p_slope_vel_ + p_intercept_vel_;
+	// this->imu_output_.angular_velocity_covariance[8] = this->imu_output_backup_.angular_velocity_covariance[8] * p_slope_vel_ + p_intercept_vel_;
 
-    this->imu_output_.linear_acceleration_covariance[0] = this->imu_output_backup_.linear_acceleration_covariance[0] * p_intercept_accel_;
-	this->imu_output_.linear_acceleration_covariance[4] = this->imu_output_backup_.linear_acceleration_covariance[4] * p_intercept_accel_;
-	this->imu_output_.linear_acceleration_covariance[8] = this->imu_output_backup_.linear_acceleration_covariance[8] * p_intercept_accel_;
+    this->imu_output_.angular_velocity_covariance[0] = p_magnitude * p_slope_vel_ + p_intercept_vel_;
+	this->imu_output_.angular_velocity_covariance[4] = p_magnitude * p_slope_vel_ + p_intercept_vel_;
+	this->imu_output_.angular_velocity_covariance[8] = p_magnitude * p_slope_vel_ + p_intercept_vel_;
+
+    this->imu_output_.linear_acceleration_covariance[0] = this->imu_output_backup_.linear_acceleration_covariance[0] * p_slope_accel_ + p_intercept_accel_;
+	this->imu_output_.linear_acceleration_covariance[4] = this->imu_output_backup_.linear_acceleration_covariance[4] * p_slope_accel_ + p_intercept_accel_;
+	this->imu_output_.linear_acceleration_covariance[8] = this->imu_output_backup_.linear_acceleration_covariance[8] * p_slope_accel_ + p_intercept_accel_;
 
 }
 
