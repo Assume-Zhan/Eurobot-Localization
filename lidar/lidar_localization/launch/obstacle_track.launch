@@ -3,6 +3,7 @@
   <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 map laser_frame" />
 
   <node name="obstacle_tracker" pkg="obstacle_detector" type="obstacle_tracker_node" >
+
     <param name="active"                  value="true"/>
 
     <param name="loop_rate"               value="100.0"/>
@@ -16,9 +17,11 @@
     <param name="frame_id"                value="map"/>
 
     <remap from="tracked_obstacles" to="obstacles"/>
+
   </node>
 
   <node name="obstacle_extractor" pkg="obstacle_detector" type="obstacle_extractor_node" >
+
     <param name="active"                  value="true"/>
 
     <param name="use_scan"                value="true"/>
@@ -38,7 +41,6 @@
     <param name="radius_enlargement"      value="0.05"/>  
 
     <param name="frame_id"                value="map"/>
-
 
   </node>
 

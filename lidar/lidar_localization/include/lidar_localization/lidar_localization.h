@@ -46,8 +46,30 @@
 #include <lidar_localization/util/math_util.h>
 #include <obstacle_detector/Obstacles.h>
 
+#define BEACON_NUMBER 3
+
 namespace lidar_localization
 {
+/**
+ * @struct ObstacleCircle
+ * @brief for restore obstacle circles
+ */
+typedef struct ObstacleCircle 
+{
+  /* -- Obstacle center position to base_footprint -- */
+  geometry_msgs::Point center;
+
+  /* -- Obstacle radius -- */
+  double radius;
+
+  /* -- Obstacle Velocity -- */
+  geometry_msgs::Vector3 velocity;
+
+  /* -- Distance between beacons -- */
+  double beacon_distance[BEACON_NUMBER];
+
+} ObstacleCircle;
+
 /**
  * @class LidarLocalization
  * @brief A class that use obstacles to localize robot position
@@ -163,7 +185,7 @@ private:
   tf2_ros::TransformListener tf2_listener_;
   tf2_ros::StaticTransformBroadcaster static_broadcaster_;
 
-  std::vector<obstacle_detector::CircleObstacle> input_circles_;
+  std::vector<ObstacleCircle> realtime_circles_;
   geometry_msgs::PoseWithCovarianceStamped output_robot_pose_;
   geometry_msgs::PoseArray output_beacons_;
 
