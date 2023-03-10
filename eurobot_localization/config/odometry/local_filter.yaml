@@ -6,7 +6,7 @@ two_d_mode: true
 smooth_lagged_data: false
 history_length: 0.4
 
-dynamic_process_noise_covariance: false
+dynamic_process_noise_covariance: true
 
 predict_to_current_time: false
 
