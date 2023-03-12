@@ -1,0 +1,22 @@
+<launch>
+
+    <node pkg="imu_drive" type="imu_drive_node" name="imu_node" output="screen">
+        
+        <param name="active" value="true"/>
+        <param name="publish" value="true"/>
+        <param name="sub_topic" value="/imu/data"/>
+        <param name="pub_topic" value="/imu/data_cov"/>
+        <param name="frame" value="imu_link"/>
+        <param name="update_params" value="false"/>
+        <param name="covariance_vx" value="0.05"/>
+        <param name="covariance_vy" value="0.05"/>
+        <param name="covariance_vz" value="0.1"/>
+        <param name="covariance_ax" value="0.05"/>
+        <param name="covariance_az" value="0.2"/>
+        <param name="intercept_vel" value="0.0001"/>
+        <param name="intercept_accel" value="0.0001"/>
+		<param name="using_nav_vel_cb" value="true"/>    <!-- "true" for cmd_vel, "false" for ekf_pose-->
+
+    </node>
+
+</launch>
