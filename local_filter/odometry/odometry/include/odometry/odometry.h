@@ -54,6 +54,7 @@ private :
     /** -- Msgs to pub -- **/
     nav_msgs::Odometry odometry_output_;
     nav_msgs::Odometry odometry_output_backup_;
+	double covariance_multi_[3]; // x, y, z
 
     /** -- Parameters -- **/
     bool p_active_;
@@ -63,6 +64,7 @@ private :
 	bool p_use_dynamic_reconf_;
 
     double p_covariance_;
+	double p_covariance_multi_;
 
     std::string p_fixed_frame_;
     std::string p_target_frame_;
