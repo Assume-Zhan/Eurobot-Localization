@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
@@ -90,10 +91,9 @@ find_package(catkin REQUIRED COMPONENTS
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+generate_dynamic_reconfigure_options(
+  cfg/odometry_param.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -150,7 +150,7 @@ include_directories(
 ## -- Declare library -- ##
 add_library(odometry lib/odometry.cpp)
 target_link_libraries(odometry ${catkin_LIBRARIES})
-add_dependencies(odometry ${catkin_EXPORTED_TARGETS})
+add_dependencies(odometry ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 
 ## -- Build a nodes -- ##
 add_executable(odometry_node src/odometry_node.cpp)

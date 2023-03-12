@@ -6,6 +6,9 @@
 #include "std_srvs/Empty.h"
 #include "std_msgs/Float64.h"
 
+#include <dynamic_reconfigure/server.h>
+#include "odometry/odometry_paramConfig.h"
+
 class Odometry {
 
 public :
@@ -31,6 +34,12 @@ private :
 
     /* Function publish sth we need */
     void publish();
+
+	/* Function for dynamic configure callback */
+	void DynamicParamCallback(odometry::odometry_paramConfig &config, uint32_t level);
+
+	/* Function to set up dynamic configure function and server */
+	void SetDynamicReconfigure();
 	
     /** -- Node Handles -- **/
     ros::NodeHandle nh_;
@@ -51,6 +60,7 @@ private :
     bool p_publish_;
     bool p_update_params_;
 	bool p_sub_from_nav_;
+	bool p_use_dynamic_reconf_;
 
     double p_covariance_;
 
