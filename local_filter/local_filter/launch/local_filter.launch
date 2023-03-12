@@ -9,7 +9,7 @@
     </node>
 
     <include file="$(find odometry)/launch/odometry.launch"/>
-	<include file="$(find local_filter)/launch/firmware_setup/comm.launch"/>
-	<include file="$(find local_filter)/launch/firmware_setup/spatial.launch"/>
+    <include file="$(find local_filter)/launch/firmware_setup/comm.launch"/>
+    <include file="$(find local_filter)/launch/firmware_setup/spatial.launch"/>
     
 </launch>
