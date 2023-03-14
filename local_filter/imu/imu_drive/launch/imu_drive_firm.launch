@@ -1,7 +1,7 @@
 <launch>
 
     <!-- Open imu firmware -->
-    <include file="$(find local_filter)/launch/firmware_setup/spatial.launch"/>
+    <include file="$(find imu_drive)/launch/spatial.launch"/>
 
 	<!-- imu feedback loop drive -->
     <node pkg="imu_drive" type="imu_drive_node" name="imu_node" output="screen">

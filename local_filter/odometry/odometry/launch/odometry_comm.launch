@@ -1,7 +1,15 @@
 <launch>
 
     <!-- Odometry communication (rosserial server) -->
-    <include file="$(find local_filter)/launch/firmware_setup/comm.launch"/>
+    <node pkg="rosserial_server" type="serial_node" name="rosserial_server_dp" output="screen">
+        <param name="port" value="/dev/ttyUSB0" />
+        <param name="baud" value="115200" />
+        <rosparam>
+            require:
+                publishers: [ Toposition ]
+                subscribers: [ cmd_vel ]
+        </rosparam>
+    </node>
 
     <!-- Odometry covariance callback node ( support rqt reconfiguration ) -->
     <node pkg="odometry" type="odometry_node" name="odometry_node" output="screen">
