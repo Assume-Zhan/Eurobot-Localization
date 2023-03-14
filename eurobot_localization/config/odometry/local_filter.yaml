@@ -6,7 +6,7 @@ two_d_mode: true
 smooth_lagged_data: false
 history_length: 0.4
 
-dynamic_process_noise_covariance: false
+dynamic_process_noise_covariance: true
 
 predict_to_current_time: false
 
@@ -34,7 +34,7 @@ odom0: odom
 odom0_config: [false, false, false,
                false, false, false,
                true,  true,  false,
-               false, false, false,
+               false, false, true,
                false, false, false]
 odom0_queue_size: 20
 odom0_differential: false
@@ -43,24 +43,24 @@ odom0_nodelay: true
 
 odom0_twist_rejection_threshold: 100
 
-imu0: imu/data
-imu0_config: [false, false, false,
-              false, false, true,
-              false, false, false,
-              false, false, true,
-              true,  true,  false]
-imu0_queue_size: 100
-imu0_differential: false
-imu0_relative: false
-imu0_nodelay: true
+# imu0: imu/data_cov
+# imu0_config: [false, false, false,
+#               false, false, false,
+#               false, false, false,
+#               false, false, false,
+#               false,  false,  false]
+# imu0_queue_size: 100
+# imu0_differential: false
+# imu0_relative: false
+# imu0_nodelay: true
 
-imu0_twist_rejection_threshold: 1000000000000.0
-imu0_linear_acceleration_rejection_threshold: 1000000000000.0
+# imu0_twist_rejection_threshold: 1000000000000.0
+# imu0_linear_acceleration_rejection_threshold: 1000000000000.0
 
-imu0_remove_gravitational_acceleration: false
+# imu0_remove_gravitational_acceleration: false
 
 
-initial_state: [0.0,  0.0,  0.0,
+initial_state: [0.0,   0.0,   0.0,
                 0.0,   0.0,   0.0,
                 0.0,   0.0,   0.0,
                 0.0,   0.0,   0.0,

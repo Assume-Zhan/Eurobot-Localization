@@ -129,7 +129,7 @@ bool IMU::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response 
     }
 
     /* -- Backup covariance -- */
-	this->imu_output_backup_ = this->imu_output_;
+	// this->imu_output_backup_ = this->imu_output_;
 		
     /* -- Set basic variables -- */
     this->imu_output_.header.frame_id = this->p_frame_;
@@ -172,9 +172,9 @@ void IMU::P_VelocityCallback(const geometry_msgs::Twist::ConstPtr &msg){
 	this->imu_output_.angular_velocity_covariance[4] = p_magnitude_ * p_slope_vel_ + p_intercept_vel_;
 	this->imu_output_.angular_velocity_covariance[8] = p_magnitude_ * p_slope_vel_ + p_intercept_vel_;
 
-    this->imu_output_.linear_acceleration_covariance[0] = this->imu_output_backup_.linear_acceleration_covariance[0] * p_slope_accel_ + p_intercept_accel_;
-	this->imu_output_.linear_acceleration_covariance[4] = this->imu_output_backup_.linear_acceleration_covariance[4] * p_slope_accel_ + p_intercept_accel_;
-	this->imu_output_.linear_acceleration_covariance[8] = this->imu_output_backup_.linear_acceleration_covariance[8] * p_slope_accel_ + p_intercept_accel_;
+    this->imu_output_.linear_acceleration_covariance[0] = p_magnitude_ * p_slope_accel_ + p_intercept_accel_;
+	this->imu_output_.linear_acceleration_covariance[4] = p_magnitude_ * p_slope_accel_ + p_intercept_accel_;
+	this->imu_output_.linear_acceleration_covariance[8] = p_magnitude_ * p_slope_accel_ + p_intercept_accel_;
 
 }
 

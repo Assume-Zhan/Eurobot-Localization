@@ -15,6 +15,7 @@
         <param name="covariance_az" value="0.2"/>
         <param name="intercept_vel" value="0.0001"/>
         <param name="intercept_accel" value="0.0001"/>
+        <param name="magnitude" value="0.02"/>
 		<param name="using_nav_vel_cb" value="true"/>    <!-- "true" for cmd_vel, "false" for ekf_pose-->
 
     </node>
