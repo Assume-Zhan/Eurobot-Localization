@@ -7,6 +7,9 @@
 #include "std_msgs/Float64.h"
 #include "geometry_msgs/TwistWithCovariance.h"
 
+#include <dynamic_reconfigure/server.h>
+#include "imu_drive/imu_drive_paramConfig.h"
+
 class IMU {
 
 public :
@@ -36,6 +39,12 @@ private :
     /* Function -> for geometry_msgs::TwistWithCovariance ( ekf_pose ) */
 	void AccelerationCallback(const geometry_msgs::TwistWithCovariance::ConstPtr &msg);
 
+	/* Set dynamic reconfigure */
+    void SetDynamicReconfigure();
+
+	/* Callback */
+	void DynamicParamCallback(imu_drive::imu_drive_paramConfig &config, uint32_t level);
+
 
     /* Function publish sth we need */
     void publish();
@@ -59,11 +68,11 @@ private :
 	bool p_publish_;
     bool p_update_params_; 
     bool p_sub_from_nav_;
+    bool p_use_dynamic_reconf_;
 
     double p_covariance_;
-    double p_intercept_vel_;
-    double p_intercept_accel_;
-    double p_magnitude_;
+	double p_cov_multi_vel_;
+	double p_cov_multi_acl_;
 
     std::string p_frame_;
 

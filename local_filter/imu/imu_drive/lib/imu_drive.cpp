@@ -82,21 +82,21 @@ bool IMU::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response 
         this->imu_output_.linear_acceleration_covariance[8] = p_covariance_;
     }
 
-    if(this->nh_local_.param<double>("intercept_vel", p_intercept_vel_, 1.0)){
-        ROS_INFO_STREAM("[IMU DRIVE] : intercept_vel set to " << p_intercept_vel_); 
-    }
-
-    if(this->nh_local_.param<double>("intercept_accel", p_intercept_accel_, 1.0)){
-        ROS_INFO_STREAM("[IMU DRIVE] : intercept_accel set to " << p_intercept_accel_); 
-    }
-
-    if(this->nh_local_.param<double>("magnitude", p_magnitude_, 1.0)){
-        ROS_INFO_STREAM("[IMU DRIVE] : magnitude set to " << p_magnitude_); 
-    }
-
     if(this->nh_local_.param<bool>("using_nav_vel_cb", p_sub_from_nav_, 0.)){
         ROS_INFO_STREAM("[Odometry] : current subscribe from nav cmd_vel is set to " << p_sub_from_nav_); 
 	}
+
+    if(this->nh_local_.param<double>("cov_multi_vel", p_cov_multi_vel_, 0.)){
+        ROS_INFO_STREAM("[Odometry] : gyroscope \"a\" is set to " << p_cov_multi_vel_); 
+	}
+
+    if(this->nh_local_.param<double>("cov_multi_acl", p_cov_multi_acl_, 0.)){
+        ROS_INFO_STREAM("[Odometry] : accel \"a\" is set to " << p_cov_multi_acl_); 
+	}
+
+    if(this->nh_local_.param<bool>("using_dynamic_reconf", p_use_dynamic_reconf_, true)){
+        ROS_INFO_STREAM("[Odometry] : using dynamic reconfigure is set to " << p_use_dynamic_reconf_); 
+    }
 
     if(p_active_ != prev_active) {
 
@@ -116,6 +116,11 @@ bool IMU::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response 
             if(this->p_update_params_){
                 this->param_srv_ = nh_local_.advertiseService("params", &IMU::UpdateParams, this);
             }
+            
+		    if(this->p_use_dynamic_reconf_){
+			    this->SetDynamicReconfigure();
+			}
+
         }
         else {
             this->imu_sub_.shutdown();
@@ -129,7 +134,7 @@ bool IMU::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response 
     }
 
     /* -- Backup covariance -- */
-	// this->imu_output_backup_ = this->imu_output_;
+	this->imu_output_backup_ = this->imu_output_;
 		
     /* -- Set basic variables -- */
     this->imu_output_.header.frame_id = this->p_frame_;
@@ -156,25 +161,28 @@ void IMU::IMUdataCallback(const sensor_msgs::Imu::ConstPtr &msg){  //  from /imu
 
 void IMU::P_VelocityCallback(const geometry_msgs::Twist::ConstPtr &msg){
 
-	static double p_slope_vel_;
-    static double p_slope_accel_;
+    double slope[3];
+    double slope_accel[3];
 
-    p_slope_vel_ = msg->linear.x;
-    p_slope_accel_ = msg->linear.x;
+    /* Rotation */
+    slope[0] = msg->angular.x * p_cov_multi_vel_;
+    slope[1] = msg->angular.y * p_cov_multi_vel_;
+    slope[2] = msg->angular.z * p_cov_multi_vel_;
 
-    /* imu_output_ = slope * original_covariance + intercept */
+    /* Linear */
+    slope_accel[0] = msg->linear.x * p_cov_multi_acl_;
+    slope_accel[1] = msg->linear.y * p_cov_multi_acl_;
+    slope_accel[2] = msg->linear.z * p_cov_multi_acl_;
+
+    /* imu_output_ = slope * x + original_covariance */
     
-	// this->imu_output_.angular_velocity_covariance[0] = this->imu_output_backup_.angular_velocity_covariance[0] * p_slope_vel_ + p_intercept_vel_;
-	// this->imu_output_.angular_velocity_covariance[4] = this->imu_output_backup_.angular_velocity_covariance[4] * p_slope_vel_ + p_intercept_vel_;
-	// this->imu_output_.angular_velocity_covariance[8] = this->imu_output_backup_.angular_velocity_covariance[8] * p_slope_vel_ + p_intercept_vel_;
+    this->imu_output_.angular_velocity_covariance[0] = slope[0] + this->imu_output_backup_.angular_velocity_covariance[0];
+    this->imu_output_.angular_velocity_covariance[4] = slope[1] + this->imu_output_backup_.angular_velocity_covariance[4];
+    this->imu_output_.angular_velocity_covariance[8] = slope[2] + this->imu_output_backup_.angular_velocity_covariance[8];
 
-    this->imu_output_.angular_velocity_covariance[0] = p_magnitude_ * p_slope_vel_ + p_intercept_vel_;
-	this->imu_output_.angular_velocity_covariance[4] = p_magnitude_ * p_slope_vel_ + p_intercept_vel_;
-	this->imu_output_.angular_velocity_covariance[8] = p_magnitude_ * p_slope_vel_ + p_intercept_vel_;
-
-    this->imu_output_.linear_acceleration_covariance[0] = p_magnitude_ * p_slope_accel_ + p_intercept_accel_;
-	this->imu_output_.linear_acceleration_covariance[4] = p_magnitude_ * p_slope_accel_ + p_intercept_accel_;
-	this->imu_output_.linear_acceleration_covariance[8] = p_magnitude_ * p_slope_accel_ + p_intercept_accel_;
+    this->imu_output_.linear_acceleration_covariance[0] = slope_accel[0] + this->imu_output_backup_.linear_acceleration_covariance[0];
+    this->imu_output_.linear_acceleration_covariance[4] = slope_accel[1] + this->imu_output_backup_.linear_acceleration_covariance[4];
+	this->imu_output_.linear_acceleration_covariance[8] = slope_accel[2] + this->imu_output_backup_.linear_acceleration_covariance[8];
 
 }
 
@@ -196,3 +204,114 @@ void IMU::publish(){
 
 }
 
+void IMU::DynamicParamCallback(imu_drive::imu_drive_paramConfig &config, uint32_t level){
+
+    /* get param */
+    if(p_publish_ != config.publish){
+		this->p_publish_ = config.publish;
+        ROS_INFO_STREAM("[IMU DRIVE] : publish set to " << p_publish_);
+    }
+
+    if(p_imu_pub_topic_ != config.pub_topic){
+
+		this->p_imu_pub_topic_ = config.pub_topic;
+
+		if(p_active_){
+            this->imu_pub_ = nh_.advertise<sensor_msgs::Imu>(p_imu_pub_topic_, 10);
+		}
+
+        ROS_INFO_STREAM("[IMU DRIVE] : Current publish topic [ " << p_imu_pub_topic_ << " ]"); 
+    }
+
+    if(p_imu_sub_topic_ != config.sub_topic){
+
+		this->p_imu_sub_topic_ = config.sub_topic;
+
+		if(p_active_){
+            this->imu_sub_ = nh_.subscribe(p_imu_sub_topic_, 10, &IMU::IMUdataCallback, this);
+		}
+
+        ROS_INFO_STREAM("[IMU DRIVE] : Current subscribe topic [ " << p_imu_sub_topic_ << " ]"); 
+    }
+
+    if(p_frame_ != config.frame){
+
+		this->p_frame_ = config.frame;
+		this->imu_output_.header.frame_id = this->p_frame_;
+
+        ROS_INFO_STREAM("[IMU DRIVE] : Current frame [ " << p_frame_ << " ]"); 
+    }
+
+    if(this->imu_output_backup_.angular_velocity_covariance[0] != config.covariance_vx){
+
+        this->imu_output_backup_.angular_velocity_covariance[0] = config.covariance_vx;
+
+        ROS_INFO_STREAM("[IMU DRIVE] : vx ( gyroscope ) covariance is set to " << this->imu_output_backup_.angular_velocity_covariance[0]);
+    }
+
+    if(this->imu_output_backup_.angular_velocity_covariance[4] != config.covariance_vy){
+
+        this->imu_output_backup_.angular_velocity_covariance[4] = config.covariance_vy;
+
+        ROS_INFO_STREAM("[IMU DRIVE] : vy ( gyroscope ) covariance is set to " << this->imu_output_backup_.angular_velocity_covariance[4]);
+    }
+
+    if(this->imu_output_backup_.angular_velocity_covariance[8] != config.covariance_vz){
+
+        this->imu_output_backup_.angular_velocity_covariance[8] = config.covariance_vz;
+
+        ROS_INFO_STREAM("[IMU DRIVE] : vz ( gyroscope ) covariance is set to " << this->imu_output_backup_.angular_velocity_covariance[8]);
+    }
+
+
+    if(this->imu_output_backup_.linear_acceleration_covariance[0] != config.covariance_ax){
+
+        this->imu_output_backup_.linear_acceleration_covariance[0] = config.covariance_ax;
+
+        ROS_INFO_STREAM("[IMU DRIVE] : ax ( acceleration ) covariance is set to " << this->imu_output_backup_.linear_acceleration_covariance[0]);
+    }
+
+    if(this->imu_output_backup_.linear_acceleration_covariance[4] != config.covariance_ay){
+
+        this->imu_output_backup_.linear_acceleration_covariance[4] = config.covariance_ay;
+
+        ROS_INFO_STREAM("[IMU DRIVE] : ay ( acceleration ) covariance is set to " << this->imu_output_backup_.linear_acceleration_covariance[4]);
+    }
+
+    if(this->imu_output_backup_.linear_acceleration_covariance[8] != config.covariance_az){
+
+        this->imu_output_backup_.linear_acceleration_covariance[8] = config.covariance_az;
+
+        ROS_INFO_STREAM("[IMU DRIVE] : az ( acceleration ) covariance is set to " << this->imu_output_backup_.linear_acceleration_covariance[8]);
+    }
+
+    if(this->p_cov_multi_vel_ != config.cov_multi_vel){
+
+        this->p_cov_multi_vel_ = config.cov_multi_vel;
+
+        ROS_INFO_STREAM("[IMU DRIVE] : covariance multiplicant angular is set to " << this->p_cov_multi_vel_);
+    }
+
+
+    if(this->p_cov_multi_acl_ != config.cov_multi_acl){
+
+        this->p_cov_multi_acl_ = config.cov_multi_acl;
+
+        ROS_INFO_STREAM("[IMU DRIVE] : covariance multiplicant linear is set to " << this->p_cov_multi_acl_);
+    }
+}
+
+
+void IMU::SetDynamicReconfigure(){
+    ROS_INFO_STREAM("[IMU DRIVE] : ");    
+    static dynamic_reconfigure::Server<imu_drive::imu_drive_paramConfig> dynamic_param_srv_;
+
+    dynamic_reconfigure::Server<imu_drive::imu_drive_paramConfig>::CallbackType callback;
+
+    // If the function is a class member :
+    // boost::bind(&function, class instance, _1, _2)
+    callback = boost::bind(&IMU::DynamicParamCallback, this, _1, _2);
+
+    // Set callback function to param server
+    dynamic_param_srv_.setCallback(callback);
+}

@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   std_srvs
+  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
@@ -90,10 +91,9 @@ find_package(catkin REQUIRED COMPONENTS
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+generate_dynamic_reconfigure_options(
+  cfg/imu_drive_param.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -154,7 +154,7 @@ include_directories(
 
 add_library(imu_drive lib/imu_drive.cpp)
 target_link_libraries(imu_drive ${catkin_LIBRARIES})
-add_dependencies(imu_drive ${catkin_EXPORTED_TARGETS})
+add_dependencies(imu_drive ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 
 
 add_executable(imu_drive_node src/imu_drive_node.cpp)

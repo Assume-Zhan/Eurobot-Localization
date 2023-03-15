@@ -252,46 +252,46 @@ void Odometry::DynamicParamCallback(odometry::odometry_paramConfig &config, uint
         ROS_INFO_STREAM("[Odometry] : Current target frame [ " << p_target_frame_ << " ]"); 
     }
 
-    if(this->odometry_output_.twist.covariance[0] != config.covariance_x){
+    if(this->odometry_output_backup_.twist.covariance[0] != config.covariance_x){
 
         this->odometry_output_backup_.twist.covariance[0] = config.covariance_x;
 
-        ROS_INFO_STREAM("[Odometry] : x covariance set to " << this->odometry_output_.twist.covariance[0]);
+        ROS_INFO_STREAM("[Odometry] : x covariance set to " << this->odometry_output_backup_.twist.covariance[0]);
     }
 
-    if(this->odometry_output_.twist.covariance[7] != config.covariance_y){
+    if(this->odometry_output_backup_.twist.covariance[7] != config.covariance_y){
 
         this->odometry_output_backup_.twist.covariance[7] = config.covariance_y;
 
-        ROS_INFO_STREAM("[Odometry] : y covariance set to " << this->odometry_output_.twist.covariance[7]);
+        ROS_INFO_STREAM("[Odometry] : y covariance set to " << this->odometry_output_backup_.twist.covariance[7]);
     }
 
-    if(this->odometry_output_.twist.covariance[14] != config.covariance_z){
+    if(this->odometry_output_backup_.twist.covariance[14] != config.covariance_z){
 
         this->odometry_output_backup_.twist.covariance[14] = config.covariance_z;
 
-        ROS_INFO_STREAM("[Odometry] : z covariance set to " << this->odometry_output_.twist.covariance[14]);
+        ROS_INFO_STREAM("[Odometry] : z covariance set to " << this->odometry_output_backup_.twist.covariance[14]);
     }
 
-    if(this->odometry_output_.twist.covariance[21] != config.covariance_vx){
+    if(this->odometry_output_backup_.twist.covariance[21] != config.covariance_vx){
 
         this->odometry_output_backup_.twist.covariance[21] = config.covariance_vx;
 
-        ROS_INFO_STREAM("[Odometry] : vx covariance set to " << this->odometry_output_.twist.covariance[21]);
+        ROS_INFO_STREAM("[Odometry] : vx covariance set to " << this->odometry_output_backup_.twist.covariance[21]);
     }
 	
-    if(this->odometry_output_.twist.covariance[28] != config.covariance_vy){
+    if(this->odometry_output_backup_.twist.covariance[28] != config.covariance_vy){
 
         this->odometry_output_backup_.twist.covariance[28] = config.covariance_vy;
 
-        ROS_INFO_STREAM("[Odometry] : vy covariance set to " << this->odometry_output_.twist.covariance[28]);
+        ROS_INFO_STREAM("[Odometry] : vy covariance set to " << this->odometry_output_backup_.twist.covariance[28]);
     }
 
-    if(this->odometry_output_.twist.covariance[35] != config.covariance_vz){
+    if(this->odometry_output_backup_.twist.covariance[35] != config.covariance_vz){
 
         this->odometry_output_backup_.twist.covariance[35] = config.covariance_vz;
 
-        ROS_INFO_STREAM("[Odometry] : vz covariance set to " << this->odometry_output_.twist.covariance[35]);
+        ROS_INFO_STREAM("[Odometry] : vz covariance set to " << this->odometry_output_backup_.twist.covariance[35]);
     }
 
     if(this->covariance_multi_[0] != config.covariance_multi_vx){
