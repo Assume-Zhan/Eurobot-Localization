@@ -17,10 +17,10 @@ debug: false
 debug_out_file: /path/to/debug/file.txt
 
 # frames
-map_frame: map
-odom_frame: odom
-base_link_frame: base_footprint
-world_frame: odom
+map_frame: robot1/map
+odom_frame: robot1/odom
+base_link_frame: robot1/base_footprint
+world_frame: robot1/odom
 transform_time_offset: 0.05
 transform_timeout: 0
 

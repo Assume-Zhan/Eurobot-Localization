@@ -17,4 +17,4 @@ max_merge_spread: 0.02
 max_circle_radius: 0.2
 radius_enlargement: 0.05
 
-frame_id: base_footprint
+frame_id: robot1/base_footprint
