@@ -1,8 +1,0 @@
-<launch>
-
-	<include file="$(find odometry)/launch/odometry.launch"/>
-	<include file="$(find imu_drive)/launch/imu_drive.launch"/>
-	<include file="$(find eurobot_localization)/launch/firmware_setup/comm.launch"/>
-	<include file="$(find eurobot_localization)/launch/firmware_setup/spatial.launch"/>
-
-</launch>

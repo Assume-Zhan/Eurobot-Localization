@@ -1,7 +1,0 @@
-<!-- For imu experiment -->
-<launch>
-
-	<include file="$(find eurobot_localization)/launch/firmware_setup/comm.launch"/>
-	<include file="$(find eurobot_localization)/launch/firmware_setup/spatial.launch"/>
-
-</launch>

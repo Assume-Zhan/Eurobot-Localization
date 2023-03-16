@@ -1,6 +1,6 @@
 <launch>
 
-	<include file="$(find eurobot_localization)/launch/odometry/local_filter.launch"/>
+	<include file="$(find local_filter)/launch/local_filter.launch"/>
 	<include file="$(find eurobot_localization)/launch/gps/global_ekf.launch"/>
 
 </launch>

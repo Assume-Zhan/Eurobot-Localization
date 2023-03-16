@@ -1,0 +1,6 @@
+<launch>
+
+    <include file="$(find lidar_localization)/launch/lidar_driver/lidar_G6.launch"/>
+    <include file="$(find lidar_localization)/launch/lidar_localization_2023.launch"/>
+
+</launch>
