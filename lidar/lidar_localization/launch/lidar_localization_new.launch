@@ -26,7 +26,7 @@
         <param name="process_rate_variance"   value="0.1"/>                                                                                     
         <param name="measurement_variance"    value="1.0"/>                                                                                     
                                                                                                                                             
-        <param name="frame_id"                value="base_footprint"/>                                                                                     
+		<param name="frame_id"                value="robot1/base_footprint"/> 
                                                                                                                                             
         <remap from="tracked_obstacles" to="obstacles_to_base" />
     </node>
