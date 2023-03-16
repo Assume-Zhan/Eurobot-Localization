@@ -609,7 +609,7 @@ void Ekf::publishEkfPose(const ros::Time& stamp)
 {
     geometry_msgs::PoseWithCovarianceStamped ekf_pose;
     ekf_pose.header.stamp = stamp;
-    ekf_pose.header.frame_id = "map";
+    ekf_pose.header.frame_id = p_robot_name_ + "map";
     ekf_pose.pose.pose.position.x = robotstate_.mu(0);
     ekf_pose.pose.pose.position.y = robotstate_.mu(1);
     tf2::Quaternion q;
@@ -634,7 +634,7 @@ void Ekf::publishGlobalFilter(const ros::Time& stamp)
 {
     nav_msgs::Odometry ekf_pose;
     ekf_pose.header.stamp = stamp;
-    ekf_pose.header.frame_id = "map";
+    ekf_pose.header.frame_id = p_robot_name_ + "map";
     ekf_pose.pose.pose.position.x = robotstate_.mu(0);
     ekf_pose.pose.pose.position.y = robotstate_.mu(1);
     tf2::Quaternion q;
@@ -666,7 +666,7 @@ void Ekf::broadcastEkfTransform(const nav_msgs::Odometry::ConstPtr& odom_msg)
 
     geometry_msgs::TransformStamped transformStamped;
     transformStamped.header.stamp = odom_msg->header.stamp;
-    transformStamped.header.frame_id = "map";
+    transformStamped.header.frame_id = p_robot_name_ + "/map";
     transformStamped.child_frame_id = p_robot_name_ + "/odom";
     transformStamped.transform = tf2::toMsg(map_to_odom);
     br_.sendTransform(transformStamped);

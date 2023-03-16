@@ -17,4 +17,4 @@ max_merge_spread: 0.02
 max_circle_radius: 0.2
 radius_enlargement: 0.05
 
-frame_id: map
+frame_id: robot1/map

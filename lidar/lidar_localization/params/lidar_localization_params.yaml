@@ -16,7 +16,7 @@ beacon_3_y: 3.1
 theta: 0
 
 obstacle_topic: obstacles_to_base
-beacon_parent_frame_id: map
-beacon_frame_id_prefix: beacon
-robot_parent_frame_id: map
-robot_frame_id: base_footprint
+beacon_parent_frame_id: robot1/map
+beacon_frame_id_prefix: robot1/beacon
+robot_parent_frame_id: robot1/map
+robot_frame_id: robot1/base_footprint

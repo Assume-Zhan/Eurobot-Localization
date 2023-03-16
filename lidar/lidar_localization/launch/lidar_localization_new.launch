@@ -1,6 +1,6 @@
 <launch>
 
-    <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 base_footprint laser_frame" />
+	<node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 robot1/base_footprint robot1/laser_frame" />
 
 
     <!-- lidar localization -->

@@ -6,7 +6,7 @@
         <param name="publish" value="true"/>
         <param name="sub_topic" value="/imu/data"/>
         <param name="pub_topic" value="/imu/data_cov"/>
-        <param name="frame" value="imu_link"/>
+		<param name="frame" value="robot1/imu_link"/>
         <param name="update_params" value="false"/>
 
         <param name="covariance_vx" value="0.05"/>
