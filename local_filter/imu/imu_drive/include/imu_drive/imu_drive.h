@@ -63,6 +63,10 @@ private :
     sensor_msgs::Imu imu_output_;
     sensor_msgs::Imu imu_output_backup_;
 
+    /** -- For low pass filter -- **/
+    geometry_msgs::Vector3 prev_angular_velocity;
+    geometry_msgs::Vector3 prev_linear_acceleration;
+
 	/* Parameters */
 	bool p_active_;
 	bool p_publish_;
@@ -73,6 +77,7 @@ private :
     double p_covariance_;
 	double p_cov_multi_vel_;
 	double p_cov_multi_acl_;
+    double p_filter_prev_;
 
     std::string p_frame_;
 
