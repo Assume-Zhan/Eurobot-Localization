@@ -98,7 +98,7 @@ bool IMU::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response 
         ROS_INFO_STREAM("[Odometry] : using dynamic reconfigure is set to " << p_use_dynamic_reconf_); 
     }
 
-    if(this->nh_local_.param<double>("filter_prev", p_filter_prev_, true)){
+    if(this->nh_local_.param<double>("filter_prev", p_filter_prev_, 0.1)){
         ROS_INFO_STREAM("[Odometry] : low pass filter constant is set to " << p_filter_prev_); 
     }
 
@@ -150,23 +150,25 @@ bool IMU::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response 
 void IMU::IMUdataCallback(const sensor_msgs::Imu::ConstPtr &msg){  //  from /imu/data
 
     static unsigned int sequence = 0;
+    sequence++;
 
     this->imu_output_.header.seq = sequence;
     this->imu_output_.header.stamp = ros::Time::now();
 
     this->imu_output_.orientation = msg->orientation;
 
-    if(sequence == 0){
+    if(sequence != 1){
         this->imu_output_.angular_velocity.x = msg->angular_velocity.x * (1 - p_filter_prev_) + prev_angular_velocity.x * p_filter_prev_;
         this->imu_output_.angular_velocity.y = msg->angular_velocity.y * (1 - p_filter_prev_) + prev_angular_velocity.y * p_filter_prev_;
         this->imu_output_.angular_velocity.z = msg->angular_velocity.z * (1 - p_filter_prev_) + prev_angular_velocity.z * p_filter_prev_;
     }
+    else this->imu_output_.angular_velocity = msg->angular_velocity;
 
     this->imu_output_.linear_acceleration = msg->linear_acceleration;
 
-    if(this->p_publish_) this->publish();
+    this->prev_angular_velocity = this->imu_output_.angular_velocity;
 
-    sequence++;
+    if(this->p_publish_) this->publish();
 
 }
 
