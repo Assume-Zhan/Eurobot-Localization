@@ -9,8 +9,10 @@
         <param name="active" value="true"/>
         <param name="publish" value="true"/>
 
-		<remap from="/Toposition" to="$(arg robot_name)/Toposition"/>
-		<remap from="/odom" to="$(arg robot_name)/odom"/>
+        <param name="twist_topic" value="/$(arg robot_name)/Toposition"/>
+        <param name="odom_topic" value="/$(arg robot_name)/odom"/>
+        <remap from="/cmd_vel" to="/$(arg robot_name)/cmd_vel"/>
+        <remap from="/ekf_pose" to="/$(arg robot_name)/ekf_pose"/>
 
 		<param name="fixed_frame" value="$(arg robot_name_slash)odom"/>
         <param name="target_frame" value="$(arg robot_name_slash)base_footprint"/>
@@ -25,7 +27,7 @@
         <param name="covariance_multi_vy" value="0.5"/>
         <param name="covariance_multi_vz" value="0.5"/>
 		<param name="using_nav_vel_cb" value="false"/>
-		<param name="using_dynamic_reconf" value="true"/>
+		<param name="using_dynamic_reconf" value="false"/>
 
     </node>
 

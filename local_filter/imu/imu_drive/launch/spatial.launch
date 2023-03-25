@@ -17,7 +17,7 @@
     <!-- <param name="hub_port" value="0"/> -->
 
     # optional param frame_id, default is "imu_link"
-    <!-- <param name="frame_id" value="imu_link"/> -->
+    <param name="frame_id" value="$(arg robot_name_slash)imu_link"/>
 
     # optional param use_orientation, default is false
     <param name="use_orientation" value="false"/>
