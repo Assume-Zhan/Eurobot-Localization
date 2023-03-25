@@ -43,7 +43,7 @@ odom0_nodelay: true
 
 odom0_twist_rejection_threshold: 100
 
-imu0: imu/data
+imu0: imu/data_cov
 imu0_config: [false, false, false,
               false, false, false,
               false, false, false,
