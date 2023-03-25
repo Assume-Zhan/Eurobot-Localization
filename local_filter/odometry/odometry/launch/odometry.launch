@@ -1,13 +1,19 @@
 <launch>
 
+    <!-- Robot name should add a slash -->
+	<arg name="robot_name" default=""/>
+	<arg name="robot_name_slash" default=""/>
+
     <node pkg="odometry" type="odometry_node" name="odometry_node" output="screen">
         
         <param name="active" value="true"/>
         <param name="publish" value="true"/>
-        <param name="twist_topic" value="/Toposition"/>
-        <param name="odom_topic" value="/odom"/>
-        <param name="fixed_frame" value="odom"/>
-        <param name="target_frame" value="base_footprint"/>
+
+		<remap from="/Toposition" to="$(arg robot_name)/Toposition"/>
+		<remap from="/odom" to="$(arg robot_name)/odom"/>
+
+		<param name="fixed_frame" value="$(arg robot_name_slash)odom"/>
+        <param name="target_frame" value="$(arg robot_name_slash)base_footprint"/>
         <param name="update_params" value="false"/>
         <param name="covariance_x" value="0.05"/>
         <param name="covariance_y" value="0.05"/>

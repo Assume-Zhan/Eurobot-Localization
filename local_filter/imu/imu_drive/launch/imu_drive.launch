@@ -1,12 +1,15 @@
 <launch>
 
+	<arg name="robot_name" default=""/>
+	<arg name="robot_name_slash" default=""/>
+
     <node pkg="imu_drive" type="imu_drive_node" name="imu_node" output="screen">
         
         <param name="active" value="true"/>
         <param name="publish" value="true"/>
-        <param name="sub_topic" value="/imu/data"/>
-        <param name="pub_topic" value="/imu/data_cov"/>
-        <param name="frame" value="imu_link"/>
+        <param name="sub_topic" value="imu/data"/>
+        <param name="pub_topic" value="imu/data_cov"/>
+        <param name="frame" value="$(arg robot_name_slash)imu_link"/>
         <param name="update_params" value="false"/>
 
         <param name="covariance_vx" value="0.05"/>
