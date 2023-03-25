@@ -1,37 +1,42 @@
 <launch>
-    <!-- <node name="base_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.044 base_footprint laser_frame"/> -->
 
-    <!-- for ydlidar static transform -->
-    <!-- ...................................<node name="base_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 -0.943 -0.333 base_footprint laser_frame"/>  -->
-    <!-- <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.954 0.301 base_footprint laser_frame"/>  -->
-    <!-- <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.998 0.061 base_footprint laser_frame"/>  -->
-    <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 base_footprint laser_frame" />
+	<arg name="robot_name" default="robot1"/>
+	<arg name="robot_name_slash" default="robot1/"/>
+    <group ns="$(arg robot_name)">
 
-    <!-- for rplidar static transform -->
-    <!-- <node name="base_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.017 1 base_footprint laser_frame"/>   -->
+        <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)laser_frame" />
 
-    <!-- lidar localization -->
-    <node name="beacon_extractor" pkg="obstacle_detector" type="obstacle_extractor_node">
-        <rosparam file="$(find lidar_localization)/params/beacon_excrator_params.yaml" command="load" />
-        <remap from="raw_obstacles" to="obstacles_to_base"/>
-    </node>
+        <!-- for rplidar static transform -->
+        <!-- <node name="base_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.017 1 base_footprint laser_frame"/>   -->
 
-    <node name="lidar_localization" pkg="lidar_localization" type="lidar_localization_node" output="log">
-        <rosparam file="$(find lidar_localization)/params/lidar_localization_params_2023.yaml" command="load" />
-        <remap from="obstacles" to="obstacles_to_base"/>
-    </node>
+        <!-- lidar localization -->
+        <node name="beacon_extractor" pkg="obstacle_detector" type="obstacle_extractor_node">
+            <rosparam file="$(find lidar_localization)/params/beacon_excrator_params.yaml" command="load" />
+            <remap from="raw_obstacles" to="obstacles_to_base"/>
+			<param name="frame_id" value="$(arg robot_name_slash)base_footprint"/>
+        </node>
 
-    <!-- obstacle -->
-    <node name="obstacle_extractor" pkg="obstacle_detector" type="obstacle_extractor_node">
-        <rosparam file="$(find lidar_localization)/params/obstacle_excrator_params.yaml" command="load" />
-        <remap from="raw_obstacles" to="obstacles_to_map"/>
-    </node>
+        <node name="lidar_localization" pkg="lidar_localization" type="lidar_localization_node" output="log">
+            <rosparam file="$(find lidar_localization)/params/lidar_localization_params_2023.yaml" command="load" />
+            <remap from="obstacles" to="obstacles_to_base"/>
+            <param name="beacon_parent_frame_id" value="$(arg robot_name_slash)map"/>
+            <param name="beacon_frame_id_prefix" value="$(arg robot_name_slash)beacon"/>
+            <param name="robot_parent_frame_id" value="$(arg robot_name_slash)map"/>
+            <param name="robot_frame_id" value="$(arg robot_name_slash)base_footprint"/>
+        </node>
 
-    <!-- <node name="area_obstacles_extractor" pkg="lidar_localization" type="area_obstacles_extractor_node" output="screen"> -->
-        <!-- <remap from="obstacle_array" to="move_base/TebLocalPlannerROS/obstacles"/> -->
-        <!-- <remap from="robot_pose" to="ekf_pose_in_odom"/>
-        <param name="avoid_distance" value="0.4"/>
-    </node> -->
+        <!-- obstacle -->
+        <node name="obstacle_extractor" pkg="obstacle_detector" type="obstacle_extractor_node">
+            <rosparam file="$(find lidar_localization)/params/obstacle_excrator_params.yaml" command="load" />
+            <remap from="raw_obstacles" to="obstacles_to_map"/>
+			<param name="frame_id" value="$(arg robot_name_slash)base_footprint"/>
+        </node>
 
+        <!-- <node name="area_obstacles_extractor" pkg="lidar_localization" type="area_obstacles_extractor_node" output="screen"> -->
+            <!-- <remap from="obstacle_array" to="move_base/TebLocalPlannerROS/obstacles"/> -->
+            <!-- <remap from="robot_pose" to="ekf_pose_in_odom"/>
+            <param name="avoid_distance" value="0.4"/>
+        </node> -->
+	</group>
 
 </launch>
