@@ -10,7 +10,10 @@
     </node>
 
     <!-- Odometry firmware and covariance feedback loop node (contain communication) -->
-    <include file="$(find odometry)/launch/odometry.launch"/>
+    <include file="$(find odometry)/launch/odometry.launch">
+		<arg name="robot_name" value="robot1"/>
+		<arg name="robot_name_slash" value="robot1/"/>
+    </include>
 
     <!-- IMU firmware and covariance feedback loop node (contain IMU spatial launch) -->
     <include file="$(find imu_drive)/launch/imu_drive.launch"/>
