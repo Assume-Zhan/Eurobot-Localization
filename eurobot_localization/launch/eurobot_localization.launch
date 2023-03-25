@@ -1,6 +1,17 @@
 <launch>
 
-	<include file="$(find local_filter)/launch/local_filter.launch"/>
-	<include file="$(find eurobot_localization)/launch/gps/global_ekf.launch"/>
+
+	<arg name="robot_name" default="robot1"/>
+	<arg name="robot_name_slash" default="robot1/"/>
+
+	<include file="$(find local_filter)/launch/local_filter.launch">
+		<arg name="robot_name" value="$(arg robot_name)"/>
+		<arg name="robot_name_slash" value="$(arg robot_name_slash)"/>
+	</include>
+
+	<include file="$(find eurobot_localization)/launch/gps/global_ekf.launch">
+		<arg name="robot_name" value="$(arg robot_name)"/>
+		<arg name="robot_name_slash" value="$(arg robot_name_slash)"/>
+	</include>
 
 </launch>

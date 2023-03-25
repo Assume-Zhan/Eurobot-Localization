@@ -26,7 +26,7 @@ struct RobotState
 class Ekf
 {
   public:
-    Ekf(ros::NodeHandle& nh) : nh_(nh){};
+    Ekf(ros::NodeHandle& nh, ros::NodeHandle& nh_local) : nh_(nh), nh_local_(nh_local){};
     void initialize();
 
   private:
@@ -128,6 +128,8 @@ class Ekf
 
     // ros node
     ros::NodeHandle nh_;
+    ros::NodeHandle nh_local_;
+
     // initial pose
     ros::Subscriber setpose_sub_;
     // measurement data
