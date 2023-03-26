@@ -3,3 +3,4 @@ devel/*
 .YDLidar-SDK/*
 obstacle_detector/*
 simulation/*
+*.swp
