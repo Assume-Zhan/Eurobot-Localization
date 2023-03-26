@@ -271,8 +271,8 @@ void LidarLocalization::getBeacontoRobot()
         beacon_to_robot_[i - 1].y = transform.transform.translation.y;
       }
       else{
-        beacon_to_robot_[i - 1].x = transform.transform.translation.x + beacon_velocity_[i - 1].x * (timeAfter - timeBefore) * 10;
-        beacon_to_robot_[i - 1].y = transform.transform.translation.y + beacon_velocity_[i - 1].y * (timeAfter - timeBefore) * 10;
+        beacon_to_robot_[i - 1].x = transform.transform.translation.x + beacon_velocity_[i - 1].x * (timeAfter - timeBefore);
+        beacon_to_robot_[i - 1].y = transform.transform.translation.y + beacon_velocity_[i - 1].y * (timeAfter - timeBefore);
       }
       timeBefore = timeAfter;
       broadcastBeacon();
