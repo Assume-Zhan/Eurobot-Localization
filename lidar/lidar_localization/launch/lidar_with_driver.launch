@@ -6,7 +6,7 @@
         <include file="$(find lidar_localization)/launch/lidar_driver/lidar_G6.launch"/>
 	</group>
 
-    <include file="$(find lidar_localization)/launch/lidar_localization_2023.launch">
+    <include file="$(find lidar_localization)/launch/lidar_localization_new.launch">
 		<arg name="robot_name" value="$(arg robot_name)"/>
 		<arg name="robot_name_slash" value="$(arg robot_name_slash)"/>
     </include>
