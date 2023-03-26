@@ -191,6 +191,7 @@ private:
 
   /* private variables */
   geometry_msgs::Point beacon_to_map_[3];
+  geometry_msgs::Point beacon_velocity_[3];
   geometry_msgs::Point beacon_to_robot_[3];
   geometry_msgs::Point beacon_found_[3];
 

@@ -253,6 +253,10 @@ void LidarLocalization::getBeacontoMap()
 
 void LidarLocalization::getBeacontoRobot()
 {
+
+  static double timeBefore;
+  double timeAfter = ros::Time::now().toSec();
+
   bool tf_ok = true;
   geometry_msgs::TransformStamped transform;
   for (int i = 1; i <= 3; ++i)
@@ -262,24 +266,34 @@ void LidarLocalization::getBeacontoRobot()
       transform =
           tf2_buffer_.lookupTransform(p_robot_frame_id_, p_beacon_frame_id_prefix_ + std::to_string(i), ros::Time());
 
-      beacon_to_robot_[i - 1].x = transform.transform.translation.x;
-      beacon_to_robot_[i - 1].y = transform.transform.translation.y;
+	  if(timeBefore == 0){
+        beacon_to_robot_[i - 1].x = transform.transform.translation.x;
+        beacon_to_robot_[i - 1].y = transform.transform.translation.y;
+	  }
+	  else{
+        beacon_to_robot_[i - 1].x = transform.transform.translation.x + beacon_velocity_[i - 1].x * (timeAfter - timeBefore);
+        beacon_to_robot_[i - 1].y = transform.transform.translation.y + beacon_velocity_[i - 1].y * (timeAfter - timeBefore);
+	  }
+      timeBefore = timeAfter;
     }
     catch (const tf2::TransformException& ex)
     {
-      try
-      {
-        transform =
-            tf2_buffer_.lookupTransform(p_robot_frame_id_, p_beacon_frame_id_prefix_ + std::to_string(i), ros::Time());
-
-        beacon_to_robot_[i - 1].x = transform.transform.translation.x;
-        beacon_to_robot_[i - 1].y = transform.transform.translation.y;
-      }
-      catch (const tf2::TransformException& ex)
-      {
-        ROS_WARN_STREAM(ex.what());
-        tf_ok = false;
-      }
+      // try
+      // {
+      //   transform =
+      //       tf2_buffer_.lookupTransform(p_robot_frame_id_, p_beacon_frame_id_prefix_ + std::to_string(i), ros::Time());
+      // 
+      //   beacon_to_robot_[i - 1].x = transform.transform.translation.x;
+      //   beacon_to_robot_[i - 1].y = transform.transform.translation.y;
+      // }
+      // catch (const tf2::TransformException& ex)
+      // {
+      //   ROS_WARN_STREAM(ex.what());
+      //   tf_ok = false;
+      // }
+	  
+      ROS_WARN_STREAM(ex.what());
+      tf_ok = false;
     }
   }
 
@@ -307,6 +321,8 @@ void LidarLocalization::findBeacon()
         min_distance = circle.beacon_distance[i];
         beacon_found_[i].x = circle.center.x;
         beacon_found_[i].y = circle.center.y;
+        beacon_velocity_[i].x = circle.velocity.x;
+        beacon_velocity_[i].y = circle.velocity.y;
       }
     }
   }
