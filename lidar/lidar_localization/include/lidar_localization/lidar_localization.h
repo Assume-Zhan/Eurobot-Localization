@@ -172,6 +172,12 @@ private:
    */
   void getRobotPose();
 
+  /**
+   * @brief Broadcast beaconTF
+   *
+   */
+  void broadcastBeacon();
+
   /* ros node */
   ros::NodeHandle nh_;
   ros::NodeHandle nh_local_;

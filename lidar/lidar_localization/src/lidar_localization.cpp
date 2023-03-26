@@ -266,32 +266,19 @@ void LidarLocalization::getBeacontoRobot()
       transform =
           tf2_buffer_.lookupTransform(p_robot_frame_id_, p_beacon_frame_id_prefix_ + std::to_string(i), ros::Time());
 
-	  if(timeBefore == 0){
+      if(timeBefore == 0){
         beacon_to_robot_[i - 1].x = transform.transform.translation.x;
         beacon_to_robot_[i - 1].y = transform.transform.translation.y;
-	  }
-	  else{
+      }
+      else{
         beacon_to_robot_[i - 1].x = transform.transform.translation.x + beacon_velocity_[i - 1].x * (timeAfter - timeBefore);
         beacon_to_robot_[i - 1].y = transform.transform.translation.y + beacon_velocity_[i - 1].y * (timeAfter - timeBefore);
-	  }
+      }
       timeBefore = timeAfter;
+      broadcastBeacon();
     }
     catch (const tf2::TransformException& ex)
     {
-      // try
-      // {
-      //   transform =
-      //       tf2_buffer_.lookupTransform(p_robot_frame_id_, p_beacon_frame_id_prefix_ + std::to_string(i), ros::Time());
-      // 
-      //   beacon_to_robot_[i - 1].x = transform.transform.translation.x;
-      //   beacon_to_robot_[i - 1].y = transform.transform.translation.y;
-      // }
-      // catch (const tf2::TransformException& ex)
-      // {
-      //   ROS_WARN_STREAM(ex.what());
-      //   tf_ok = false;
-      // }
-	  
       ROS_WARN_STREAM(ex.what());
       tf_ok = false;
     }
@@ -302,6 +289,36 @@ void LidarLocalization::getBeacontoRobot()
     ROS_WARN_STREAM("[Lidar Localization]: "
                     << "get beacon to robot tf failed");
   }
+}
+
+void LidarLocalization::broadcastBeacon(){
+
+  geometry_msgs::TransformStamped transform;
+  ros::Time now = ros::Time::now();
+  transform.header.stamp = now;
+  transform.header.frame_id = p_robot_frame_id_;
+
+  transform.transform.translation.z = 0;
+  transform.transform.rotation.x = 0;
+  transform.transform.rotation.y = 0;
+  transform.transform.rotation.z = 0;
+  transform.transform.rotation.w = 1;
+
+  transform.child_frame_id = p_beacon_frame_id_prefix_ + "01";
+  transform.transform.translation.x = beacon_to_robot_[0].x;
+  transform.transform.translation.y = beacon_to_robot_[0].y;
+  static_broadcaster_.sendTransform(transform);
+
+  transform.child_frame_id = p_beacon_frame_id_prefix_ + "02";
+  transform.transform.translation.x = beacon_to_robot_[1].x;
+  transform.transform.translation.y = beacon_to_robot_[1].y;
+  static_broadcaster_.sendTransform(transform);
+
+  transform.child_frame_id = p_beacon_frame_id_prefix_ + "03";
+  transform.transform.translation.x = beacon_to_robot_[2].x;
+  transform.transform.translation.y = beacon_to_robot_[2].y;
+  static_broadcaster_.sendTransform(transform);
+
 }
 
 void LidarLocalization::findBeacon()
