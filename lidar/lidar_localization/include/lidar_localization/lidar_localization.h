@@ -201,6 +201,9 @@ private:
   geometry_msgs::Point beacon_to_robot_[3];
   geometry_msgs::Point beacon_found_[3];
 
+  geometry_msgs::Point robot_to_map_vel_;
+  double beacon_to_robot_theta_[3];
+
   /* ros param */
   bool p_active_;
 

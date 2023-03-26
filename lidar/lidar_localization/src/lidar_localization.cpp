@@ -266,15 +266,21 @@ void LidarLocalization::getBeacontoRobot()
       transform =
           tf2_buffer_.lookupTransform(p_robot_frame_id_, p_beacon_frame_id_prefix_ + std::to_string(i), ros::Time());
 
-      if(timeBefore == 0){
-        beacon_to_robot_[i - 1].x = transform.transform.translation.x;
-        beacon_to_robot_[i - 1].y = transform.transform.translation.y;
+      if(timeBefore == 0)
+      {
+        double x = transform.transform.translation.x;
+        double y = transform.transform.translation.y;
+        beacon_to_robot_[i - 1].x = x;
+        beacon_to_robot_[i - 1].y = y;
       }
-      else{
-        beacon_to_robot_[i - 1].x = transform.transform.translation.x + beacon_velocity_[i - 1].x * (timeAfter - timeBefore);
-        beacon_to_robot_[i - 1].y = transform.transform.translation.y + beacon_velocity_[i - 1].y * (timeAfter - timeBefore);
+      else
+      {
+        double x = transform.transform.translation.x;
+        double y = transform.transform.translation.y;
+        double beacon_to_robot_theta = std::atan2(y, x);
+        beacon_to_robot_[i - 1].x = x + robot_to_map_vel_.z * std::cos(beacon_to_robot_theta) * (timeAfter - timeBefore);
+        beacon_to_robot_[i - 1].y = y + robot_to_map_vel_.z * std::sin(beacon_to_robot_theta) * (timeAfter - timeBefore);
       }
-      timeBefore = timeAfter;
       broadcastBeacon();
     }
     catch (const tf2::TransformException& ex)
@@ -283,6 +289,8 @@ void LidarLocalization::getBeacontoRobot()
       tf_ok = false;
     }
   }
+
+  timeBefore = timeAfter;
 
   if (!tf_ok)
   {
