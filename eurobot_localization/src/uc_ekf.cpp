@@ -426,7 +426,8 @@ int main(int argc, char** argv)
 {
     ros::init(argc, argv, "landmark_update");
     ros::NodeHandle nh;
-    Ekf ekf(nh);
+    ros::NodeHandle nh_local("~");
+    Ekf ekf(nh, nh_local);
     ekf.initialize();
 
     while (ros::ok())

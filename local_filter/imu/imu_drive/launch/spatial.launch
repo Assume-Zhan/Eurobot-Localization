@@ -2,6 +2,9 @@
 
 <launch>
 
+  <arg name="robot_name" default=""/>
+  <arg name="robot_name_slash" default=""/>
+
   <node pkg="nodelet" type="nodelet" name="imu_manager" args="manager" output="screen" />
 
   <node pkg="nodelet" type="nodelet" name="PhidgetsSpatialNodelet" args="load phidgets_spatial/PhidgetsSpatialNodelet imu_manager"
@@ -14,7 +17,7 @@
     <!-- <param name="hub_port" value="0"/> -->
 
     # optional param frame_id, default is "imu_link"
-    <!-- <param name="frame_id" value="imu_link"/> -->
+    <param name="frame_id" value="$(arg robot_name_slash)imu_link"/>
 
     # optional param use_orientation, default is false
     <param name="use_orientation" value="false"/>
@@ -95,6 +98,6 @@
   </node>
 
   #### IMU static transform ###############################################
-  <node name="base_footprint_to_mpu9250" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 1 base_footprint imu_link" />
+  <node name="base_footprint_to_imu" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 1 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)imu_link"/>
 
 </launch>

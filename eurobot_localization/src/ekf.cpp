@@ -29,17 +29,17 @@ using namespace std;
 void Ekf::initialize()
 {
     // get parameter
-    nh_.param<string>("/ekf/robot_name", p_robot_name_, "");
-    nh_.param<double>("/ekf/initial_x", p_initial_x_, 0.4);
-    nh_.param<double>("/ekf/initial_y", p_initial_y_, 2.7);
-    nh_.param<double>("/ekf/initial_theta", p_initial_theta_deg_, -90.0);
+    nh_local_.param<string>("robot_name", p_robot_name_, "");
+    nh_local_.param<double>("initial_x", p_initial_x_, 0.4);
+    nh_local_.param<double>("initial_y", p_initial_y_, 2.7);
+    nh_local_.param<double>("initial_theta", p_initial_theta_deg_, -90.0);
 
-    nh_.param<double>("/ekf/beacon_ax", p_beacon_ax_, 0.05);
-    nh_.param<double>("/ekf/beacon_ay", p_beacon_ay_, 3.1);
-    nh_.param<double>("/ekf/beacon_bx", p_beacon_bx_, 1.05);
-    nh_.param<double>("/ekf/beacon_by", p_beacon_by_, -0.1);
-    nh_.param<double>("/ekf/beacon_cx", p_beacon_cx_, 1.95);
-    nh_.param<double>("/ekf/beacon_cy", p_beacon_cy_, 3.1);
+    nh_local_.param<double>("beacon_ax", p_beacon_ax_, 0.05);
+    nh_local_.param<double>("beacon_ay", p_beacon_ay_, 3.1);
+    nh_local_.param<double>("beacon_bx", p_beacon_bx_, 1.05);
+    nh_local_.param<double>("beacon_by", p_beacon_by_, -0.1);
+    nh_local_.param<double>("beacon_cx", p_beacon_cx_, 1.95);
+    nh_local_.param<double>("beacon_cy", p_beacon_cy_, 3.1);
 
     // for beacon position in map list<double>{ax, ay, bx, by, cx, cy}
     Eigen::Vector2d beacon_a{ p_beacon_ax_, p_beacon_ay_ };
@@ -56,35 +56,35 @@ void Ekf::initialize()
     robotstate_.mu << mu_0_;
     robotstate_.sigma << 0, 0, 0, 0, 0, 0, 0, 0, 0;
 
-    nh_.param<double>("/ekf/odom_freq", p_odom_freq_, 100.0);
+    nh_.param<double>("odom_freq", p_odom_freq_, 100.0);
     dt_ = 1.0 / p_odom_freq_;
 
     // ekf parameter
     // prediction
     // differential drive
-    nh_.param<double>("/ekf/predict_cov_a1", p_a1_, 1.5);
-    nh_.param<double>("/ekf/predict_cov_a2", p_a2_, 2.5);
-    nh_.param<double>("/ekf/predict_cov_a3", p_a3_, 1.5);
-    nh_.param<double>("/ekf/predict_cov_a4", p_a4_, 2.5);
+    nh_local_.param<double>("predict_cov_a1", p_a1_, 1.5);
+    nh_local_.param<double>("predict_cov_a2", p_a2_, 2.5);
+    nh_local_.param<double>("predict_cov_a3", p_a3_, 1.5);
+    nh_local_.param<double>("predict_cov_a4", p_a4_, 2.5);
     // omnidirectional drive
-    nh_.param<double>("/ekf/predict_const_x", p_const_x, 2.0);
-    nh_.param<double>("/ekf/predict_const_y", p_const_y, 2.0);
-    nh_.param<double>("/ekf/predict_const_theta", p_const_theta, 0.3);
+    nh_local_.param<double>("predict_const_x", p_const_x, 2.0);
+    nh_local_.param<double>("predict_const_y", p_const_y, 2.0);
+    nh_local_.param<double>("predict_const_theta", p_const_theta, 0.3);
     P_omni_model_ = Eigen::Vector3d{ p_const_x, p_const_y, p_const_theta }.asDiagonal();
     // measurement
-    nh_.param<double>("/ekf/update_cov_1", p_Q1_, 0.01);
-    nh_.param<double>("/ekf/update_cov_2", p_Q2_, 0.01);
-    nh_.param<double>("/ekf/update_cov_3", p_Q3_, 0.02);
+    nh_local_.param<double>("update_cov_1", p_Q1_, 0.01);
+    nh_local_.param<double>("update_cov_2", p_Q2_, 0.01);
+    nh_local_.param<double>("update_cov_3", p_Q3_, 0.02);
     Q_ = Eigen::Vector3d{ p_Q1_, p_Q2_, p_Q3_ }.asDiagonal();
     // use log(j_k)
-    nh_.param<double>("/ekf/mini_likelihood", p_mini_likelihood_, -10000.0);
-    nh_.param<double>("/ekf/mini_likelihood_update", p_mini_likelihood_update_, 0.4);
+    nh_local_.param<double>("mini_likelihood", p_mini_likelihood_, -10000.0);
+    nh_local_.param<double>("mini_likelihood_update", p_mini_likelihood_update_, 0.4);
     // use j_k
     // mini_likelihood_ = 0.0;
     // mini_likelihood_update_ = 25.0;
 
     // for obstacle filtering
-    nh_.param<double>("/ekf/max_obstacle_distance", p_max_obstacle_distance_, 0.5);
+    nh_local_.param<double>("max_obstacle_distance", p_max_obstacle_distance_, 0.5);
 
     // for beacon piller detection
     if_new_obstacles_ = false;
@@ -609,7 +609,7 @@ void Ekf::publishEkfPose(const ros::Time& stamp)
 {
     geometry_msgs::PoseWithCovarianceStamped ekf_pose;
     ekf_pose.header.stamp = stamp;
-    ekf_pose.header.frame_id = "map";
+    ekf_pose.header.frame_id = p_robot_name_ + "map";
     ekf_pose.pose.pose.position.x = robotstate_.mu(0);
     ekf_pose.pose.pose.position.y = robotstate_.mu(1);
     tf2::Quaternion q;
@@ -634,7 +634,7 @@ void Ekf::publishGlobalFilter(const ros::Time& stamp)
 {
     nav_msgs::Odometry ekf_pose;
     ekf_pose.header.stamp = stamp;
-    ekf_pose.header.frame_id = "map";
+    ekf_pose.header.frame_id = p_robot_name_ + "map";
     ekf_pose.pose.pose.position.x = robotstate_.mu(0);
     ekf_pose.pose.pose.position.y = robotstate_.mu(1);
     tf2::Quaternion q;
@@ -666,8 +666,8 @@ void Ekf::broadcastEkfTransform(const nav_msgs::Odometry::ConstPtr& odom_msg)
 
     geometry_msgs::TransformStamped transformStamped;
     transformStamped.header.stamp = odom_msg->header.stamp;
-    transformStamped.header.frame_id = "map";
-    transformStamped.child_frame_id = p_robot_name_ + "/odom";
+    transformStamped.header.frame_id = p_robot_name_ + "map";
+    transformStamped.child_frame_id = p_robot_name_ + "odom";
     transformStamped.transform = tf2::toMsg(map_to_odom);
     br_.sendTransform(transformStamped);
 }
@@ -686,10 +686,7 @@ void Ekf::publishUpdateBeacon(const ros::Time& stamp)
         circle.true_radius = 0.05;
         update_obstacles.circles.push_back(circle);
     }
-    if (p_robot_name_ == "")
-        update_obstacles.header.frame_id = "base_footprint";
-    else
-        update_obstacles.header.frame_id = p_robot_name_ + "/base_footprint";
+    update_obstacles.header.frame_id = p_robot_name_ + "base_footprint";
     update_beacon_pub_.publish(update_obstacles);
 }
 
@@ -697,7 +694,8 @@ int main(int argc, char** argv)
 {
     ros::init(argc, argv, "ekf_localization");
     ros::NodeHandle nh;
-    Ekf ekf(nh);
+	ros::NodeHandle nh_local("~");
+    Ekf ekf(nh, nh_local);
     ekf.initialize();
 
     while (ros::ok())

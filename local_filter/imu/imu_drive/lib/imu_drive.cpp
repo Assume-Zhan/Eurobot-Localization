@@ -94,7 +94,7 @@ bool IMU::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response 
         ROS_INFO_STREAM("[Odometry] : accel \"a\" is set to " << p_cov_multi_acl_); 
 	}
 
-    if(this->nh_local_.param<bool>("using_dynamic_reconf", p_use_dynamic_reconf_, true)){
+    if(this->nh_local_.param<bool>("using_dynamic_reconf", p_use_dynamic_reconf_, false)){
         ROS_INFO_STREAM("[Odometry] : using dynamic reconfigure is set to " << p_use_dynamic_reconf_); 
     }
 

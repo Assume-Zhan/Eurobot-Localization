@@ -1,39 +1,43 @@
 <launch>
+    
+	<arg name="robot_name" default="robot1"/>
+	<arg name="robot_name_slash" default="robot1/"/>
 
-    <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 base_footprint laser_frame" />
+	<group ns="$(arg robot_name)">
+
+        <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)laser_frame" />
 
 
-    <!-- lidar localization -->
-    <node name="beacon_extractor" pkg="obstacle_detector" type="obstacle_extractor_node">
-        <rosparam file="$(find lidar_localization)/params/beacon_excrator_params.yaml" command="load" />
-        <!-- remap from="raw_obstacles" to="obstacles_to_base"/ -->
-    </node>
+        <!-- lidar localization -->
+        <node name="beacon_extractor" pkg="obstacle_detector" type="obstacle_extractor_node">
+            <rosparam file="$(find lidar_localization)/params/beacon_excrator_params.yaml" command="load" />
+			<param name="frame_id" value="$(arg robot_name_slash)base_footprint"/>
+        </node>
 
-    <node name="lidar_localization" pkg="lidar_localization" type="lidar_localization_node" output="log">
-        <rosparam file="$(find lidar_localization)/params/lidar_localization_params_2023.yaml" command="load" />
-        <remap from="obstacles" to="obstacles_to_base"/>
-    </node>
+        <node name="lidar_localization" pkg="lidar_localization" type="lidar_localization_node" output="log">
+            <rosparam file="$(find lidar_localization)/params/lidar_localization_params_2023.yaml" command="load" />
+            <remap from="obstacles" to="obstacles_to_base"/>
+            <param name="beacon_parent_frame_id" value="$(arg robot_name_slash)map"/>
+            <param name="beacon_frame_id_prefix" value="$(arg robot_name_slash)beacon"/>
+            <param name="robot_parent_frame_id" value="$(arg robot_name_slash)map"/>
+            <param name="robot_frame_id" value="$(arg robot_name_slash)base_footprint"/>
+        </node>
 
-    <node name="obstacle_tracker" pkg="obstacle_detector" type="obstacle_tracker_node" > 
+        <node name="obstacle_tracker" pkg="obstacle_detector" type="obstacle_tracker_node" > 
                                                                                                                                             
-        <param name="active"                  value="true"/>                                                                                    
+            <param name="active" value="true"/>
                                                    
-        <param name="loop_rate"               value="10.0"/>
-        <param name="tracking_duration"       value="0.5"/>  
-        <param name="min_correspondence_cost" value="3"/>                                                                                     
-        <param name="std_correspondence_dev"  value="0.15"/>                                                                                    
-        <param name="process_variance"        value="5"/>                                                                                     
-        <param name="process_rate_variance"   value="0.1"/>                                                                                     
-        <param name="measurement_variance"    value="1.0"/>                                                                                     
+            <param name="loop_rate" value="10.0"/>
+            <param name="tracking_duration" value="0.5"/>
+            <param name="min_correspondence_cost" value="3"/>
+            <param name="std_correspondence_dev" value="0.15"/>
+            <param name="process_variance" value="5"/>
+            <param name="process_rate_variance" value="0.1"/>
+            <param name="measurement_variance" value="1.0"/>
                                                                                                                                             
-        <param name="frame_id"                value="base_footprint"/>                                                                                     
+            <param name="frame_id" value="$(arg robot_name_slash)base_footprint"/>
                                                                                                                                             
-        <remap from="tracked_obstacles" to="obstacles_to_base" />
-    </node>
-
-    <!-- node name="obstacle_extractor" pkg="obstacle_detector" type="obstacle_extractor_node">
-        <rosparam file="$(find lidar_localization)/params/obstacle_excrator_params.yaml" command="load" />
-        <remap from="raw_obstacles" to="obstacles_to_map"/>
-    </node -->
-
+            <remap from="tracked_obstacles" to="obstacles_to_base" />
+        </node>
+	</group>
 </launch>
