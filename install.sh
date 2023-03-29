@@ -14,16 +14,16 @@ mv $WS_PATH $NEW_WS_PATH
 # Build lidar sdk
 mv $NEW_WS_PATH/.YDLidar-SDK $NEW_WS_PATH/YDLidar-SDK
 cd $NEW_WS_PATH/YDLidar-SDK && mkdir build && cd build
-# cmake ..
-# make
-# sudo make install
-echo "Done make"
+cmake ..
+make
+sudo make install
+# echo "Done make"
 mv $NEW_WS_PATH/YDLidar-SDK $NEW_WS_PATH/.YDLidar-SDK
 
 # Workspace setup
 cd $NEW_WS_PATH
-# catkin_make
-echo "Done catkin_make"
+catkin_make
+# echo "Done catkin_make"
 
 # USB driver setup
 cd $NEW_WS_PATH
