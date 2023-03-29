@@ -14,19 +14,19 @@ mv $WS_PATH $NEW_WS_PATH
 # Build lidar sdk
 mv $NEW_WS_PATH/.YDLidar-SDK $NEW_WS_PATH/YDLidar-SDK
 cd $NEW_WS_PATH/YDLidar-SDK && mkdir build && cd build
-cmake ..
-make
-sudo make install
+# cmake ..
+# make
+# sudo make install
+echo "Done make"
 mv $NEW_WS_PATH/YDLidar-SDK $NEW_WS_PATH/.YDLidar-SDK
 
 # Workspace setup
 cd $NEW_WS_PATH
-catkin_make
+# catkin_make
+echo "Done catkin_make"
 
 # USB driver setup
 cd $NEW_WS_PATH
-chmod 777 firmware/ydlidar_ros_driver/startup/*
-sudo sh firmware/ydlidar_ros_driver/startup/initenv.sh
-cd $NEW_WS_PATH/firmware/phidgets_drivers/phidgets_api
+cd $NEW_WS_PATH/local_filter/imu/phidgets_drivers/phidgets_api
 sudo cp debian/udev /etc/udev/rules.d/99-phidgets.rules
 sudo udevadm control --reload-rules
