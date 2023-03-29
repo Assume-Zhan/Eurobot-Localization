@@ -21,7 +21,7 @@ sudo make install
 mv $NEW_WS_PATH/YDLidar-SDK $NEW_WS_PATH/.YDLidar-SDK
 
 # Workspace setup
-cd $NEW_WS_PATH
+cd $NEW_WS_PATH/../..
 catkin_make
 # echo "Done catkin_make"
 
