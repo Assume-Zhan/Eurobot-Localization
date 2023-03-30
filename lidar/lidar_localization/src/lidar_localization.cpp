@@ -315,7 +315,7 @@ void LidarLocalization::broadcastBeacon(){
   geometry_msgs::TransformStamped transform;
   ros::Time now = ros::Time::now();
   transform.header.stamp = now;
-  transform.header.frame_id = p_robot_frame_id_;
+  transform.header.frame_id = p_map_frame_id_;
 
   transform.transform.translation.z = 0;
   transform.transform.rotation.x = 0;
