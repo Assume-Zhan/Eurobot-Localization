@@ -109,6 +109,10 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
         ROS_INFO_STREAM("[Odometry] : using dynamic reconfigure is set to " << p_use_dynamic_reconf_); 
 	}
 
+    if(this->nh_local_.param<bool>("use_stm_integral", p_use_stm_integral_, true)){
+        ROS_INFO_STREAM("[Odometry] : use stm integral " << p_use_stm_integral_); 
+    }
+
     if(p_active_ != prev_active) {
 
         if (p_active_) {
@@ -163,8 +167,20 @@ void Odometry::TwistCallback(const geometry_msgs::Twist::ConstPtr &msg){
 
     this->odometry_output_.header.seq = sequence;
     this->odometry_output_.header.stamp = ros::Time::now();
+    
+    if(p_use_stm_integral_){
+        this->odometry_output_.pose.pose.position.x = msg->angular.x;                                                                           
+        this->odometry_output_.pose.pose.position.y = msg->angular.y;                                                                           
+                                                                                                                                            
+        tf2::Quaternion quaternion;                                                                                                             
+        quaternion.setRPY(0, 0, msg->linear.z);                                                                                                 
 
-    this->odometry_output_.twist.twist = *msg;
+        this->odometry_output_.pose.pose.orientation = tf2::toMsg(quaternion);
+    }
+
+    this->odometry_output_.twist.twist.linear.x = msg->linear.x;
+    this->odometry_output_.twist.twist.linear.x = msg->linear.y;
+    this->odometry_output_.twist.twist.angular.z = msg->angular.z;
 
     if(this->p_publish_) this->publish();
 

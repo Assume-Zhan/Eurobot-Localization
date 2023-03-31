@@ -1,8 +1,8 @@
 <launch>
 
     <!-- Robot name should add a slash -->
-	<arg name="robot_name" default=""/>
-	<arg name="robot_name_slash" default=""/>
+    <arg name="robot_name" default=""/>
+    <arg name="robot_name_slash" default=""/>
 
     <node pkg="odometry" type="odometry_node" name="odometry_node" output="screen">
         
@@ -26,8 +26,9 @@
         <param name="covariance_multi_vx" value="0.5"/>
         <param name="covariance_multi_vy" value="0.5"/>
         <param name="covariance_multi_vz" value="0.5"/>
-		<param name="using_nav_vel_cb" value="false"/>
-		<param name="using_dynamic_reconf" value="false"/>
+        <param name="using_nav_vel_cb" value="false"/>
+        <param name="using_dynamic_reconf" value="false"/>
+        <param name="use_stm_integral" value="true"/>
 
     </node>
 
