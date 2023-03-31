@@ -290,15 +290,19 @@ void LidarLocalization::getBeacontoRobot()
         double y = transform.transform.translation.y;
         double beacon_to_robot_theta = std::atan2(y, x);
 
-        double beacon_velocity[3];
-        beacon_velocity[0] = -robot_to_map_vel_.x;
-        beacon_velocity[1] = -robot_to_map_vel_.y;
-        beacon_velocity[2] = -robot_to_map_vel_.z;
-        ROS_INFO_STREAM("[LIDAR] : beacon velocity (x, y, z) (" << beacon_velocity[0] << ", " << beacon_velocity[1] << 
-                ", " << beacon_velocity[2] << ")");
-
-        beacon_to_robot_[i - 1].x = x + robot_to_map_vel_.z * std::cos(beacon_to_robot_theta) * (timeAfter - timeBefore);
-        beacon_to_robot_[i - 1].y = y + robot_to_map_vel_.z * std::sin(beacon_to_robot_theta) * (timeAfter - timeBefore);
+        double beacon_velocity[2];                                                                                                          
+        double radius = sqrt(x * x + y * y);                                                                                                
+        beacon_velocity[0] = -robot_to_map_vel_.x - robot_to_map_vel_.z * radius * sin(beacon_to_robot_theta);                              
+        beacon_velocity[1] = -robot_to_map_vel_.y - robot_to_map_vel_.z * radius * cos(beacon_to_robot_theta);                              
+                                                                                                                                            
+        ROS_INFO_STREAM("[LIDAR] : id" << i << " beacon velocity (x, y) (" << beacon_velocity[0] << ", " << beacon_velocity[1] <<           
+                "), beacon predict velocity (x, y) (" << beacon_velocity_[i - 1].x << ", "                                                  
+                << beacon_velocity_[i - 1].y << ")");                                                                                       
+                                                                                                                                            
+        double gain = 0.2;                                                                                                                  
+                                                                                                                                            
+        beacon_to_robot_[i - 1].x = x + gain * beacon_velocity[0] * (timeAfter - timeBefore);                                               
+        beacon_to_robot_[i - 1].y = y + gain * beacon_velocity[1] * (timeAfter - timeBefore);    
       }
       broadcastBeacon();
     }
