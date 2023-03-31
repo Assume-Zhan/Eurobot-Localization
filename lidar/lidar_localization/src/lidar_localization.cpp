@@ -73,7 +73,7 @@ bool LidarLocalization::updateParams(std_srvs::Empty::Request& req, std_srvs::Em
   get_param_ok = nh_local_.param<double>("theta", p_theta_, 0);
 
   get_param_ok = nh_local_.param<string>("obstacle_topic", p_obstacle_topic_, "obstacles");
-  get_param_ok = nh_local_.param<string>("cmd_vel_topic", p_cmd_vel_topic_, "cmd_vel");
+  get_param_ok = nh_local_.param<string>("toposition_topic", p_toposition_topic_, "/Toposition");
   get_param_ok = nh_local_.param<string>("beacon_parent_frame_id", p_beacon_parent_frame_id_, "map");
   get_param_ok = nh_local_.param<string>("beacon_frame_id_prefix", p_beacon_frame_id_prefix_, "beacon");
   get_param_ok = nh_local_.param<string>("robot_parent_frame_id", p_robot_parent_frame_id_, "map");
@@ -84,7 +84,7 @@ bool LidarLocalization::updateParams(std_srvs::Empty::Request& req, std_srvs::Em
     if (p_active_)
     {
       sub_obstacles_ = nh_.subscribe(p_obstacle_topic_, 10, &LidarLocalization::obstacleCallback, this);
-      sub_cmd_vel_ = nh_.subscribe(p_cmd_vel_topic_, 10, &LidarLocalization::cmdvelCallback, this);
+      sub_toposition_ = nh_.subscribe(p_toposition_topic_, 10, &LidarLocalization::cmdvelCallback, this);
       pub_location_ = nh_.advertise<geometry_msgs::PoseWithCovarianceStamped>("lidar_bonbonbon", 10);
       pub_beacon_ = nh_.advertise<geometry_msgs::PoseArray>("beacons", 10);
     }

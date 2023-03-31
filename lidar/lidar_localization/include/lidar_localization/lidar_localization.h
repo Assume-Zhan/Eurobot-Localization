@@ -193,7 +193,7 @@ private:
 
   /* ros inter-node */
   ros::Subscriber sub_obstacles_;
-  ros::Subscriber sub_cmd_vel_;
+  ros::Subscriber sub_toposition_;
   ros::Publisher pub_location_;
   ros::Publisher pub_beacon_;
   tf2_ros::Buffer tf2_buffer_;
@@ -227,7 +227,7 @@ private:
   double p_theta_;
 
   std::string p_obstacle_topic_;
-  std::string p_cmd_vel_topic_;
+  std::string p_toposition_topic_;
   std::string p_beacon_parent_frame_id_;
   std::string p_beacon_frame_id_prefix_;
   std::string p_robot_parent_frame_id_;
