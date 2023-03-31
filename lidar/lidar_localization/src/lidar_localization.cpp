@@ -289,6 +289,14 @@ void LidarLocalization::getBeacontoRobot()
         double x = transform.transform.translation.x;
         double y = transform.transform.translation.y;
         double beacon_to_robot_theta = std::atan2(y, x);
+
+        double beacon_velocity[3];
+        beacon_velocity[0] = -robot_to_map_vel_.x;
+        beacon_velocity[1] = -robot_to_map_vel_.y;
+        beacon_velocity[2] = -robot_to_map_vel_.z;
+        ROS_INFO_STREAM("[LIDAR] : beacon velocity (x, y, z) (" << beacon_velocity[0] << ", " << beacon_velocity[1] << 
+                ", " << beacon_velocity[2] << ")");
+
         beacon_to_robot_[i - 1].x = x + robot_to_map_vel_.z * std::cos(beacon_to_robot_theta) * (timeAfter - timeBefore);
         beacon_to_robot_[i - 1].y = y + robot_to_map_vel_.z * std::sin(beacon_to_robot_theta) * (timeAfter - timeBefore);
       }
