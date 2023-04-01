@@ -55,6 +55,7 @@ class Ekf
     void imuCallback(const sensor_msgs::Imu::ConstPtr& imu_msg);
     void obstaclesCallback(const obstacle_detector::Obstacles::ConstPtr& obstacle_msg);
     void gpsCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg);
+    void viveCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg);
     void beaconCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg);
     void publishEkfPose(const ros::Time& stamp);
     void publishGlobalFilter(const ros::Time& stamp);
@@ -137,6 +138,7 @@ class Ekf
     ros::Subscriber imu_sub_;
     ros::Subscriber raw_obstacles_sub_;
     ros::Subscriber gps_sub_;
+    ros::Subscriber vive_sub_;
     ros::Subscriber beacon_sub_;
 
     // Publisher
