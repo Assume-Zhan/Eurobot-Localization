@@ -26,7 +26,7 @@ PACKAGES_PATH="$( find ~ -name Eurobot-Localization | awk '{print $1}' | head -1
 
 # Change visible of lidar sdk
 # Build lidar sdk
-mv $PACKSGES_PATH/.YDLidar-SDK $PACKAGES_PATH/YDLidar-SDK
+mv $PACKAGES_PATH/.YDLidar-SDK $PACKAGES_PATH/YDLidar-SDK
 cd $PACKAGES_PATH/YDLidar-SDK && mkdir build && cd build
 cmake ..
 make
