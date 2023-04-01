@@ -97,6 +97,7 @@ void Ekf::initialize()
     imu_sub_ = nh_.subscribe("mpu6050_imu", 50, &Ekf::imuCallback, this);
     raw_obstacles_sub_ = nh_.subscribe("obstacles_to_base", 10, &Ekf::obstaclesCallback, this);
     gps_sub_ = nh_.subscribe("lidar_bonbonbon", 10, &Ekf::gpsCallback, this);
+    vive_sub_ = nh_.subscribe("vive_bonbonbon", 10, &Ekf::viveCallback, this);
     beacon_sub_ = nh_.subscribe("beacon_bonbonbon", 10, &Ekf::gpsCallback, this);
     ekf_pose_pub_ = nh_.advertise<geometry_msgs::PoseWithCovarianceStamped>("ekf_pose", 10);
     global_filter_pub_ = nh_.advertise<nav_msgs::Odometry>("ekf_pose_in_odom", 10);
@@ -542,6 +543,58 @@ void Ekf::gpsCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& 
     gps_sigma(2, 1) = pose_msg->pose.covariance[31];  // theta-y
     gps_sigma(2, 2) = pose_msg->pose.covariance[35];  // theta-theta
     if_gps = true;
+}
+
+void Ekf::viveCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg){
+
+    tf2::Quaternion q;
+    tf2::fromMsg(pose_msg->pose.pose.orientation, q);
+    tf2::Matrix3x3 qt(q);
+    double _, yaw;
+    qt.getRPY(_, _, yaw);
+
+    gps_mu(0) = pose_msg->pose.pose.position.x;
+    gps_mu(1) = pose_msg->pose.pose.position.y;
+    gps_mu(2) = yaw;
+
+    gps_sigma(0, 0) = pose_msg->pose.covariance[0];   // x-x
+    gps_sigma(0, 1) = pose_msg->pose.covariance[1];   // x-y
+    gps_sigma(0, 2) = pose_msg->pose.covariance[5];   // x-theta
+    gps_sigma(1, 0) = pose_msg->pose.covariance[6];   // y-x
+    gps_sigma(1, 1) = pose_msg->pose.covariance[7];   // y-y
+    gps_sigma(1, 2) = pose_msg->pose.covariance[11];  // y-theta
+    gps_sigma(2, 0) = pose_msg->pose.covariance[30];  // theta-x
+    gps_sigma(2, 1) = pose_msg->pose.covariance[31];  // theta-y
+    gps_sigma(2, 2) = pose_msg->pose.covariance[35];  // theta-theta
+    if_gps = true;
+}
+
+void Ekf::viveCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg){
+    
+}
+
+void Ekf::beaconCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg)
+{
+    tf2::Quaternion q;
+    tf2::fromMsg(pose_msg->pose.pose.orientation, q);
+    tf2::Matrix3x3 qt(q);
+    double _, yaw;
+    qt.getRPY(_, _, yaw);
+
+    beacon_mu(0) = pose_msg->pose.pose.position.x;
+    beacon_mu(1) = pose_msg->pose.pose.position.y;
+    beacon_mu(2) = yaw;
+
+    beacon_sigma(0, 0) = pose_msg->pose.covariance[0];   // x-x
+    beacon_sigma(0, 1) = pose_msg->pose.covariance[1];   // x-y
+    beacon_sigma(0, 2) = pose_msg->pose.covariance[5];   // x-theta
+    beacon_sigma(1, 0) = pose_msg->pose.covariance[6];   // y-x
+    beacon_sigma(1, 1) = pose_msg->pose.covariance[7];   // y-y
+    beacon_sigma(1, 2) = pose_msg->pose.covariance[11];  // y-theta
+    beacon_sigma(2, 0) = pose_msg->pose.covariance[30];  // theta-x
+    beacon_sigma(2, 1) = pose_msg->pose.covariance[31];  // theta-y
+    beacon_sigma(2, 2) = pose_msg->pose.covariance[35];  // theta-theta
+    if_beacon = true;
 }
 
 void Ekf::beaconCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg)
