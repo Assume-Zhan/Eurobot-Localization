@@ -22,24 +22,34 @@ sudo apt install ros-noetic-costmap-converter \
                  libusb-1.0-0 libusb-1.0-0-dev -y
 
 # Rename the workspace
-WS_PATH="$( find ~ -name Eurobot-Localization | awk '{print $1}' | head -1)"
+PACKAGES_PATH="$( find ~ -name Eurobot-Localization | awk '{print $1}' | head -1)"
 
 # Change visible of lidar sdk
 # Build lidar sdk
-mv $WS_PATH/.YDLidar-SDK $WS_PATH/YDLidar-SDK
-cd $WS_PATH/YDLidar-SDK && mkdir build && cd build
+mv $PACKSGES_PATH/.YDLidar-SDK $PACKAGES_PATH/YDLidar-SDK
+cd $PACKAGES_PATH/YDLidar-SDK && mkdir build && cd build
 cmake ..
 make
 sudo make install
 # echo "Done make"
-mv $WS_PATH/YDLidar-SDK $WS_PATH/.YDLidar-SDK
+mv $PACKAGES_PATH/YDLidar-SDK $PACKAGES_PATH/.YDLidar-SDK
 
 # Go back to Workspace
 check_backto_ws
+
+# CHECK missed package
+if [ $(rospack find obstacle_detector) ]; then
+    echo "Has obstacle detector"
+else 
+    echo "Missing package : obstacle_detector"
+    echo "Directly insall obstacle_detector from github"
+    git clone https://github.com/tysik/obstacle_detector.git src/obstacle_detector
+fi
+
 catkin_make
 
 # USB driver setup
-cd $WS_PATH
-cd $WS_PATH/local_filter/imu/phidgets_drivers/phidgets_api
+cd $PACKAGES_PATH
+cd $PACKAGES_PATH/local_filter/imu/phidgets_drivers/phidgets_api
 sudo cp debian/udev /etc/udev/rules.d/99-phidgets.rules
 sudo udevadm control --reload-rules
