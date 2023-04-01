@@ -1,3 +1,19 @@
+# Function for go back to workspace
+function check_backto_ws(){
+    if [ $(ls | grep devel | wc -l) = 1 ]; then
+        echo "BACK TO WS"
+        return 0
+    else 
+        cd ..
+        if [ $(pwd) = "/home" ] || [ $(pwd) = "/" ]; then
+            return -1
+        else
+            check_backto_ws
+        fi
+    fi
+}
+
+
 # Install basic package
 sudo apt update -y
 sudo apt install ros-noetic-costmap-converter \
@@ -19,23 +35,7 @@ sudo make install
 mv $WS_PATH/YDLidar-SDK $WS_PATH/.YDLidar-SDK
 
 # Go back to Workspace
-check_backto_ws(){
-    if [ $(ls | grep devel | wc -l) = 1 ]; then
-        echo "BACK TO WS"
-        return 0
-    else 
-      
-        cd ..
-        
-        if [ $(pwd) = "/home" ] || [ $(pwd) = "/" ]; then
-            return -1
-        else
-            check_backto_ws
-        fi
-
-    fi
-}
-check_backto_ws()
+check_backto_ws
 catkin_make
 
 # USB driver setup
