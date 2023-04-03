@@ -84,11 +84,17 @@ class Ekf
     // for robot state
     Eigen::Vector3d mu_0_;
     RobotState robotstate_;
+    RobotState vive_state_;
+    RobotState lidar_state_;
     double p_odom_freq_;
     double imu_w;
     double dt_;
     double t_last;
     bool first_cb;
+
+    // Check update
+    bool update_lidar_;
+    bool update_vive_;
 
     // ekf parameter
     // motion covariance

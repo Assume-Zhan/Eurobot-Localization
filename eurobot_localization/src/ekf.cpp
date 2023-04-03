@@ -529,20 +529,22 @@ void Ekf::gpsCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& 
     double _, yaw;
     qt.getRPY(_, _, yaw);
 
-    gps_mu(0) = pose_msg->pose.pose.position.x;
-    gps_mu(1) = pose_msg->pose.pose.position.y;
-    gps_mu(2) = yaw;
+    lidar_state_.mu(0) = pose_msg->pose.pose.position.x;
+    lidar_state_.mu(1) = pose_msg->pose.pose.position.y;
+    lidar_state_.mu(2) = yaw;
 
-    gps_sigma(0, 0) = pose_msg->pose.covariance[0];   // x-x
-    gps_sigma(0, 1) = pose_msg->pose.covariance[1];   // x-y
-    gps_sigma(0, 2) = pose_msg->pose.covariance[5];   // x-theta
-    gps_sigma(1, 0) = pose_msg->pose.covariance[6];   // y-x
-    gps_sigma(1, 1) = pose_msg->pose.covariance[7];   // y-y
-    gps_sigma(1, 2) = pose_msg->pose.covariance[11];  // y-theta
-    gps_sigma(2, 0) = pose_msg->pose.covariance[30];  // theta-x
-    gps_sigma(2, 1) = pose_msg->pose.covariance[31];  // theta-y
-    gps_sigma(2, 2) = pose_msg->pose.covariance[35];  // theta-theta
+    lidar_state_.sigma(0, 0) = pose_msg->pose.covariance[0];   // x-x
+    lidar_state_.sigma(0, 1) = pose_msg->pose.covariance[1];   // x-y
+    lidar_state_.sigma(0, 2) = pose_msg->pose.covariance[5];   // x-theta
+    lidar_state_.sigma(1, 0) = pose_msg->pose.covariance[6];   // y-x
+    lidar_state_.sigma(1, 1) = pose_msg->pose.covariance[7];   // y-y
+    lidar_state_.sigma(1, 2) = pose_msg->pose.covariance[11];  // y-theta
+    lidar_state_.sigma(2, 0) = pose_msg->pose.covariance[30];  // theta-x
+    lidar_state_.sigma(2, 1) = pose_msg->pose.covariance[31];  // theta-y
+    lidar_state_.sigma(2, 2) = pose_msg->pose.covariance[35];  // theta-theta
     if_gps = true;
+
+    update_lidar_ = true;
 }
 
 void Ekf::viveCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg){
@@ -553,20 +555,22 @@ void Ekf::viveCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr&
     double _, yaw;
     qt.getRPY(_, _, yaw);
 
-    gps_mu(0) = pose_msg->pose.pose.position.x;
-    gps_mu(1) = pose_msg->pose.pose.position.y;
-    gps_mu(2) = yaw;
+    vive_state_.mu(0) = pose_msg->pose.pose.position.x;
+    vive_state_.mu(1) = pose_msg->pose.pose.position.y;
+    vive_state_.mu(2) = yaw;
 
-    gps_sigma(0, 0) = pose_msg->pose.covariance[0];   // x-x
-    gps_sigma(0, 1) = pose_msg->pose.covariance[1];   // x-y
-    gps_sigma(0, 2) = pose_msg->pose.covariance[5];   // x-theta
-    gps_sigma(1, 0) = pose_msg->pose.covariance[6];   // y-x
-    gps_sigma(1, 1) = pose_msg->pose.covariance[7];   // y-y
-    gps_sigma(1, 2) = pose_msg->pose.covariance[11];  // y-theta
-    gps_sigma(2, 0) = pose_msg->pose.covariance[30];  // theta-x
-    gps_sigma(2, 1) = pose_msg->pose.covariance[31];  // theta-y
-    gps_sigma(2, 2) = pose_msg->pose.covariance[35];  // theta-theta
+    vive_state_.sigma(0, 0) = pose_msg->pose.covariance[0];   // x-x
+    vive_state_.sigma(0, 1) = pose_msg->pose.covariance[1];   // x-y
+    vive_state_.sigma(0, 2) = pose_msg->pose.covariance[5];   // x-theta
+    vive_state_.sigma(1, 0) = pose_msg->pose.covariance[6];   // y-x
+    vive_state_.sigma(1, 1) = pose_msg->pose.covariance[7];   // y-y
+    vive_state_.sigma(1, 2) = pose_msg->pose.covariance[11];  // y-theta
+    vive_state_.sigma(2, 0) = pose_msg->pose.covariance[30];  // theta-x
+    vive_state_.sigma(2, 1) = pose_msg->pose.covariance[31];  // theta-y
+    vive_state_.sigma(2, 2) = pose_msg->pose.covariance[35];  // theta-theta
     if_gps = true;
+
+    update_vive_ = true;
 }
 
 void Ekf::beaconCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg)
