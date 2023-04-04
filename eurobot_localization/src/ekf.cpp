@@ -102,12 +102,17 @@ void Ekf::initialize()
     ekf_pose_pub_ = nh_.advertise<geometry_msgs::PoseWithCovarianceStamped>("ekf_pose", 10);
     global_filter_pub_ = nh_.advertise<nav_msgs::Odometry>("ekf_pose_in_odom", 10);
     update_beacon_pub_ = nh_.advertise<obstacle_detector::Obstacles>("update_beacon", 10);
+    update_timer_ = nh_.createTimer(ros::Duration(1.0), &Ekf::updateTimerCallback, this, false, false);
 
     // for time calculate
     count_ = 0;
     duration_ = 0.0;
     first_cb = false;
     t_last = 0.0;
+
+    // Set timer period
+    update_timer_.setPeriod(ros::Duration(1 / 10), false);
+    update_timer_.start();
 }
 
 void Ekf::predict_diff(double v, double w)
@@ -571,6 +576,13 @@ void Ekf::viveCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr&
     if_gps = true;
 
     update_vive_ = true;
+}
+
+
+void Ekf::updateTimerCallback(const ros::TimerEvent &e){
+    
+    // Update the vive data and lidar data
+
 }
 
 void Ekf::beaconCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg)

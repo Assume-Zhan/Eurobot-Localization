@@ -61,6 +61,7 @@ class Ekf
     void publishGlobalFilter(const ros::Time& stamp);
     void publishUpdateBeacon(const ros::Time& stamp);
     void broadcastEkfTransform(const nav_msgs::Odometry::ConstPtr& odom_msg);
+    void updateTimerCallback(const ros::TimerEvent &e);
 
     // for beacon position in map std::list<double>{ax, ay, bx, by, cx, cy}
     double p_beacon_ax_;
@@ -150,9 +151,13 @@ class Ekf
     // Publisher
     ros::Publisher ekf_pose_pub_;
     tf2_ros::TransformBroadcaster br_;
+
     // for debug
     ros::Publisher update_beacon_pub_;
     ros::Publisher global_filter_pub_;
+
+    // Update timer
+    ros::Timer update_timer_;
 
     // for function time calculation
     int count_;
