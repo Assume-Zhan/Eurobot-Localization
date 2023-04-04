@@ -44,3 +44,5 @@ mini_likelihood: -10000.0
 mini_likelihood_update: 0.1
 #mini_likelihood_update: 0.65
 max_obstacle_distance: 0.5
+
+timer_frequency: 10

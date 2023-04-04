@@ -73,6 +73,9 @@ class Ekf
     double p_beacon_dx_;
     double p_beacon_dy_;
 
+    // Timer frequency
+    double p_timer_frequency_;
+
     std::list<Eigen::Vector2d> beacon_in_map_;
 
     // for beacon piller detection
