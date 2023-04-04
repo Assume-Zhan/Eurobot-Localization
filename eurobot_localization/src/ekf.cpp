@@ -580,8 +580,10 @@ void Ekf::viveCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr&
 
 void Ekf::updateTimerCallback(const ros::TimerEvent &e){
     
+    if(!(update_lidar_ || update_vive_)) return;
+
     // Update the vive data and lidar data
-    if(update_lidar_ && !update_vive_){
+    if(update_lidar_){
         gps_mu(0) = lidar_state_.mu(0);
         gps_mu(1) = lidar_state_.mu(1);
         gps_mu(2) = lidar_state_.mu(2);
@@ -598,8 +600,8 @@ void Ekf::updateTimerCallback(const ros::TimerEvent &e){
         if_gps = true;  
     }
     else if(update_vive_ && !update_lidar_){
-        gps_mu(0) = vive_state_.mu(0);
-        gps_mu(1) = vive_state_.mu(1);
+        gps_mu(0) = cos_theta_ * vive_state_.mu(0) - sin_theta_ * vive_state_.mu(1);
+        gps_mu(1) = sin_theta_ * vive_state_.mu(0) + cos_theta_ * vive_state_.mu(1);
         gps_mu(2) = vive_state_.mu(2);
 
         gps_sigma(0, 0) = vive_state_.sigma(0, 0);   // x-x
@@ -612,7 +614,21 @@ void Ekf::updateTimerCallback(const ros::TimerEvent &e){
         gps_sigma(2, 1) = vive_state_.sigma(2, 1);  // theta-y
         gps_sigma(2, 2) = vive_state_.sigma(2, 2);  // theta-theta
         if_gps = true;  
-	}
+    }
+    
+    if(update_lidar_ && update_vive_){
+        double theorem_x = lidar_state_.mu(0) - 150;
+        double theorem_y = lidar_state_.mu(1) - 100;
+        double pratical_x = vive_state_.mu(0) - 150;
+        double pratical_y = vive_state_.mu(1) - 100;
+        double denominator = (theorem_x * theorem_x + theorem_y * theorem_y);
+
+        cos_theta_ = (theorem_x * pratical_x + theorem_y * pratical_y) / (denominator);
+        sin_theta_ = (theorem_x * pratical_y - theorem_y * pratical_x) / (denominator);
+
+        offset_theta_ = atan2(sin_theta_, cos_theta_);
+        // ROS_INFO_STREAM("[EKF] : current offset " << offset_theta_);
+    }
 
     update_vive_ = update_lidar_ = false;
 }

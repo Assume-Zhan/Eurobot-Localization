@@ -126,6 +126,10 @@ class Ekf
     Eigen::Vector3d beacon_mu;
     Eigen::Matrix3d beacon_sigma;
 
+    double offset_theta_;
+    double cos_theta_;
+    double sin_theta_;
+
     // set minimum likelihood value
     double p_mini_likelihood_;
     double p_mini_likelihood_update_;
