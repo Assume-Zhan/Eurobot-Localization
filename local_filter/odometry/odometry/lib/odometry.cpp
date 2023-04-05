@@ -179,7 +179,7 @@ void Odometry::TwistCallback(const geometry_msgs::Twist::ConstPtr &msg){
     }
 
     this->odometry_output_.twist.twist.linear.x = msg->linear.x;
-    this->odometry_output_.twist.twist.linear.x = msg->linear.y;
+    this->odometry_output_.twist.twist.linear.y = msg->linear.y;
     this->odometry_output_.twist.twist.angular.z = msg->angular.z;
 
     if(this->p_publish_) this->publish();

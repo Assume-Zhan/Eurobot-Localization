@@ -605,8 +605,8 @@ void Ekf::updateTimerCallback(const ros::TimerEvent &e){
         gps_sigma(2, 2) = lidar_state_.sigma(2, 2);  // theta-theta
     }
     else if(update_vive_ && !update_lidar_){
-        gps_mu(0) = cos_theta_ * vive_state_.mu(0) - sin_theta_ * vive_state_.mu(1);
-        gps_mu(1) = sin_theta_ * vive_state_.mu(0) + cos_theta_ * vive_state_.mu(1);
+        gps_mu(0) = cos_theta_ * (vive_state_.mu(0) - 1.5) - sin_theta_ * (vive_state_.mu(1) - 1.0) + 1.5;
+        gps_mu(1) = sin_theta_ * (vive_state_.mu(0) - 1.5) + cos_theta_ * (vive_state_.mu(1) - 1.0) + 1.0;
         gps_mu(2) = vive_state_.mu(2);
 
         gps_sigma(0, 0) = vive_state_.sigma(0, 0);   // x-x
@@ -629,15 +629,15 @@ void Ekf::updateTimerCallback(const ros::TimerEvent &e){
 
         cos_theta_ = (theorem_x * pratical_x + theorem_y * pratical_y) / (denominator);
         sin_theta_ = (theorem_x * pratical_y - theorem_y * pratical_x) / (denominator);
-        
-		if(denominator == 0){                                                                                                               
-            cos_theta_ = 1;                                                                                                                 
-            sin_theta_ = 0;                                                                                                                 
-        }                                                                                                                                   
-        else{                                                                                                                               
-            cos_theta_ = (theorem_x * pratical_x + theorem_y * pratical_y) / (denominator);                                                 
-            sin_theta_ = (theorem_x * pratical_y - theorem_y * pratical_x) / (denominator);                                                 
-        } 
+
+		if(denominator == 0){
+            cos_theta_ = 1;
+            sin_theta_ = 0; 
+        }
+        else{
+            cos_theta_ = (theorem_x * pratical_x + theorem_y * pratical_y) / (denominator);
+            sin_theta_ = (theorem_x * pratical_y - theorem_y * pratical_x) / (denominator);
+        }
 
         offset_theta_ = atan2(sin_theta_, cos_theta_);
         // ROS_INFO_STREAM("[EKF] : current offset " << offset_theta_);
