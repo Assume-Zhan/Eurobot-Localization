@@ -22,25 +22,8 @@ catkin_package(
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_library(phidgets_api src/accelerometer.cpp
-                         src/analog_input.cpp
-                         src/analog_inputs.cpp
-                         src/analog_output.cpp
-                         src/analog_outputs.cpp
-                         src/digital_input.cpp
-                         src/digital_inputs.cpp
-                         src/digital_output.cpp
-                         src/digital_outputs.cpp
-                         src/encoder.cpp
-                         src/encoders.cpp
-                         src/gyroscope.cpp
-                         src/ir.cpp
-                         src/magnetometer.cpp
-                         src/motor.cpp
-                         src/motors.cpp
-                         src/phidget22.cpp
-                         src/spatial.cpp
-                         src/temperature.cpp)
+add_library(phidgets_api src/phidget22.cpp
+                         src/spatial.cpp)
 
 add_dependencies(phidgets_api ${catkin_EXPORTED_TARGETS})
 

@@ -1,4 +1,3 @@
-![YDLIDAR](images/YDLidar.jpg  "YDLIDAR")
 # YDLIDAR ROS Driver
 
 ydlidar_ros_driver is a new ros package, which is designed to gradually become the standard driver package for ydlidar devices in the ros environment.
@@ -142,9 +141,6 @@ The ydlidar_ros_driver internal parameters are in the launch file, they are list
 | invalid_range_is_inf     | bool | Invalid Range is inf.<br/>true -- inf.<br/>false -- 0.0.<br/>default: `false` |
 | point_cloud_preservative  | bool | Keep invalid range.<br/>true -- Keep.<br/>false -- Reject.<br/>default: `false` |
 More paramters details, see [here](details.md)
-
-## Contact EAI
-![Development Path](images/EAI.png)
 
 If you have any extra questions, please feel free to [contact us](http://www.ydlidar.cn/cn/contact)
 
