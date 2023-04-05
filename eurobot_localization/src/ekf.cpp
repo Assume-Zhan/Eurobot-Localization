@@ -621,14 +621,23 @@ void Ekf::updateTimerCallback(const ros::TimerEvent &e){
     }
     
     if(update_lidar_ && update_vive_){
-        double theorem_x = lidar_state_.mu(0) - 150;
-        double theorem_y = lidar_state_.mu(1) - 100;
-        double pratical_x = vive_state_.mu(0) - 150;
-        double pratical_y = vive_state_.mu(1) - 100;
+        double theorem_x = lidar_state_.mu(0) - 1.5;
+        double theorem_y = lidar_state_.mu(1) - 1.;
+        double pratical_x = vive_state_.mu(0) - 1.5;
+        double pratical_y = vive_state_.mu(1) - 1.;
         double denominator = (theorem_x * theorem_x + theorem_y * theorem_y);
 
         cos_theta_ = (theorem_x * pratical_x + theorem_y * pratical_y) / (denominator);
         sin_theta_ = (theorem_x * pratical_y - theorem_y * pratical_x) / (denominator);
+        
+		if(denominator == 0){                                                                                                               
+            cos_theta_ = 1;                                                                                                                 
+            sin_theta_ = 0;                                                                                                                 
+        }                                                                                                                                   
+        else{                                                                                                                               
+            cos_theta_ = (theorem_x * pratical_x + theorem_y * pratical_y) / (denominator);                                                 
+            sin_theta_ = (theorem_x * pratical_y - theorem_y * pratical_x) / (denominator);                                                 
+        } 
 
         offset_theta_ = atan2(sin_theta_, cos_theta_);
         // ROS_INFO_STREAM("[EKF] : current offset " << offset_theta_);
