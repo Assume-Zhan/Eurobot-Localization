@@ -101,6 +101,7 @@ void Ekf::initialize()
     vive_sub_ = nh_.subscribe("vive_bonbonbon", 10, &Ekf::viveCallback, this);
     beacon_sub_ = nh_.subscribe("beacon_bonbonbon", 10, &Ekf::gpsCallback, this);
     ekf_pose_pub_ = nh_.advertise<geometry_msgs::PoseWithCovarianceStamped>("ekf_pose", 10);
+    debug_pub_ = nh_.advertise<std_msgs::Float64>("ekf_debugger", 10);
     global_filter_pub_ = nh_.advertise<nav_msgs::Odometry>("ekf_pose_in_odom", 10);
     update_beacon_pub_ = nh_.advertise<obstacle_detector::Obstacles>("update_beacon", 10);
     update_timer_ = nh_.createTimer(ros::Duration(1.0), &Ekf::updateTimerCallback, this, false, false);
@@ -112,7 +113,7 @@ void Ekf::initialize()
     t_last = 0.0;
 
     // Set timer period
-    update_timer_.setPeriod(ros::Duration(1 / 10), false);
+    update_timer_.setPeriod(ros::Duration(1 / p_timer_frequency_), false);
     update_timer_.start();
 }
 
@@ -580,6 +581,10 @@ void Ekf::viveCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr&
 
 void Ekf::updateTimerCallback(const ros::TimerEvent &e){
     
+    std_msgs::Float64 data;
+    data.data = offset_theta_;
+    debug_pub_.publish(data);
+
     if(!(update_lidar_ || update_vive_)) return;
 
     // Update the vive data and lidar data

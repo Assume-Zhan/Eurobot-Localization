@@ -14,6 +14,7 @@
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <std_msgs/Float64.h>
 #include <sensor_msgs/Imu.h>
 #include "obstacle_detector/Obstacles.h"
 
@@ -157,6 +158,7 @@ class Ekf
 
     // Publisher
     ros::Publisher ekf_pose_pub_;
+    ros::Publisher debug_pub_;
     tf2_ros::TransformBroadcaster br_;
 
     // for debug
