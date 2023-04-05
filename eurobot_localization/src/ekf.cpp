@@ -639,6 +639,9 @@ void Ekf::updateTimerCallback(const ros::TimerEvent &e){
             sin_theta_ = (theorem_x * pratical_y - theorem_y * pratical_x) / (denominator);
         }
 
+        cos_theta_ = cos_theta_ * p_offset_lpf_gain_ + prev_cos_theta_ * (1 - p_offset_lpf_gain_);
+        sin_theta_ = sin_theta_ * p_offset_lpf_gain_ + prev_sin_theta_ * (1 - p_offset_lpf_gain_);
+
         offset_theta_ = atan2(sin_theta_, cos_theta_);
         // ROS_INFO_STREAM("[EKF] : current offset " << offset_theta_);
     }
