@@ -630,7 +630,7 @@ void Ekf::updateTimerCallback(const ros::TimerEvent &e){
         cos_theta_ = (theorem_x * pratical_x + theorem_y * pratical_y) / (denominator);
         sin_theta_ = (theorem_x * pratical_y - theorem_y * pratical_x) / (denominator);
 
-		if(denominator == 0){
+        if(denominator == 0){
             cos_theta_ = 1;
             sin_theta_ = 0; 
         }
