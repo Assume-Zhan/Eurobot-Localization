@@ -90,6 +90,7 @@ void Ekf::initialize()
     // for beacon piller detection
     if_new_obstacles_ = false;
     if_gps = false;
+    update_lidar_ = update_vive_ = false;
     beacon_from_scan_ = {};
 
     // for ros
@@ -602,7 +603,6 @@ void Ekf::updateTimerCallback(const ros::TimerEvent &e){
         gps_sigma(2, 0) = lidar_state_.sigma(2, 0);  // theta-x
         gps_sigma(2, 1) = lidar_state_.sigma(2, 1);  // theta-y
         gps_sigma(2, 2) = lidar_state_.sigma(2, 2);  // theta-theta
-        if_gps = true;  
     }
     else if(update_vive_ && !update_lidar_){
         gps_mu(0) = cos_theta_ * vive_state_.mu(0) - sin_theta_ * vive_state_.mu(1);
@@ -618,7 +618,6 @@ void Ekf::updateTimerCallback(const ros::TimerEvent &e){
         gps_sigma(2, 0) = vive_state_.sigma(2, 0);  // theta-x
         gps_sigma(2, 1) = vive_state_.sigma(2, 1);  // theta-y
         gps_sigma(2, 2) = vive_state_.sigma(2, 2);  // theta-theta
-        if_gps = true;  
     }
     
     if(update_lidar_ && update_vive_){
@@ -634,6 +633,8 @@ void Ekf::updateTimerCallback(const ros::TimerEvent &e){
         offset_theta_ = atan2(sin_theta_, cos_theta_);
         // ROS_INFO_STREAM("[EKF] : current offset " << offset_theta_);
     }
+    
+    if_gps = true;  
 
     update_vive_ = update_lidar_ = false;
 }
