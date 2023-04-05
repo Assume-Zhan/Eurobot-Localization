@@ -86,6 +86,7 @@ void Ekf::initialize()
     // for obstacle filtering
     nh_local_.param<double>("max_obstacle_distance", p_max_obstacle_distance_, 0.5);
     nh_local_.param<double>("timer_frequency", p_timer_frequency_, 10);
+    nh_local_.param<double>("offset_lpf_gain", p_offset_lpf_gain_, 0.5);
 
     // for beacon piller detection
     if_new_obstacles_ = false;
