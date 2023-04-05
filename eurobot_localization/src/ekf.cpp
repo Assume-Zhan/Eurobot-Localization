@@ -97,7 +97,7 @@ void Ekf::initialize()
     // for ros
     setpose_sub_ = nh_.subscribe("initialpose", 50, &Ekf::setposeCallback, this);
     odom_sub_ = nh_.subscribe("odom", 50, &Ekf::odomCallback, this);
-    imu_sub_ = nh_.subscribe("mpu6050_imu", 50, &Ekf::imuCallback, this);
+    imu_sub_ = nh_.subscribe("imu/data_cov", 50, &Ekf::imuCallback, this);
     raw_obstacles_sub_ = nh_.subscribe("obstacles_to_base", 10, &Ekf::obstaclesCallback, this);
     gps_sub_ = nh_.subscribe("lidar_bonbonbon", 10, &Ekf::gpsCallback, this);
     vive_sub_ = nh_.subscribe("vive_bonbonbon", 10, &Ekf::viveCallback, this);
