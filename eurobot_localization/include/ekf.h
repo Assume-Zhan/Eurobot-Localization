@@ -33,7 +33,7 @@ class Ekf
   private:
     // ekf
     void predict_diff(double v, double w);
-    void predict_omni(double v_x, double v_y, double w);
+    void predict_omni(double v_x, double v_y, double w, double dt);
     void update_landmark();
     void update_gps(Eigen::Vector3d gps_pose, Eigen::Matrix3d gps_cov);
 

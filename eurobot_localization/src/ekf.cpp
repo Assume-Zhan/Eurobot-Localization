@@ -154,12 +154,22 @@ void Ekf::predict_diff(double v, double w)
     robotstate_.sigma = G * robotstate_.sigma * G.transpose() + V * M * V.transpose();
 }
 
-void Ekf::predict_omni(double v_x, double v_y, double w)
+void Ekf::predict_omni(double v_x, double v_y, double w, double dt)
 {
     // TODO ekf predict function for omni
-    double d_x = v_x / p_odom_freq_;
+    double d_x;
     double d_y = v_y / p_odom_freq_;
     double d_theta = w / p_odom_freq_;
+    if(dt == 0){
+        d_x = v_x / p_odom_freq_;
+        d_y = v_y / p_odom_freq_;
+        d_theta = w / p_odom_freq_;
+    }
+    else{
+        d_x = v_x / dt;
+        d_y = v_y / dt;
+        d_theta = w / dt;
+    }
     double theta = robotstate_.mu(2);
     double theta_ = theta + d_theta / 2;
     double s_theta = sin(theta);
@@ -508,7 +518,7 @@ void Ekf::odomCallback(const nav_msgs::Odometry::ConstPtr& odom_msg)
     // clock_gettime(CLOCK_REALTIME, &tt1);
 
     // predict_diff(v_x, w);
-    predict_omni(v_x, v_y, w);
+    predict_omni(v_x, v_y, w, dt_);
     // predict_omni(v_x, v_y, imu_w);
     // ROS_INFO("Predict_omni = %f %f %f", robotstate_.mu(0), robotstate_.mu(1), robotstate_.mu(2));
     update_landmark();
