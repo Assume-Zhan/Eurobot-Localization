@@ -158,17 +158,17 @@ void Ekf::predict_omni(double v_x, double v_y, double w, double dt)
 {
     // TODO ekf predict function for omni
     double d_x;
-    double d_y = v_y / p_odom_freq_;
-    double d_theta = w / p_odom_freq_;
+    double d_y;
+    double d_theta;
     if(dt == 0){
         d_x = v_x / p_odom_freq_;
         d_y = v_y / p_odom_freq_;
         d_theta = w / p_odom_freq_;
     }
     else{
-        d_x = v_x / dt;
-        d_y = v_y / dt;
-        d_theta = w / dt;
+        d_x = v_x * dt;
+        d_y = v_y * dt;
+        d_theta = w * dt;
     }
     double theta = robotstate_.mu(2);
     double theta_ = theta + d_theta / 2;
