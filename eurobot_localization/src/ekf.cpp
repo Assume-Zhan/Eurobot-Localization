@@ -23,6 +23,8 @@
  */
 
 #include "ekf.h"
+#include "geometry_msgs/Twist.h"
+#include "geometry_msgs/TwistWithCovariance.h"
 #include "nav_msgs/Odometry.h"
 using namespace std;
 
@@ -87,6 +89,7 @@ void Ekf::initialize()
     nh_local_.param<double>("max_obstacle_distance", p_max_obstacle_distance_, 0.5);
     nh_local_.param<double>("timer_frequency", p_timer_frequency_, 10);
     nh_local_.param<double>("offset_lpf_gain", p_offset_lpf_gain_, 0.5);
+    nh_local_.param<double>("velocity_lpf_gain", p_velocity_lpf_gain_, 0.5);
 
     // for beacon piller detection
     if_new_obstacles_ = false;
@@ -751,6 +754,7 @@ void Ekf::publishEkfPose(const ros::Time& stamp)
 void Ekf::publishGlobalFilter(const ros::Time& stamp)
 {
     static RobotState prev_robot_state;
+    static geometry_msgs::Twist prev_velocity;
 
     nav_msgs::Odometry ekf_pose;
     ekf_pose.header.stamp = stamp;
@@ -773,11 +777,17 @@ void Ekf::publishGlobalFilter(const ros::Time& stamp)
     ekf_pose.pose.covariance[31] = robotstate_.sigma(2, 1);  // theta-y
     ekf_pose.pose.covariance[35] = robotstate_.sigma(2, 2);  // theta-theta
 
-    ekf_pose.twist.twist.linear.x = (robotstate_.mu(0) - prev_robot_state.mu(0)) / 0.01;
-    ekf_pose.twist.twist.linear.y = (robotstate_.mu(1) - prev_robot_state.mu(1)) / 0.01;
-    ekf_pose.twist.twist.angular.z = (robotstate_.mu(2) - prev_robot_state.mu(2)) / 0.01;
+    ekf_pose.twist.twist.linear.x = ((robotstate_.mu(0) - prev_robot_state.mu(0)) * p_velocity_lpf_gain_
+        + prev_velocity.linear.x * (1 - p_velocity_lpf_gain_)) / 0.01;
+
+    ekf_pose.twist.twist.linear.y = ((robotstate_.mu(1) - prev_robot_state.mu(1)) * p_velocity_lpf_gain_
+        + prev_velocity.linear.y * (1 - p_velocity_lpf_gain_)) / 0.01;
+
+    ekf_pose.twist.twist.angular.z = ((robotstate_.mu(2) - prev_robot_state.mu(2)) * p_velocity_lpf_gain_
+        + prev_velocity.angular.z * (1 - p_velocity_lpf_gain_)) / 0.01;
 	
     prev_robot_state = robotstate_;
+    prev_velocity = ekf_pose.twist.twist;
 
     global_filter_pub_.publish(ekf_pose);
 }

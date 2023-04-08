@@ -143,6 +143,8 @@ class Ekf
     double p_initial_theta_deg_;
     double p_offset_lpf_gain_;
 
+    double p_velocity_lpf_gain_;
+
     // ros node
     ros::NodeHandle nh_;
     ros::NodeHandle nh_local_;

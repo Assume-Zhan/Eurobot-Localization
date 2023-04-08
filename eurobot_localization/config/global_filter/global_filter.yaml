@@ -46,3 +46,4 @@ mini_likelihood_update: 0.1
 max_obstacle_distance: 0.5
 
 timer_frequency: 10
+velocity_lpf_gain: 0.5
