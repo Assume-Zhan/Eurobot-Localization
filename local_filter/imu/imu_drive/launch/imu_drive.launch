@@ -11,7 +11,7 @@
         <param name="sub_topic" value="/$(arg robot_name)/imu/data"/>
         <param name="pub_topic" value="/$(arg robot_name)/imu/data_cov"/>
         <remap from="/cmd_vel" to="/$(arg robot_name)/cmd_vel"/>
-        <remap from="/ekf_pose" to="/$(arg robot_name)/ekf_pose"/>
+        <remap from="/ekf_pose" to="/$(arg robot_name)/ekf_pose_in_odom"/>
 
         <param name="frame" value="$(arg robot_name_slash)imu_link"/>
         <param name="update_params" value="false"/>

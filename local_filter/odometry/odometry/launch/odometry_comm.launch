@@ -11,7 +11,7 @@
         <param name="twist_topic" value="/$(arg robot_name)/Toposition"/>
         <param name="odom_topic" value="/$(arg robot_name)/odom"/>
         <remap from="/cmd_vel" to="/$(arg robot_name)/cmd_vel"/>
-        <remap from="/ekf_pose" to="/$(arg robot_name)/ekf_pose"/>
+        <remap from="/ekf_pose" to="/$(arg robot_name)/ekf_pose_in_odom"/>
 
         <param name="fixed_frame" value="$(arg robot_name_slash)odom"/>
         <param name="target_frame" value="$(arg robot_name_slash)base_footprint"/>

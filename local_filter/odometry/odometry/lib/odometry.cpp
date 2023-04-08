@@ -125,7 +125,7 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
                 this->vel_sub_ = nh_.subscribe("/cmd_vel", 10, &Odometry::P_VelocityCallback, this);
             }
             else{
-                this->vel_sub_ = nh_.subscribe("/ekf_pose", 10, &Odometry::VelocityCallback, this);
+                this->vel_sub_ = nh_.subscribe("/ekf_pose_in_odom", 10, &Odometry::VelocityCallback, this);
             }
 
             if(this->p_update_params_){

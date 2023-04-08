@@ -114,7 +114,7 @@ bool IMU::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Response 
                 this->vel_sub_ = nh_.subscribe("/cmd_vel", 10, &IMU::P_VelocityCallback, this);
             }
             else{
-                this->vel_sub_ = nh_.subscribe("/ekf_pose", 10, &IMU::VelocityCallback, this);
+                this->vel_sub_ = nh_.subscribe("/ekf_pose_in_odom", 10, &IMU::VelocityCallback, this);
             }
 
             if(this->p_update_params_){
