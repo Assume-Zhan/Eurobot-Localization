@@ -55,6 +55,8 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
   get_param_ok = nh_local_.param<double>("y_min_range", p_y_min_range_, 0.0);
   get_param_ok = nh_local_.param<double>("y_max_range", p_y_max_range_, 3.0);
 
+  get_param_ok = nh_local_.param<string>("parent_frame", p_parent_frame_, "map");
+
   p_excluded_x_.clear();
   if (!nh_local_.getParam("excluded_x", p_excluded_x_))
   {
@@ -100,7 +102,7 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
   {
     if (p_active_)
     {
-      sub_obstacles_ = nh_.subscribe("obstacles_to_map", 10, &AreaObstaclesExtractor::obstacleCallback, this);
+      sub_obstacles_ = nh_.subscribe("obstacles_to_base", 10, &AreaObstaclesExtractor::obstacleCallback, this);
       sub_robot_pose_ = nh_.subscribe("robot_pose", 10, &AreaObstaclesExtractor::robotPoseCallback, this);
       sub_ally_robot_pose_ = nh_.subscribe("ally_pose", 10, &AreaObstaclesExtractor::robotPoseCallback, this);
       pub_obstacles_array_ = nh_.advertise<costmap_converter::ObstacleArrayMsg>("obstacle_array", 10);
@@ -131,29 +133,57 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
 
 void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr)
 {
+  static tf2_ros::TransformListener tfListener(tfBuffer);
+
   ros::Time now = ros::Time::now();
   output_obstacles_array_.obstacles.clear();
   output_obstacles_array_.header.stamp = now;
   output_obstacles_array_.header.frame_id = ptr->header.frame_id;
 
+  // Get tf transform from base_footprint to map
+  geometry_msgs::TransformStamped transformStamped;
+  try{
+      transformStamped = tfBuffer.lookupTransform(p_parent_frame_, ptr->header.frame_id, ros::Time(0));
+  }
+  catch (tf2::TransformException &ex) {
+    ROS_WARN("%s", ex.what());
+    return;
+  }
+
   output_marker_array_.markers.clear();
   int id = 0;
   for (const obstacle_detector::CircleObstacle& circle : ptr->circles)
   {
-    if (checkBoundary(circle.center))
+
+    // First transform from base_footprint to map
+    geometry_msgs::PointStamped obstacle_to_base;
+    obstacle_to_base.header.frame_id = ptr->header.frame_id;
+    obstacle_to_base.header.stamp = ptr->header.stamp;
+    obstacle_to_base.point = circle.center;
+
+    geometry_msgs::PointStamped obstacle_to_map;
+	tf2::doTransform(obstacle_to_base, obstacle_to_map, transformStamped);
+
+
+    // Check obstacle boundary
+    if (checkBoundary(obstacle_to_map.point))
     {
       costmap_converter::ObstacleMsg obstacle_msg;
       obstacle_msg.header.frame_id = ptr->header.frame_id;
       obstacle_msg.header.stamp = now;
 
+      // Transfrom from map back from base_footprint
       geometry_msgs::Point32 point;
       point.x = circle.center.x;
       point.y = circle.center.y;
+
+      // Push obstacles inside the play area
       obstacle_msg.polygon.points.push_back(point);
       obstacle_msg.radius = circle.radius;
       obstacle_msg.orientation.w = 1.0;
       output_obstacles_array_.obstacles.push_back(obstacle_msg);
 
+      // Mark the obstacles
       visualization_msgs::Marker marker;
       marker.header.frame_id = ptr->header.frame_id;
       marker.header.stamp = now;
@@ -175,6 +205,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
       output_marker_array_.markers.push_back(marker);
     }
+
     publishObstacles();
     publishMarkers();
     publishHaveObstacles();
@@ -211,26 +242,26 @@ bool AreaObstaclesExtractor::checkBoundary(geometry_msgs::Point p)
     ret = false;
 
   // exclude some excluded circles
-  int idx = 0;
-  for (const auto exclude_pose_ : exclude_poses_)
-  {
-    if (length(exclude_pose_, p) < p_excluded_radius_.at(idx))
-    {
-      ret = false;
-      break;
-    }
-    ++idx;
-  }
+  // int idx = 0;
+  // for (const auto exclude_pose_ : exclude_poses_)
+  // {
+  //   if (length(exclude_pose_, p) < p_excluded_radius_.at(idx))
+  //   {
+  //     ret = false;
+  //     break;
+  //   }
+  //   ++idx;
+  // }
 
   // exclude too close or too far obstacles
-  if (length(input_robot_pose_.pose.pose.position, p) > p_avoid_max_distance_)
-    ret = false;
-  if (length(input_robot_pose_.pose.pose.position, p) < p_avoid_min_distance_)
-    ret = false;
+  // if (length(input_robot_pose_.pose.pose.position, p) > p_avoid_max_distance_)
+  //   ret = false;
+  // if (length(input_robot_pose_.pose.pose.position, p) < p_avoid_min_distance_)
+  //   ret = false;
 
   // exclude ally obstacles
-  if (length(input_ally_robot_pose_.pose.pose.position, p) < p_ally_excluded_radius_)
-    ret = false;
+  // if (length(input_ally_robot_pose_.pose.pose.position, p) < p_ally_excluded_radius_)
+  //   ret = false;
 
   return ret;
 }

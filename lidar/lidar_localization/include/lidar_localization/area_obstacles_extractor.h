@@ -40,6 +40,12 @@
 #include <visualization_msgs/MarkerArray.h>
 #include <nav_msgs/Odometry.h>
 
+// TF2
+#include <tf2_ros/transform_listener.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <geometry_msgs/PointStamped.h>
+#include <geometry_msgs/TransformStamped.h>
+
 namespace lidar_localization
 {
 /**
@@ -116,6 +122,8 @@ private:
   ros::Publisher pub_have_obstacles_;
   ros::Publisher pub_marker_;
 
+  tf2_ros::Buffer tfBuffer;
+
   nav_msgs::Odometry input_robot_pose_;
   geometry_msgs::PoseWithCovarianceStamped input_ally_robot_pose_;
   costmap_converter::ObstacleArrayMsg output_obstacles_array_;
@@ -136,6 +144,8 @@ private:
   double p_marker_height_;
   double p_avoid_min_distance_;
   double p_avoid_max_distance_;
+
+  std::string p_parent_frame_;
 
   double p_ally_excluded_radius_;
 
