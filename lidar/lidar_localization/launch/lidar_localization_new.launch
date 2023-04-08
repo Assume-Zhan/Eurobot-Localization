@@ -1,9 +1,9 @@
 <launch>
     
-	<arg name="robot_name" default="robot1"/>
-	<arg name="robot_name_slash" default="robot1/"/>
+    <arg name="robot_name" default="robot1"/>
+    <arg name="robot_name_slash" default="robot1/"/>
 
-	<group ns="$(arg robot_name)">
+    <group ns="$(arg robot_name)">
 
         <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)laser_frame" />
 
@@ -11,7 +11,7 @@
         <!-- lidar localization -->
         <node name="beacon_extractor" pkg="obstacle_detector" type="obstacle_extractor_node">
             <rosparam file="$(find lidar_localization)/params/beacon_excrator_params.yaml" command="load" />
-			<param name="frame_id" value="$(arg robot_name_slash)base_footprint"/>
+            <param name="frame_id" value="$(arg robot_name_slash)base_footprint"/>
         </node>
 
         <node name="lidar_localization" pkg="lidar_localization" type="lidar_localization_node" output="log">
@@ -47,5 +47,5 @@
             <param name="parent_frame" value="$(arg robot_name_slash)map"/>
         </node>
 
-	</group>
+    </group>
 </launch>
