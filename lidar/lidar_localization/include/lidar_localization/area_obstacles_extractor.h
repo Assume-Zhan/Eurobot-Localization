@@ -126,13 +126,14 @@ private:
 
   nav_msgs::Odometry input_robot_pose_;
   geometry_msgs::PoseWithCovarianceStamped input_ally_robot_pose_;
-  costmap_converter::ObstacleArrayMsg output_obstacles_array_;
+  obstacle_detector::Obstacles output_obstacles_array_;
   std_msgs::Bool output_have_obstacles_;
   visualization_msgs::MarkerArray output_marker_array_;
   /* private variables */
 
   /* ros param */
   bool p_active_;
+  bool p_central_;
 
   double p_x_min_range_;
   double p_x_max_range_;

@@ -45,17 +45,17 @@ AreaObstaclesExtractor::~AreaObstaclesExtractor()
 
 bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res)
 {
-  bool get_param_ok = true;
   bool prev_active = p_active_;
 
-  get_param_ok = nh_local_.param<bool>("active", p_active_, true);
+  nh_local_.param<bool>("active", p_active_, true);
+  nh_local_.param<bool>("central", p_central_, true);
 
-  get_param_ok = nh_local_.param<double>("x_min_range", p_x_min_range_, 0.0);
-  get_param_ok = nh_local_.param<double>("x_max_range", p_x_max_range_, 2.0);
-  get_param_ok = nh_local_.param<double>("y_min_range", p_y_min_range_, 0.0);
-  get_param_ok = nh_local_.param<double>("y_max_range", p_y_max_range_, 3.0);
+  nh_local_.param<double>("x_min_range", p_x_min_range_, 0.0);
+  nh_local_.param<double>("x_max_range", p_x_max_range_, 2.0);
+  nh_local_.param<double>("y_min_range", p_y_min_range_, 0.0);
+  nh_local_.param<double>("y_max_range", p_y_max_range_, 3.0);
 
-  get_param_ok = nh_local_.param<string>("parent_frame", p_parent_frame_, "map");
+  nh_local_.param<string>("parent_frame", p_parent_frame_, "map");
 
   p_excluded_x_.clear();
   if (!nh_local_.getParam("excluded_x", p_excluded_x_))
@@ -93,41 +93,35 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
     std::cout << "r: " << p_excluded_radius_.at(i) << "\n";
   }
 
-  get_param_ok = nh_local_.param<double>("obstacle_height", p_marker_height_, 2);
-  get_param_ok = nh_local_.param<double>("avoid_min_distance", p_avoid_min_distance_, 0.1);
-  get_param_ok = nh_local_.param<double>("avoid_max_distance", p_avoid_max_distance_, 0.5);
-  get_param_ok = nh_local_.param<double>("ally_excluded_radius", p_ally_excluded_radius_, p_avoid_min_distance_);
+  nh_local_.param<double>("obstacle_height", p_marker_height_, 2);
+  nh_local_.param<double>("avoid_min_distance", p_avoid_min_distance_, 0.1);
+  nh_local_.param<double>("avoid_max_distance", p_avoid_max_distance_, 0.5);
+  nh_local_.param<double>("ally_excluded_radius", p_ally_excluded_radius_, p_avoid_min_distance_);
 
   if (p_active_ != prev_active)
   {
     if (p_active_)
     {
       sub_obstacles_ = nh_.subscribe("obstacles_to_base", 10, &AreaObstaclesExtractor::obstacleCallback, this);
-      sub_robot_pose_ = nh_.subscribe("robot_pose", 10, &AreaObstaclesExtractor::robotPoseCallback, this);
-      sub_ally_robot_pose_ = nh_.subscribe("ally_pose", 10, &AreaObstaclesExtractor::robotPoseCallback, this);
-      pub_obstacles_array_ = nh_.advertise<costmap_converter::ObstacleArrayMsg>("obstacle_array", 10);
-      pub_have_obstacles_ = nh_.advertise<std_msgs::Bool>("have_obstacles", 10);
-      pub_marker_ = nh_.advertise<visualization_msgs::MarkerArray>("obstacle_marker", 10);
+      if(p_central_) {
+        sub_robot_pose_ = nh_.subscribe("robot_pose", 10, &AreaObstaclesExtractor::robotPoseCallback, this);
+        sub_ally_robot_pose_ = nh_.subscribe("ally_pose", 10, &AreaObstaclesExtractor::robotPoseCallback, this);
+        pub_obstacles_array_ = nh_.advertise<obstacle_detector::Obstacles>("obstacle_array", 10);
+        pub_have_obstacles_ = nh_.advertise<std_msgs::Bool>("have_obstacles", 10);
+        pub_marker_ = nh_.advertise<visualization_msgs::MarkerArray>("obstacle_marker", 10);
+      }
     }
     else
     {
-      sub_robot_pose_.shutdown();
-      pub_obstacles_array_.shutdown();
-      pub_have_obstacles_.shutdown();
-      pub_marker_.shutdown();
+      if(p_central_){
+        sub_robot_pose_.shutdown();
+        pub_obstacles_array_.shutdown();
+        pub_have_obstacles_.shutdown();
+        pub_marker_.shutdown();
+      }
     }
   }
 
-  if (get_param_ok)
-  {
-    ROS_INFO_STREAM("[Area Obstacles Extractor]: "
-                    << "set param ok");
-  }
-  else
-  {
-    ROS_WARN_STREAM("[Area Obstacles Extractor]: "
-                    << "set param failed");
-  }
   return true;
 }
 
@@ -136,9 +130,11 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
   static tf2_ros::TransformListener tfListener(tfBuffer);
 
   ros::Time now = ros::Time::now();
-  output_obstacles_array_.obstacles.clear();
   output_obstacles_array_.header.stamp = now;
   output_obstacles_array_.header.frame_id = ptr->header.frame_id;
+
+  // Clear all previous obstacles
+  output_obstacles_array_.circles.clear();
 
   // Get tf transform from base_footprint to map
   geometry_msgs::TransformStamped transformStamped;
@@ -168,20 +164,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     // Check obstacle boundary
     if (checkBoundary(obstacle_to_map.point))
     {
-      costmap_converter::ObstacleMsg obstacle_msg;
-      obstacle_msg.header.frame_id = ptr->header.frame_id;
-      obstacle_msg.header.stamp = now;
-
-      // Transfrom from map back from base_footprint
-      geometry_msgs::Point32 point;
-      point.x = circle.center.x;
-      point.y = circle.center.y;
-
-      // Push obstacles inside the play area
-      obstacle_msg.polygon.points.push_back(point);
-      obstacle_msg.radius = circle.radius;
-      obstacle_msg.orientation.w = 1.0;
-      output_obstacles_array_.obstacles.push_back(obstacle_msg);
+      output_obstacles_array_.circles.push_back(circle);
 
       // Mark the obstacles
       visualization_msgs::Marker marker;
@@ -219,7 +202,7 @@ void AreaObstaclesExtractor::publishObstacles()
 void AreaObstaclesExtractor::publishHaveObstacles()
 {
   output_have_obstacles_.data = false;
-  if (output_obstacles_array_.obstacles.size())
+  if (output_obstacles_array_.circles.size())
   {
     output_have_obstacles_.data = true;
   }
