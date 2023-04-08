@@ -283,7 +283,7 @@ bool AreaObstaclesExtractor::checkBoundary(geometry_msgs::Point p)
   return ret;
 }
 
-void AreaObstaclesExtractor::robotPoseCallback(const nav_msgs::Odometry::ConstPtr& ptr)
+void AreaObstaclesExtractor::robotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr)
 {
   input_robot_pose_ = *ptr;
 }

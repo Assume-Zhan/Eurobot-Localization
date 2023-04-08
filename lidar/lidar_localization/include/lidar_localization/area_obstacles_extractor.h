@@ -108,7 +108,7 @@ private:
   void publishMarkers();
 
   bool checkBoundary(geometry_msgs::Point);
-  void robotPoseCallback(const nav_msgs::Odometry::ConstPtr& ptr);
+  void robotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
   void allyRobotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
 
   /* ros node */
@@ -127,7 +127,7 @@ private:
 
   tf2_ros::Buffer tfBuffer;
 
-  nav_msgs::Odometry input_robot_pose_;
+  geometry_msgs::PoseWithCovarianceStamped input_robot_pose_;
   geometry_msgs::PoseWithCovarianceStamped input_ally_robot_pose_;
   obstacle_detector::Obstacles output_obstacles_array_;
   obstacle_detector::Obstacles ally_obstacles_;
