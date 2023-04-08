@@ -169,6 +169,11 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 	
       // Central -> check obstacles on the other robot and average the closest obstacle
       if(p_central_){
+        for(const obstacle_detector::CircleObstacle& ally_circle : ally_obstacles_.circles){
+          if(length(ally_circle.center, obstacle_to_map.point) < 0.2){
+		    // Average the point
+          }
+        }
       }
 
       obstacle_detector::CircleObstacle circle_msg;
