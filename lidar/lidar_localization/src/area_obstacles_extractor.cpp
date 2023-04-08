@@ -98,6 +98,7 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
   nh_local_.param<double>("avoid_min_distance", p_avoid_min_distance_, 0.1);
   nh_local_.param<double>("avoid_max_distance", p_avoid_max_distance_, 0.5);
   nh_local_.param<double>("ally_excluded_radius", p_ally_excluded_radius_, p_avoid_min_distance_);
+  nh_local_.param<double>("obstacle_merge_d", p_obstacle_merge_d_, 0.1);
 
   if (p_active_ != prev_active)
   {
@@ -166,21 +167,27 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     // Check obstacle boundary
     if (checkBoundary(obstacle_to_map.point))
     {
-	
-      // Central -> check obstacles on the other robot and average the closest obstacle
-      if(p_central_){
-        for(const obstacle_detector::CircleObstacle& ally_circle : ally_obstacles_.circles){
-          if(length(ally_circle.center, obstacle_to_map.point) < 0.2){
-		    // Average the point
-          }
-        }
-      }
-
       obstacle_detector::CircleObstacle circle_msg;
       circle_msg.center = obstacle_to_map.point;
       circle_msg.velocity = circle.velocity;
       circle_msg.radius = circle.radius;
       circle_msg.true_radius = circle.true_radius;
+	
+      // Central -> check obstacles on the other robot and average the closest obstacle
+      if(p_central_){
+        for(const obstacle_detector::CircleObstacle& ally_circle : ally_obstacles_.circles){
+          if(length(ally_circle.center, obstacle_to_map.point) < p_obstacle_merge_d_){
+		    // Average the point
+            circle_msg.center.x = (circle_msg.center.x + ally_circle.center.x) / 2;
+            circle_msg.center.y = (circle_msg.center.y + ally_circle.center.y) / 2;
+            circle_msg.velocity.x = (circle_msg.velocity.x + ally_circle.velocity.x) / 2;
+            circle_msg.velocity.y = (circle_msg.velocity.y + ally_circle.velocity.y) / 2;
+            circle_msg.radius = (circle.radius + ally_circle.radius) / 2;
+            circle_msg.true_radius = (circle.true_radius + ally_circle.true_radius) / 2;
+          }
+        }
+      }
+
       output_obstacles_array_.circles.push_back(circle_msg);
 
       if(p_central_){

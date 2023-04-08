@@ -149,6 +149,7 @@ private:
   double p_marker_height_;
   double p_avoid_min_distance_;
   double p_avoid_max_distance_;
+  double p_obstacle_merge_d_;
 
   std::string p_parent_frame_;
   std::string p_ally_obstacles_topic_;
