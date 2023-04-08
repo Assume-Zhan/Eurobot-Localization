@@ -92,6 +92,8 @@ private:
    */
   void obstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr);
 
+  void allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr);
+
   /**
    * @brief Topic `obstacles_to_map` publisher function
    *
@@ -118,6 +120,7 @@ private:
   ros::Subscriber sub_obstacles_;
   ros::Subscriber sub_robot_pose_;
   ros::Subscriber sub_ally_robot_pose_;
+  ros::Subscriber sub_ally_obstacles_;
   ros::Publisher pub_obstacles_array_;
   ros::Publisher pub_have_obstacles_;
   ros::Publisher pub_marker_;
@@ -127,6 +130,7 @@ private:
   nav_msgs::Odometry input_robot_pose_;
   geometry_msgs::PoseWithCovarianceStamped input_ally_robot_pose_;
   obstacle_detector::Obstacles output_obstacles_array_;
+  obstacle_detector::Obstacles ally_obstacles_;
   std_msgs::Bool output_have_obstacles_;
   visualization_msgs::MarkerArray output_marker_array_;
   /* private variables */
@@ -147,6 +151,7 @@ private:
   double p_avoid_max_distance_;
 
   std::string p_parent_frame_;
+  std::string p_ally_obstacles_topic_;
 
   double p_ally_excluded_radius_;
 

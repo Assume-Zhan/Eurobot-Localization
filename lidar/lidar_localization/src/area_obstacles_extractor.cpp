@@ -56,6 +56,7 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
   nh_local_.param<double>("y_max_range", p_y_max_range_, 3.0);
 
   nh_local_.param<string>("parent_frame", p_parent_frame_, "map");
+  nh_local_.param<string>("ally_obstacles_topic", p_ally_obstacles_topic_, "/robot2/obstacle_array");
 
   p_excluded_x_.clear();
   if (!nh_local_.getParam("excluded_x", p_excluded_x_))
@@ -103,19 +104,20 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
     if (p_active_)
     {
       sub_obstacles_ = nh_.subscribe("obstacles_to_base", 10, &AreaObstaclesExtractor::obstacleCallback, this);
+      pub_obstacles_array_ = nh_.advertise<obstacle_detector::Obstacles>("obstacle_array", 10);
       if(p_central_) {
+        sub_ally_obstacles_ = nh_.subscribe(p_ally_obstacles_topic_, 10, &AreaObstaclesExtractor::allyObstacleCallback, this);  
         sub_robot_pose_ = nh_.subscribe("robot_pose", 10, &AreaObstaclesExtractor::robotPoseCallback, this);
         sub_ally_robot_pose_ = nh_.subscribe("ally_pose", 10, &AreaObstaclesExtractor::robotPoseCallback, this);
-        pub_obstacles_array_ = nh_.advertise<obstacle_detector::Obstacles>("obstacle_array", 10);
         pub_have_obstacles_ = nh_.advertise<std_msgs::Bool>("have_obstacles", 10);
         pub_marker_ = nh_.advertise<visualization_msgs::MarkerArray>("obstacle_marker", 10);
       }
     }
     else
     {
+      pub_obstacles_array_.shutdown();
       if(p_central_){
         sub_robot_pose_.shutdown();
-        pub_obstacles_array_.shutdown();
         pub_have_obstacles_.shutdown();
         pub_marker_.shutdown();
       }
@@ -164,6 +166,10 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     // Check obstacle boundary
     if (checkBoundary(obstacle_to_map.point))
     {
+	
+      // Central -> check obstacles on the other robot and average the closest obstacle
+      if(p_central_){
+      }
 
       obstacle_detector::CircleObstacle circle_msg;
       circle_msg.center = obstacle_to_map.point;
@@ -172,34 +178,44 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
       circle_msg.true_radius = circle.true_radius;
       output_obstacles_array_.circles.push_back(circle_msg);
 
-      // Mark the obstacles
-      visualization_msgs::Marker marker;
-      marker.header.frame_id = p_parent_frame_;
-      marker.header.stamp = now;
-      marker.id = id++;
-      marker.type = visualization_msgs::Marker::CYLINDER;
-      marker.lifetime = ros::Duration(0.1);
-      marker.pose.position.x = circle_msg.center.x;
-      marker.pose.position.y = circle_msg.center.y;
-      marker.pose.position.z = p_marker_height_ / 2.0;
-      marker.pose.orientation.w = 1.0;
-      marker.color.r = 0.5;
-      marker.color.g = 1.0;
-      marker.color.b = 0.5;
-      marker.color.a = 1.0;
+      if(p_central_){
+        // Mark the obstacles
+        visualization_msgs::Marker marker;
+        marker.header.frame_id = p_parent_frame_;
+        marker.header.stamp = now;
+        marker.id = id++;
+        marker.type = visualization_msgs::Marker::CYLINDER;
+        marker.lifetime = ros::Duration(0.1);
+        marker.pose.position.x = circle_msg.center.x;
+        marker.pose.position.y = circle_msg.center.y;
+        marker.pose.position.z = p_marker_height_ / 2.0;
+        marker.pose.orientation.w = 1.0;
+        marker.color.r = 0.5;
+        marker.color.g = 1.0;
+        marker.color.b = 0.5;
+        marker.color.a = 1.0;
 
-      marker.scale.x = circle.radius;
-      marker.scale.y = circle.radius;
-      marker.scale.z = p_marker_height_;
+        marker.scale.x = circle.radius;
+        marker.scale.y = circle.radius;
+        marker.scale.z = p_marker_height_;
 
-      output_marker_array_.markers.push_back(marker);
+        output_marker_array_.markers.push_back(marker);
+      }
     }
 
     publishObstacles();
-    publishMarkers();
-    publishHaveObstacles();
+    
+    if(p_central_){
+      publishMarkers();
+      publishHaveObstacles();
+    }
   }
 }
+
+void AreaObstaclesExtractor::allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr){
+    ally_obstacles_ = *ptr; 
+}
+
 void AreaObstaclesExtractor::publishObstacles()
 {
   pub_obstacles_array_.publish(output_obstacles_array_);
