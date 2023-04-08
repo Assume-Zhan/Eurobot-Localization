@@ -41,7 +41,7 @@
         </node>
 
         <!-- Area extractor -->
-        <node name="area_obstacle_extractor" pkg="lidar_localizaion" type="area_obstacle_extractor_node">
+        <node name="area_obstacle_extractor" pkg="lidar_localization" type="area_obstacle_extractor_node">
             <param name="x_max_range" value="3.0"/>
             <param name="y_max_range" value="2.0"/>
             <param name="parent_frame" value="$(arg robot_name_slash)map"/>
