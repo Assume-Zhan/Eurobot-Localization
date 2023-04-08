@@ -131,7 +131,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
   ros::Time now = ros::Time::now();
   output_obstacles_array_.header.stamp = now;
-  output_obstacles_array_.header.frame_id = ptr->header.frame_id;
+  output_obstacles_array_.header.frame_id = p_parent_frame_;
 
   // Clear all previous obstacles
   output_obstacles_array_.circles.clear();
@@ -164,17 +164,23 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     // Check obstacle boundary
     if (checkBoundary(obstacle_to_map.point))
     {
-      output_obstacles_array_.circles.push_back(circle);
+
+      obstacle_detector::CircleObstacle circle_msg;
+      circle_msg.center = obstacle_to_map.point;
+      circle_msg.velocity = circle.velocity;
+      circle_msg.radius = circle.radius;
+      circle_msg.true_radius = circle.true_radius;
+      output_obstacles_array_.circles.push_back(circle_msg);
 
       // Mark the obstacles
       visualization_msgs::Marker marker;
-      marker.header.frame_id = ptr->header.frame_id;
+      marker.header.frame_id = p_parent_frame_;
       marker.header.stamp = now;
       marker.id = id++;
       marker.type = visualization_msgs::Marker::CYLINDER;
       marker.lifetime = ros::Duration(0.1);
-      marker.pose.position.x = circle.center.x;
-      marker.pose.position.y = circle.center.y;
+      marker.pose.position.x = circle_msg.center.x;
+      marker.pose.position.y = circle_msg.center.y;
       marker.pose.position.z = p_marker_height_ / 2.0;
       marker.pose.orientation.w = 1.0;
       marker.color.r = 0.5;
