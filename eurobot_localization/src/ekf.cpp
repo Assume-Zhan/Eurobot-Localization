@@ -777,14 +777,14 @@ void Ekf::publishGlobalFilter(const ros::Time& stamp)
     ekf_pose.pose.covariance[31] = robotstate_.sigma(2, 1);  // theta-y
     ekf_pose.pose.covariance[35] = robotstate_.sigma(2, 2);  // theta-theta
 
-    ekf_pose.twist.twist.linear.x = ((robotstate_.mu(0) - prev_robot_state.mu(0)) * p_velocity_lpf_gain_
-        + prev_velocity.linear.x * (1 - p_velocity_lpf_gain_)) / 0.01;
+    ekf_pose.twist.twist.linear.x = ((robotstate_.mu(0) - prev_robot_state.mu(0)) / 0.01) * p_velocity_lpf_gain_
+        + prev_velocity.linear.x * (1 - p_velocity_lpf_gain_);
 
-    ekf_pose.twist.twist.linear.y = ((robotstate_.mu(1) - prev_robot_state.mu(1)) * p_velocity_lpf_gain_
-        + prev_velocity.linear.y * (1 - p_velocity_lpf_gain_)) / 0.01;
+    ekf_pose.twist.twist.linear.y = ((robotstate_.mu(1) - prev_robot_state.mu(1)) / 0.01) * p_velocity_lpf_gain_
+        + prev_velocity.linear.y * (1 - p_velocity_lpf_gain_);
 
-    ekf_pose.twist.twist.angular.z = ((robotstate_.mu(2) - prev_robot_state.mu(2)) * p_velocity_lpf_gain_
-        + prev_velocity.angular.z * (1 - p_velocity_lpf_gain_)) / 0.01;
+    ekf_pose.twist.twist.angular.z = ((robotstate_.mu(2) - prev_robot_state.mu(2)) / 0.01) * p_velocity_lpf_gain_
+        + prev_velocity.angular.z * (1 - p_velocity_lpf_gain_);
 	
     prev_robot_state = robotstate_;
     prev_velocity = ekf_pose.twist.twist;
