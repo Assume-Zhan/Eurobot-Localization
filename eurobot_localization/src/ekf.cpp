@@ -750,9 +750,6 @@ void Ekf::publishEkfPose(const ros::Time& stamp)
 
 void Ekf::publishGlobalFilter(const ros::Time& stamp)
 {
-    static double timeBefore;
-    double timeAfter = stamp.toSec();
-
     static RobotState prev_robot_state;
 
     nav_msgs::Odometry ekf_pose;
@@ -776,11 +773,10 @@ void Ekf::publishGlobalFilter(const ros::Time& stamp)
     ekf_pose.pose.covariance[31] = robotstate_.sigma(2, 1);  // theta-y
     ekf_pose.pose.covariance[35] = robotstate_.sigma(2, 2);  // theta-theta
 
-    ekf_pose.twist.twist.linear.x = (robotstate_.mu(0) - prev_robot_state.mu(0)) / (timeAfter - timeBefore);
-    ekf_pose.twist.twist.linear.y = (robotstate_.mu(1) - prev_robot_state.mu(1)) / (timeAfter - timeBefore);
-    ekf_pose.twist.twist.angular.z = (robotstate_.mu(2) - prev_robot_state.mu(2)) / (timeAfter - timeBefore);
+    ekf_pose.twist.twist.linear.x = (robotstate_.mu(0) - prev_robot_state.mu(0)) / 0.01;
+    ekf_pose.twist.twist.linear.y = (robotstate_.mu(1) - prev_robot_state.mu(1)) / 0.01;
+    ekf_pose.twist.twist.angular.z = (robotstate_.mu(2) - prev_robot_state.mu(2)) / 0.01;
 	
-    timeBefore = timeAfter;
     prev_robot_state = robotstate_;
 
     global_filter_pub_.publish(ekf_pose);
