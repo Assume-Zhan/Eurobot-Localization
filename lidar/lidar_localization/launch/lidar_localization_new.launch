@@ -44,7 +44,10 @@
         <node name="area_obstacles_extractor" pkg="lidar_localization" type="area_obstacles_extractor_node">
             <param name="x_max_range" value="3.0"/>
             <param name="y_max_range" value="2.0"/>
-            <param name="central" value="true"/>
+
+            <param name="central" value="true" if="$(eval arg('robot_name')=='robot1')"/>
+            <param name="central" value="false" if="$(eval arg('robot_name')=='robot2')"/>
+
             <param name="parent_frame" value="$(arg robot_name_slash)map"/>
 			<remap from="robot_pose" to="/$(arg robot_name_slash)ekf_pose"/>
         </node>
