@@ -45,6 +45,7 @@
             <param name="x_max_range" value="3.0"/>
             <param name="y_max_range" value="2.0"/>
             <param name="parent_frame" value="$(arg robot_name_slash)map"/>
+			<remap from="robot_pose" to="$(arg robot_name_slash)ekf_pose"/>
         </node>
 
     </group>
