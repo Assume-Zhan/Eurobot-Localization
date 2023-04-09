@@ -108,6 +108,7 @@ private:
   void publishMarkers();
 
   bool checkBoundary(geometry_msgs::Point);
+  bool checkRobotpose(geometry_msgs::Point);
   void robotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
   void allyRobotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
 
@@ -150,6 +151,7 @@ private:
   double p_avoid_min_distance_;
   double p_avoid_max_distance_;
   double p_obstacle_merge_d_;
+  double p_obstacle_error_;
 
   std::string p_parent_frame_;
   std::string p_ally_obstacles_topic_;
