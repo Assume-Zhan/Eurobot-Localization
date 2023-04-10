@@ -570,8 +570,27 @@ void Ekf::gpsCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& 
 
 void Ekf::viveCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg){
 
+    static tf2_ros::TransformListener tfListener(tfBuffer);
+
+    // Get TF transform from vive to map
+    geometry_msgs::TransformStamped transformStamped;
+    try{
+        transformStamped = tfBuffer.lookupTransform("robot1/base_footprint", "robot1/vive_frame", ros::Time(0));
+    }
+    catch (tf2::TransformException &ex) {
+        ROS_WARN("%s", ex.what());
+        return;
+    }
+
+    geometry_msgs::PoseStamped vive_to_map;
+    geometry_msgs::PoseStamped base_to_map;
+    vive_to_map.header.frame_id = "robot1/vive_frame";
+    vive_to_map.header.stamp = pose_msg->header.stamp;
+    vive_to_map.pose = pose_msg->pose.pose;
+    tf2::doTransform(vive_to_map, base_to_map, transformStamped);
+
     tf2::Quaternion q;
-    tf2::fromMsg(pose_msg->pose.pose.orientation, q);
+    tf2::fromMsg(base_to_map.pose.orientation, q);
     tf2::Matrix3x3 qt(q);
     double _, yaw;
     qt.getRPY(_, _, yaw);

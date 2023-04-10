@@ -6,6 +6,7 @@
     <group ns="$(arg robot_name)">
 
         <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)laser_frame" />
+        <node name="base_link_to_vive" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)vive_frame" />
 
 
         <!-- lidar localization -->
