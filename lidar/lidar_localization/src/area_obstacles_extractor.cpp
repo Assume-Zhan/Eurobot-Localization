@@ -100,6 +100,7 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
   nh_local_.param<double>("ally_excluded_radius", p_ally_excluded_radius_, p_avoid_min_distance_);
   nh_local_.param<double>("obstacle_merge_d", p_obstacle_merge_d_, 0.1);
   nh_local_.param<double>("obstacle_error", p_obstacle_error_, 0.1);
+  nh_local_.param<double>("obstacle_lpf_cur", p_obstacle_lpf_cur_, 0.5);
 
   if (p_active_ != prev_active)
   {
@@ -191,6 +192,9 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
       if(p_central_ && checkRobotpose(circle_msg.center)) return;
 
+      // Do low pass filter
+      circle_msg = doLowPassFilter(circle_msg);
+
       output_obstacles_array_.circles.push_back(circle_msg);
 
       if(p_central_){
@@ -219,12 +223,27 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     }
 
     publishObstacles();
+    prev_output_obstacles_array_.circles.clear();
+    for(auto circle : output_obstacles_array_.circles){
+      prev_output_obstacles_array_.circles.push_back(circle);
+    }
     
     if(p_central_){
       publishMarkers();
       publishHaveObstacles();
     }
   }
+}
+
+obstacle_detector::CircleObstacle AreaObstaclesExtractor::doLowPassFilter(obstacle_detector::CircleObstacle cur_obstacle){
+  for(auto prev_obstacle : prev_output_obstacles_array_.circles){
+    if(length(prev_obstacle.center, cur_obstacle.center) < 0.1){
+      cur_obstacle.velocity.x = cur_obstacle.velocity.x * p_obstacle_lpf_cur_ + prev_obstacle.velocity.x * (1 - p_obstacle_lpf_cur_);
+      cur_obstacle.velocity.y = cur_obstacle.velocity.y * p_obstacle_lpf_cur_ + prev_obstacle.velocity.y * (1 - p_obstacle_lpf_cur_);
+      return cur_obstacle;
+    }
+  }
+  return cur_obstacle;
 }
 
 void AreaObstaclesExtractor::allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr){

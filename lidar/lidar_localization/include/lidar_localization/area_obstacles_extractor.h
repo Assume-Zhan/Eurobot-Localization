@@ -94,6 +94,8 @@ private:
 
   void allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr);
 
+  obstacle_detector::CircleObstacle doLowPassFilter(obstacle_detector::CircleObstacle);
+
   /**
    * @brief Topic `obstacles_to_map` publisher function
    *
@@ -131,6 +133,7 @@ private:
   geometry_msgs::PoseWithCovarianceStamped input_robot_pose_;
   geometry_msgs::PoseWithCovarianceStamped input_ally_robot_pose_;
   obstacle_detector::Obstacles output_obstacles_array_;
+  obstacle_detector::Obstacles prev_output_obstacles_array_;
   obstacle_detector::Obstacles ally_obstacles_;
   std_msgs::Bool output_have_obstacles_;
   visualization_msgs::MarkerArray output_marker_array_;
@@ -152,6 +155,7 @@ private:
   double p_avoid_max_distance_;
   double p_obstacle_merge_d_;
   double p_obstacle_error_;
+  double p_obstacle_lpf_cur_;
 
   std::string p_parent_frame_;
   std::string p_ally_obstacles_topic_;
