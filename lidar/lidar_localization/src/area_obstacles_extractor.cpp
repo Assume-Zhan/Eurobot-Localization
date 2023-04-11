@@ -111,7 +111,7 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
       if(p_central_) {
         sub_ally_obstacles_ = nh_.subscribe(p_ally_obstacles_topic_, 10, &AreaObstaclesExtractor::allyObstacleCallback, this);  
         sub_robot_pose_ = nh_.subscribe("robot_pose", 10, &AreaObstaclesExtractor::robotPoseCallback, this);
-        sub_ally_robot_pose_ = nh_.subscribe("ally_pose", 10, &AreaObstaclesExtractor::robotPoseCallback, this);
+        sub_ally_robot_pose_ = nh_.subscribe("ally_pose", 10, &AreaObstaclesExtractor::allyRobotPoseCallback, this);
         pub_have_obstacles_ = nh_.advertise<std_msgs::Bool>("have_obstacles", 10);
         pub_marker_ = nh_.advertise<visualization_msgs::MarkerArray>("obstacle_marker", 10);
       }
