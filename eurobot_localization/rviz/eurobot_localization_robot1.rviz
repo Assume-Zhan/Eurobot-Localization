@@ -69,6 +69,8 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        map:
+          Value: true
         robot1/base_footprint:
           Value: true
         robot1/beacon01:
@@ -91,6 +93,8 @@ Visualization Manager:
           Value: true
         robot1/odom:
           Value: true
+        robot2/map:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -98,25 +102,28 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        robot1/map:
-          robot1/beacon1:
+        map:
+          robot1/map:
+            robot1/beacon1:
+              {}
+            robot1/beacon2:
+              {}
+            robot1/beacon3:
+              {}
+            robot1/odom:
+              robot1/base_footprint:
+                robot1/beacon01:
+                  {}
+                robot1/beacon02:
+                  {}
+                robot1/beacon03:
+                  {}
+                robot1/imu_link:
+                  {}
+                robot1/laser_frame:
+                  {}
+          robot2/map:
             {}
-          robot1/beacon2:
-            {}
-          robot1/beacon3:
-            {}
-          robot1/odom:
-            robot1/base_footprint:
-              robot1/beacon01:
-                {}
-              robot1/beacon02:
-                {}
-              robot1/beacon03:
-                {}
-              robot1/imu_link:
-                {}
-              robot1/laser_frame:
-                {}
       Update Interval: 0
       Value: true
     - Class: rviz/MarkerArray
@@ -129,7 +136,7 @@ Visualization Manager:
       Value: true
     - Circles color: 170; 0; 0
       Class: Obstacles
-      Enabled: true
+      Enabled: false
       Margin color: 0; 170; 0
       Name: Obstacles
       Opacity: 0.75
@@ -138,6 +145,28 @@ Visualization Manager:
       Segments thickness: 0.029999999329447746
       Topic: /robot1/obstacle_array
       Unreliable: false
+      Value: false
+    - Circles color: 170; 0; 0
+      Class: Obstacles
+      Enabled: true
+      Margin color: 0; 170; 0
+      Name: Obstacles
+      Opacity: 0.75
+      Queue Size: 10
+      Segments color: 170; 170; 0
+      Segments thickness: 0.029999999329447746
+      Topic: /RivalObstacle
+      Unreliable: false
+      Value: true
+    - Alpha: 0.699999988079071
+      Class: rviz/Map
+      Color Scheme: costmap
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic: /robot1/move_base/global_costmap/costmap
+      Unreliable: false
+      Use Timestamp: false
       Value: true
   Enabled: true
   Global Options:
@@ -166,7 +195,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 0
+      Angle: 0.019999999552965164
       Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
@@ -176,10 +205,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 139.13510131835938
+      Scale: 203.11611938476562
       Target Frame: <Fixed Frame>
-      X: 2.354512929916382
-      Y: 0.5653852224349976
+      X: 1.283842921257019
+      Y: 0.9333204030990601
     Saved: ~
 Window Geometry:
   Displays:
