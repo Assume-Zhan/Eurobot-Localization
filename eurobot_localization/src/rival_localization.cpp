@@ -258,6 +258,7 @@ bool RivalMulti::distribute_rival_odom(bool rival1_ok, bool rival2_ok, std::vect
 
     // ADD : publish other obstacle data to lidar obstacle topic
     obstacle_detector::Obstacles output_obstacles;
+    output_obstacles.header.frame_id = "robot1/map";
     for(auto obstacle : Lidar_vec){
         obstacle_detector::CircleObstacle circle;
         circle.center.x = obstacle.x;
