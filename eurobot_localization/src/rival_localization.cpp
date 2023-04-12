@@ -266,6 +266,8 @@ bool RivalMulti::distribute_rival_odom(bool rival1_ok, bool rival2_ok, std::vect
         circle.center.y = obstacle.y;
         circle.velocity.x = obstacle.Vx;
         circle.velocity.y = obstacle.Vy;
+        circle.radius = 0.1;
+        circle.true_radius = 0.12;
         output_obstacles.circles.push_back(circle);
     }
     lidar_pub.publish(output_obstacles);
