@@ -6,7 +6,6 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /TF1
         - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 725
@@ -119,6 +118,26 @@ Visualization Manager:
               robot1/laser_frame:
                 {}
       Update Interval: 0
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /robot1/obstacle_marker
+      Name: MarkerArray
+      Namespaces:
+        "": true
+      Queue Size: 100
+      Value: true
+    - Circles color: 170; 0; 0
+      Class: Obstacles
+      Enabled: true
+      Margin color: 0; 170; 0
+      Name: Obstacles
+      Opacity: 0.75
+      Queue Size: 10
+      Segments color: 170; 170; 0
+      Segments thickness: 0.029999999329447746
+      Topic: /robot1/obstacle_array
+      Unreliable: false
       Value: true
   Enabled: true
   Global Options:
