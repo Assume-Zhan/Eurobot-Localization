@@ -3,7 +3,7 @@
     <arg name="robot_name" default="robot1"/>
     <arg name="robot_name_slash" default="robot1/"/>
 
-    <group ns="$(arg robot_name)">
+    <group ns="$(arg robot_name)" if="$(eval arg('robot_name')=='robot1')">
         <node name="rival_localization" pkg="eurobot_localization" type="rival_localization" output="screen">
             <param name="fusion_active" type="bool" value="true"/> <!-- fusion lidar & tracker rival pose-->
             <param name="rival1_active" type="bool" value="true"/>
