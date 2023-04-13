@@ -2,6 +2,8 @@
 
 	<arg name="robot_name" default="robot1"/>
 	<arg name="robot_name_slash" default="robot1/"/>
+	<arg name="active_rival_center" default="0"/>
+
     <group ns="$(arg robot_name)">
         <include file="$(find lidar_localization)/launch/lidar_driver/lidar_G6.launch">
 			<arg name="robot_name" value="$(arg robot_name)"/>
@@ -12,6 +14,7 @@
     <include file="$(find lidar_localization)/launch/lidar_localization_new.launch">
 		<arg name="robot_name" value="$(arg robot_name)"/>
 		<arg name="robot_name_slash" value="$(arg robot_name_slash)"/>
+        <arg name="active_rival_center" value="$(arg active_rival_center)"/>
     </include>
 
 </launch>
