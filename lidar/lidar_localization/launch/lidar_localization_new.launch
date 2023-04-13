@@ -11,9 +11,16 @@
 
 
         <!-- lidar localization -->
-        <node name="beacon_extractor" pkg="obstacle_detector" type="obstacle_extractor_node">
+        <node name="obstacle_detector_to_base" pkg="obstacle_detector" type="obstacle_extractor_node">
             <rosparam file="$(find lidar_localization)/params/beacon_excrator_params.yaml" command="load" />
             <param name="frame_id" value="$(arg robot_name_slash)base_footprint"/>
+            <remap from="raw_obstacles" to="detector_to_base"/>
+        </node>
+
+        <node name="obstacle_detector_to_map" pkg="obstacle_detector" type="obstacle_extractor_node">
+            <rosparam file="$(find lidar_localization)/params/beacon_excrator_params.yaml" command="load" />
+            <param name="frame_id" value="$(arg robot_name_slash)map"/>
+            <remap from="raw_obstacles" to="detector_to_map"/>
         </node>
 
         <node name="lidar_localization" pkg="lidar_localization" type="lidar_localization_node" output="log">
@@ -25,9 +32,10 @@
             <param name="robot_frame_id" value="$(arg robot_name_slash)base_footprint"/>
         </node>
 
-        <node name="obstacle_tracker" pkg="obstacle_detector" type="obstacle_tracker_node" > 
+        <node name="obstacle_tracker_to_base" pkg="obstacle_detector" type="obstacle_tracker_node" > 
                                                                                                                                             
             <param name="active" value="true"/>
+            <remap from="raw_obstacles" to="detector_to_base"/>
                                                    
             <param name="loop_rate" value="10.0"/>
             <param name="tracking_duration" value="0.5"/>
@@ -40,6 +48,24 @@
             <param name="frame_id" value="$(arg robot_name_slash)base_footprint"/>
                                                                                                                                             
             <remap from="tracked_obstacles" to="obstacles_to_base" />
+        </node>
+
+        <node name="obstacle_tracker_to_map" pkg="obstacle_detector" type="obstacle_tracker_node" > 
+                                                                                                                                            
+            <param name="active" value="true"/>
+            <remap from="raw_obstacles" to="detector_to_map"/>
+                                                   
+            <param name="loop_rate" value="10.0"/>
+            <param name="tracking_duration" value="0.5"/>
+            <param name="min_correspondence_cost" value="3"/>
+            <param name="std_correspondence_dev" value="0.15"/>
+            <param name="process_variance" value="5"/>
+            <param name="process_rate_variance" value="0.1"/>
+            <param name="measurement_variance" value="1.0"/>
+                                                                                                                                            
+            <param name="frame_id" value="$(arg robot_name_slash)map"/>
+                                                                                                                                            
+            <remap from="tracked_obstacles" to="obstacles_to_map" />
         </node>
 
         <!-- Area extractor -->
