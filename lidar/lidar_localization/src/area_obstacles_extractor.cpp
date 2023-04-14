@@ -168,7 +168,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
         }
       }
 
-      if(p_central_ && checkRobotpose(circle_msg.center)) return;
+      if(p_central_ && checkRobotpose(circle_msg.center)) continue;
 
       // Do low pass filter
       circle_msg = doLowPassFilter(circle_msg);
@@ -284,8 +284,10 @@ bool AreaObstaclesExtractor::checkBoundary(geometry_msgs::Point p)
 }
 
 bool AreaObstaclesExtractor::checkRobotpose(geometry_msgs::Point p){
-  if(length(input_robot_pose_.pose.pose.position, p) < p_obstacle_error_) return true;
-  if(length(input_ally_robot_pose_.pose.pose.position, p) < p_obstacle_error_) return true;
+  // 	if(length(input_robot_pose_.pose.pose.position, p) < p_obstacle_error_) return true;
+  if(length(input_ally_robot_pose_.pose.pose.position, p) < p_obstacle_error_) {
+	  return true;
+  }
   return false;
 }
 
