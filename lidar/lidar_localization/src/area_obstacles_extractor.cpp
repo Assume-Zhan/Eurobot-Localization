@@ -132,42 +132,20 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
 
 void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr)
 {
-  static tf2_ros::TransformListener tfListener(tfBuffer);
-
-  ros::Time now = ros::Time::now();
-  output_obstacles_array_.header.stamp = now;
+  output_obstacles_array_.header.stamp = ptr->header.stamp;
   output_obstacles_array_.header.frame_id = p_parent_frame_;
 
   // Clear all previous obstacles
   output_obstacles_array_.circles.clear();
-
-  // Get tf transform from base_footprint to map
-  geometry_msgs::TransformStamped transformStamped;
-  try{
-      transformStamped = tfBuffer.lookupTransform(p_parent_frame_, ptr->header.frame_id, ros::Time(0));
-  }
-  catch (tf2::TransformException &ex) {
-    ROS_WARN("%s", ex.what());
-    return;
-  }
-
   output_marker_array_.markers.clear();
+
   int id = 0;
+
   for (const obstacle_detector::CircleObstacle& circle : ptr->circles)
   {
 
-    // First transform from base_footprint to map
-    geometry_msgs::PointStamped obstacle_to_base;
-    obstacle_to_base.header.frame_id = ptr->header.frame_id;
-    obstacle_to_base.header.stamp = ptr->header.stamp;
-    obstacle_to_base.point = circle.center;
-
-    geometry_msgs::PointStamped obstacle_to_map;
-	tf2::doTransform(obstacle_to_base, obstacle_to_map, transformStamped);
-
-
     // Check obstacle boundary
-    if (checkBoundary(obstacle_to_base.point))
+    if (checkBoundary(circle.center))
     {
       obstacle_detector::CircleObstacle circle_msg;
       circle_msg.center = circle.center;
@@ -178,7 +156,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
       // Central -> check obstacles on the other robot and average the closest obstacle
       if(p_central_){
         for(const obstacle_detector::CircleObstacle& ally_circle : ally_obstacles_.circles){
-          if(length(ally_circle.center, obstacle_to_map.point) < p_obstacle_merge_d_){
+          if(length(ally_circle.center, circle_msg.center) < p_obstacle_merge_d_){
 		    // Average the point
             circle_msg.center.x = (circle_msg.center.x + ally_circle.center.x) / 2;
             circle_msg.center.y = (circle_msg.center.y + ally_circle.center.y) / 2;
@@ -201,7 +179,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
         // Mark the obstacles
         visualization_msgs::Marker marker;
         marker.header.frame_id = p_parent_frame_;
-        marker.header.stamp = now;
+        marker.header.stamp = ptr->header.stamp;
         marker.id = id++;
         marker.type = visualization_msgs::Marker::CYLINDER;
         marker.lifetime = ros::Duration(0.1);
