@@ -5,7 +5,7 @@
     <arg name="active_rival_center" default="1"/>
 
     <group ns="$(arg robot_name)" if="$(eval arg('active_rival_center')==1)">
-        <node name="rival_localization" pkg="eurobot_localization" type="rival_localization" output="screen">
+        <node name="rival_localization" pkg="eurobot_localization" type="rival_localization">
             <param name="fusion_active" type="bool" value="true"/> <!-- fusion lidar & tracker rival pose-->
             <param name="rival1_active" type="bool" value="true"/>
             <param name="rival2_active" type="bool" value="false"/>

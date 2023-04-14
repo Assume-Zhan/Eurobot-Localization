@@ -31,7 +31,7 @@
     </node>
     <!-- Odometry communication (rosserial server) -->
     <node pkg="rosserial_server" type="serial_node" name="rosserial_server_dp" output="screen">
-        <param name="port" value="/dev/USB0" />
+        <param name="port" value="/dev/USB0-2" />
         <param name="baud" value="115200" />
         <rosparam>
             require:
