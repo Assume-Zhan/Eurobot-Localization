@@ -13,8 +13,8 @@
             <param name="rival1_topic_name" type="string" value="/rival1/odom"/>
             <param name="rival2_topic_name" type="string" value="/rival2/odom"/>
 
-            <param name="lidar_topic_name" type="string" value="/robot1/obstacle_array" if="$(eval arg('robot_name')=='robot2')"/>
-            <param name="lidar_topic_name" type="string" value="/robot2/obstacle_array" if="$(eval arg('robot_name')=='robot1')"/>
+            <param name="lidar_topic_name" type="string" value="/robot1/obstacle_array" if="$(eval arg('robot_name')=='robot1')"/>
+            <param name="lidar_topic_name" type="string" value="/robot2/obstacle_array" if="$(eval arg('robot_name')=='robot2')"/>
 
             <param name="lidar_pub_topic_name" type="string" value="/RivalObstacle"/>
             <param name="time_out" type="double" value="0.1"/>
