@@ -83,6 +83,8 @@
             <param name="central" value="false" if="$(eval arg('active_rival_center')==0)"/>
 
             <param name="parent_frame" value="$(arg robot_name_slash)map"/>
+            <param name="obstacle_merge_d" value="0.1"/>
+            <param name="obstacle_vel_merge_d" value="0.35"/>
 
             <remap from="robot_pose" to="/robot1/ekf_pose" if="$(eval arg('robot_name')=='robot1')"/>
             <remap from="robot_pose" to="/robot2/ekf_pose" if="$(eval arg('robot_name')=='robot2')"/>

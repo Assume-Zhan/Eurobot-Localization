@@ -156,6 +156,7 @@ private:
   double p_avoid_min_distance_;
   double p_avoid_max_distance_;
   double p_obstacle_merge_d_;
+  double p_obstacle_vel_merge_d_;
   double p_obstacle_error_;
   double p_obstacle_lpf_cur_;
 

@@ -99,6 +99,7 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
   nh_local_.param<double>("avoid_max_distance", p_avoid_max_distance_, 0.5);
   nh_local_.param<double>("ally_excluded_radius", p_ally_excluded_radius_, p_avoid_min_distance_);
   nh_local_.param<double>("obstacle_merge_d", p_obstacle_merge_d_, 0.1);
+  nh_local_.param<double>("obstacle_vel_merge_d", p_obstacle_vel_merge_d_, 0.3);
   nh_local_.param<double>("obstacle_error", p_obstacle_error_, 0.1);
   nh_local_.param<double>("obstacle_lpf_cur", p_obstacle_lpf_cur_, 0.5);
 
@@ -173,7 +174,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
       if(p_central_ && checkRobotpose(circle_msg.center)) continue;
 
       // Do low pass filter
-      circle_msg = doLowPassFilter(circle_msg);
+      // circle_msg = doLowPassFilter(circle_msg);
 
       output_obstacles_array_.circles.push_back(circle_msg);
 
@@ -230,7 +231,7 @@ obstacle_detector::CircleObstacle AreaObstaclesExtractor::matchPreviousObs(obsta
   obstacle_detector::CircleObstacle circle_match = p;
 
   for(auto prev_obstacle : prev_output_obstacles_array_.circles){
-    if(length(p.center, prev_obstacle.center) < p_obstacle_merge_d_){
+    if(length(p.center, prev_obstacle.center) < p_obstacle_vel_merge_d_){
       circle_match.velocity.x = (p.center.x - prev_obstacle.center.x) / 0.1;
       circle_match.velocity.y = (p.center.y - prev_obstacle.center.y) / 0.1;
     }
