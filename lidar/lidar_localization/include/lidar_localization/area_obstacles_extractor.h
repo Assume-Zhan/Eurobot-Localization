@@ -113,6 +113,8 @@ private:
   bool checkRobotpose(geometry_msgs::Point);
   void robotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
   void allyRobotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
+  
+  obstacle_detector::CircleObstacle matchPreviousObs(obstacle_detector::CircleObstacle);
 
   /* ros node */
   ros::NodeHandle nh_;

@@ -152,6 +152,8 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
       circle_msg.velocity = circle.velocity;
       circle_msg.radius = circle.radius;
       circle_msg.true_radius = circle.true_radius;
+
+      circle_msg = matchPreviousObs(circle);
 	
       // Central -> check obstacles on the other robot and average the closest obstacle
       if(p_central_){
@@ -222,6 +224,18 @@ obstacle_detector::CircleObstacle AreaObstaclesExtractor::doLowPassFilter(obstac
     }
   }
   return cur_obstacle;
+}
+
+obstacle_detector::CircleObstacle AreaObstaclesExtractor::matchPreviousObs(obstacle_detector::CircleObstacle p){
+  obstacle_detector::CircleObstacle circle_match = p;
+
+  for(auto prev_obstacle : prev_output_obstacles_array_.circles){
+    if(length(p.center, prev_obstacle.center) < p_obstacle_merge_d_){
+      circle_match.velocity.x = (p.velocity.x - prev_obstacle.velocity.x) / 0.1;
+      circle_match.velocity.y = (p.velocity.y - prev_obstacle.velocity.y) / 0.1;
+    }
+  }
+  return circle_match;
 }
 
 void AreaObstaclesExtractor::allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr){
