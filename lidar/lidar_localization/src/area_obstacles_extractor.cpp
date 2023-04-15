@@ -231,8 +231,8 @@ obstacle_detector::CircleObstacle AreaObstaclesExtractor::matchPreviousObs(obsta
 
   for(auto prev_obstacle : prev_output_obstacles_array_.circles){
     if(length(p.center, prev_obstacle.center) < p_obstacle_merge_d_){
-      circle_match.velocity.x = (p.velocity.x - prev_obstacle.velocity.x) / 0.1;
-      circle_match.velocity.y = (p.velocity.y - prev_obstacle.velocity.y) / 0.1;
+      circle_match.velocity.x = (p.center.x - prev_obstacle.center.x) / 0.1;
+      circle_match.velocity.y = (p.center.y - prev_obstacle.center.y) / 0.1;
     }
   }
   return circle_match;
