@@ -41,9 +41,9 @@ update_cov_3: 0.015
 
 # update param=
 mini_likelihood: -10000.0
-mini_likelihood_update: 0.1
+mini_likelihood_update: 0.35
 #mini_likelihood_update: 0.65
-max_obstacle_distance: 0.5
+max_obstacle_distance: 0.25
 
 timer_frequency: 10
 velocity_lpf_gain: 0.5
