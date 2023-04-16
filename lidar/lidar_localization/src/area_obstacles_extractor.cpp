@@ -104,6 +104,7 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
   nh_local_.param<double>("obstacle_error", p_obstacle_error_, 0.1);
   nh_local_.param<double>("obstacle_lpf_cur", p_obstacle_lpf_cur_, 0.5);
   nh_local_.param<double>("sample_number", p_sample_number_, 10.0);
+  nh_local_.param<double>("timeout", p_timeout_, 3.0);
 
   if (p_active_ != prev_active)
   {
@@ -203,6 +204,10 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     }
 
     recordObstacles(*ptr, ptr->header.stamp.now().toSec());
+
+    for(int i = 0 ; i < prev_output_obstacles_array_.size() ; i++){
+      ROS_INFO_STREAM("time diff : " << (prev_output_obstacles_array_.front().x - prev_output_obstacles_array_.front().y));
+    }
 
     publishObstacles();
     
