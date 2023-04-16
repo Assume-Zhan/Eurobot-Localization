@@ -203,15 +203,15 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
     }
 
-    recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
+  }
+  recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
 
-    publishObstacles();
+  publishObstacles();
     
     
-    if(p_central_){
-      publishMarkers();
-      publishHaveObstacles();
-    }
+  if(p_central_){
+    publishMarkers();
+    publishHaveObstacles();
   }
 }
 
