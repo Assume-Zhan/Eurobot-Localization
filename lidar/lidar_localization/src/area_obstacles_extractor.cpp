@@ -23,6 +23,7 @@
  */
 
 #include "lidar_localization/area_obstacles_extractor.h"
+#include "obstacle_detector/CircleObstacle.h"
 
 using namespace std;
 using namespace lidar_localization;
@@ -102,6 +103,8 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
   nh_local_.param<double>("obstacle_vel_merge_d", p_obstacle_vel_merge_d_, 0.3);
   nh_local_.param<double>("obstacle_error", p_obstacle_error_, 0.1);
   nh_local_.param<double>("obstacle_lpf_cur", p_obstacle_lpf_cur_, 0.5);
+  nh_local_.param<double>("sample_number", p_sample_number_, 10.0);
+  nh_local_.param<double>("timeout", p_timeout_, 0.8);
 
   if (p_active_ != prev_active)
   {
@@ -149,18 +152,13 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     if (checkBoundary(circle.center))
     {
       obstacle_detector::CircleObstacle circle_msg;
-      circle_msg.center = circle.center;
-      circle_msg.velocity = circle.velocity;
-      circle_msg.radius = circle.radius;
-      circle_msg.true_radius = circle.true_radius;
-
       circle_msg = matchPreviousObs(circle);
 	
       // Central -> check obstacles on the other robot and average the closest obstacle
       if(p_central_){
         for(const obstacle_detector::CircleObstacle& ally_circle : ally_obstacles_.circles){
           if(length(ally_circle.center, circle_msg.center) < p_obstacle_merge_d_){
-		    // Average the point
+            // Average the point
             circle_msg.center.x = (circle_msg.center.x + ally_circle.center.x) / 2;
             circle_msg.center.y = (circle_msg.center.y + ally_circle.center.y) / 2;
             circle_msg.velocity.x = (circle_msg.velocity.x + ally_circle.velocity.x) / 2;
@@ -169,15 +167,13 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
             circle_msg.true_radius = (circle.true_radius + ally_circle.true_radius) / 2;
           }
         }
+        
+        if(checkRobotpose(circle_msg.center)) continue;
       }
-
-      if(p_central_ && checkRobotpose(circle_msg.center)) continue;
-
+      
       // Do low pass filter
       // circle_msg = doLowPassFilter(circle_msg);
-
-      output_obstacles_array_.circles.push_back(circle_msg);
-
+      
       if(p_central_){
         // Mark the obstacles
         visualization_msgs::Marker marker;
@@ -201,13 +197,16 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
         output_marker_array_.markers.push_back(marker);
       }
+
+
+      output_obstacles_array_.circles.push_back(circle_msg);
+
     }
 
+    recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
+
     publishObstacles();
-    prev_output_obstacles_array_.circles.clear();
-    for(auto circle : output_obstacles_array_.circles){
-      prev_output_obstacles_array_.circles.push_back(circle);
-    }
+    
     
     if(p_central_){
       publishMarkers();
@@ -216,26 +215,75 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
   }
 }
 
-obstacle_detector::CircleObstacle AreaObstaclesExtractor::doLowPassFilter(obstacle_detector::CircleObstacle cur_obstacle){
-  for(auto prev_obstacle : prev_output_obstacles_array_.circles){
-    if(length(prev_obstacle.center, cur_obstacle.center) < 0.1){
-      cur_obstacle.velocity.x = cur_obstacle.velocity.x * p_obstacle_lpf_cur_ + prev_obstacle.velocity.x * (1 - p_obstacle_lpf_cur_);
-      cur_obstacle.velocity.y = cur_obstacle.velocity.y * p_obstacle_lpf_cur_ + prev_obstacle.velocity.y * (1 - p_obstacle_lpf_cur_);
-      return cur_obstacle;
-    }
+void AreaObstaclesExtractor::recordObstacles(obstacle_detector::Obstacles& circles, double time){
+
+  // Removing timeout object
+  bool removingTimeout = true;
+  while(!prev_output_obstacles_array_.empty() && removingTimeout){
+    // Get the front of previous point
+    geometry_msgs::Point checkPoint = prev_output_obstacles_array_.front();
+
+    // Remove timeout point
+    if(time - checkPoint.z < p_timeout_) removingTimeout = false;
+    else prev_output_obstacles_array_.pop();
   }
+
+  // Check each point in previous obstacle
+  // If matched the closest obstacle will renew the velocity information
+  int queueSize = prev_output_obstacles_array_.size();
+  for(int i = 0 ; i < queueSize ; i++){
+    geometry_msgs::Point checkpt = prev_output_obstacles_array_.front();
+
+    for(obstacle_detector::CircleObstacle& circle : circles.circles){
+      if(length(circle.center, checkpt) < p_obstacle_error_){
+        try{
+          circle.velocity.x = (circle.center.x - checkpt.x) / (time - checkpt.z);
+          circle.velocity.y = (circle.center.y - checkpt.y) / (time - checkpt.z);
+        }
+        catch (...){
+          ROS_ERROR_STREAM("[Area Extractor] : " << "Divide zero problem");
+        }
+      }
+    }
+    prev_output_obstacles_array_.pop();
+    prev_output_obstacles_array_.push(checkpt);
+  }
+
+  ROS_INFO_STREAM("[Area Extractor] : Check previous queue size " << queueSize);
+
+  // Put new obstales with timestamp in queue
+  // Use z to store time information
+  for(obstacle_detector::CircleObstacle& circle : circles.circles){
+    circle.center.z = time;
+    geometry_msgs::Point p;
+    p.x = circle.center.x;
+    p.y = circle.center.y;
+    p.z = time;
+    prev_output_obstacles_array_.push(p);
+  }
+
+}
+
+obstacle_detector::CircleObstacle AreaObstaclesExtractor::doLowPassFilter(obstacle_detector::CircleObstacle cur_obstacle){
+  // for(auto prev_obstacle : prev_output_obstacles_array_.circles){
+  //   if(length(prev_obstacle.center, cur_obstacle.center) < 0.1){
+  //     cur_obstacle.velocity.x = cur_obstacle.velocity.x * p_obstacle_lpf_cur_ + prev_obstacle.velocity.x * (1 - p_obstacle_lpf_cur_);
+  //     cur_obstacle.velocity.y = cur_obstacle.velocity.y * p_obstacle_lpf_cur_ + prev_obstacle.velocity.y * (1 - p_obstacle_lpf_cur_);
+  //     return cur_obstacle;
+  //   }
+  // }
   return cur_obstacle;
 }
 
 obstacle_detector::CircleObstacle AreaObstaclesExtractor::matchPreviousObs(obstacle_detector::CircleObstacle p){
   obstacle_detector::CircleObstacle circle_match = p;
 
-  for(auto prev_obstacle : prev_output_obstacles_array_.circles){
-    if(length(p.center, prev_obstacle.center) < p_obstacle_vel_merge_d_){
-      circle_match.velocity.x = (p.center.x - prev_obstacle.center.x) / 0.1;
-      circle_match.velocity.y = (p.center.y - prev_obstacle.center.y) / 0.1;
-    }
-  }
+  // for(auto prev_obstacle : prev_output_obstacles_array_.circles){
+  //   if(length(p.center, prev_obstacle.center) < p_obstacle_vel_merge_d_){
+  //     circle_match.velocity.x = (p.center.x - prev_obstacle.center.x) / 0.1;
+  //     circle_match.velocity.y = (p.center.y - prev_obstacle.center.y) / 0.1;
+  //   }
+  // }
   return circle_match;
 }
 
