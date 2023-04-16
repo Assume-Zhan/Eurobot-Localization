@@ -24,8 +24,11 @@
 
 #pragma once
 
+#include "geometry_msgs/Point.h"
+#include "obstacle_detector/CircleObstacle.h"
 #include <ros/ros.h>
 #include <vector>
+#include <queue>
 
 #include <lidar_localization/util/math_util.h>
 #include <std_msgs/Bool.h>
@@ -96,6 +99,8 @@ private:
 
   obstacle_detector::CircleObstacle doLowPassFilter(obstacle_detector::CircleObstacle);
 
+  void recordObstacles(obstacle_detector::Obstacles, double);
+
   /**
    * @brief Topic `obstacles_to_map` publisher function
    *
@@ -135,7 +140,7 @@ private:
   geometry_msgs::PoseWithCovarianceStamped input_robot_pose_;
   geometry_msgs::PoseWithCovarianceStamped input_ally_robot_pose_;
   obstacle_detector::Obstacles output_obstacles_array_;
-  obstacle_detector::Obstacles prev_output_obstacles_array_;
+  std::queue<geometry_msgs::Point> prev_output_obstacles_array_;
   obstacle_detector::Obstacles ally_obstacles_;
   std_msgs::Bool output_have_obstacles_;
   visualization_msgs::MarkerArray output_marker_array_;
@@ -159,6 +164,8 @@ private:
   double p_obstacle_vel_merge_d_;
   double p_obstacle_error_;
   double p_obstacle_lpf_cur_;
+  double p_sample_number_;
+  double p_timeout_;
 
   std::string p_parent_frame_;
   std::string p_ally_obstacles_topic_;
