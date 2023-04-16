@@ -204,10 +204,6 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     }
 
     recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
-    for(auto circle : output_obstacles_array_.circles){
-      ROS_INFO_STREAM("CHECK VEL : " << circle.velocity.x);
-    }
-
 
     publishObstacles();
     
@@ -239,14 +235,21 @@ void AreaObstaclesExtractor::recordObstacles(obstacle_detector::Obstacles& circl
     geometry_msgs::Point checkpt = prev_output_obstacles_array_.front();
 
     for(obstacle_detector::CircleObstacle& circle : circles.circles){
-      if(length(circle.center, checkpt) < 0.1){
-        circle.velocity.x = time - checkpt.z;
+      if(length(circle.center, checkpt) < p_obstacle_error_){
+        try{
+          circle.velocity.x = (circle.center.x - checkpt.x) / (time - checkpt.z);
+          circle.velocity.y = (circle.center.y - checkpt.y) / (time - checkpt.z);
+        }
+        catch (...){
+          ROS_ERROR_STREAM("[Area Extractor] : " << "Divide zero problem");
+        }
       }
     }
     prev_output_obstacles_array_.pop();
     prev_output_obstacles_array_.push(checkpt);
   }
-  ROS_INFO_STREAM("queue size : " << queueSize);
+
+  ROS_INFO_STREAM("[Area Extractor] : Check previous queue size " << queueSize);
 
   // Put new obstales with timestamp in queue
   // Use z to store time information
