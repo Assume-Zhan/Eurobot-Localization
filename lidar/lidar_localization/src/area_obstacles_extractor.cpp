@@ -104,7 +104,7 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
   nh_local_.param<double>("obstacle_error", p_obstacle_error_, 0.1);
   nh_local_.param<double>("obstacle_lpf_cur", p_obstacle_lpf_cur_, 0.5);
   nh_local_.param<double>("sample_number", p_sample_number_, 10.0);
-  nh_local_.param<double>("timeout", p_timeout_, 3.0);
+  nh_local_.param<double>("timeout", p_timeout_, 0.8);
 
   if (p_active_ != prev_active)
   {
@@ -203,11 +203,11 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
     }
 
-    recordObstacles(*ptr, ptr->header.stamp.now().toSec());
-
-    for(int i = 0 ; i < prev_output_obstacles_array_.size() ; i++){
-      ROS_INFO_STREAM("time diff : " << (prev_output_obstacles_array_.front().x - prev_output_obstacles_array_.front().y));
+    recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
+    for(auto circle : output_obstacles_array_.circles){
+      ROS_INFO_STREAM("CHECK VEL : " << circle.velocity.x);
     }
+
 
     publishObstacles();
     
@@ -219,17 +219,37 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
   }
 }
 
-void AreaObstaclesExtractor::recordObstacles(obstacle_detector::Obstacles circles, double time){
+void AreaObstaclesExtractor::recordObstacles(obstacle_detector::Obstacles& circles, double time){
 
   // Removing timeout object
   bool removingTimeout = true;
   while(!prev_output_obstacles_array_.empty() && removingTimeout){
+    // Get the front of previous point
     geometry_msgs::Point checkPoint = prev_output_obstacles_array_.front();
-    if(checkPoint.z > p_timeout_) prev_output_obstacles_array_.pop();
-    else removingTimeout = false;
+
+    // Remove timeout point
+    if(time - checkPoint.z < p_timeout_) removingTimeout = false;
+    else prev_output_obstacles_array_.pop();
   }
 
+  // Check each point in previous obstacle
+  // If matched the closest obstacle will renew the velocity information
+  int queueSize = prev_output_obstacles_array_.size();
+  for(int i = 0 ; i < queueSize ; i++){
+    geometry_msgs::Point checkpt = prev_output_obstacles_array_.front();
+
+    for(obstacle_detector::CircleObstacle& circle : circles.circles){
+      if(length(circle.center, checkpt) < 0.1){
+        circle.velocity.x = time - checkpt.z;
+      }
+    }
+    prev_output_obstacles_array_.pop();
+    prev_output_obstacles_array_.push(checkpt);
+  }
+  ROS_INFO_STREAM("queue size : " << queueSize);
+
   // Put new obstales with timestamp in queue
+  // Use z to store time information
   for(obstacle_detector::CircleObstacle& circle : circles.circles){
     circle.center.z = time;
     geometry_msgs::Point p;

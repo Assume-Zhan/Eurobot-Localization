@@ -99,7 +99,7 @@ private:
 
   obstacle_detector::CircleObstacle doLowPassFilter(obstacle_detector::CircleObstacle);
 
-  void recordObstacles(obstacle_detector::Obstacles, double);
+  void recordObstacles(obstacle_detector::Obstacles&, double);
 
   /**
    * @brief Topic `obstacles_to_map` publisher function
