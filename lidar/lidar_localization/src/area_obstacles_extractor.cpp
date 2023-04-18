@@ -163,7 +163,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
         for(auto& ally_circle : ally_obstacles_.circles)
         {
-          if(length(ally_circle.center, circle_msg.center) < p_obstacle_merge_d_)
+          if(ally_circle.center.z == 0 && length(ally_circle.center, circle_msg.center) < p_obstacle_merge_d_)
           {
             // Average the point
             circle_msg.center.x = (circle_msg.center.x + ally_circle.center.x) / 2;
@@ -210,11 +210,38 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
   }
 
-  for(const obstacle_detector::CircleObstacle& ally_circle : ally_obstacles_.circles)
-  {
-    if(ally_circle.center.z == 0)
+  if(p_central_){
+    for(const obstacle_detector::CircleObstacle& ally_circle : ally_obstacles_.circles)
     {
-      output_obstacles_array_.circles.push_back(ally_circle);
+      if(ally_circle.center.z == 0)
+      {
+        ROS_INFO_STREAM("Not matched will push in");
+        output_obstacles_array_.circles.push_back(ally_circle);
+
+        if(checkRobotpose(circle_msg.center)) continue;
+
+        // Mark the obstacles
+        visualization_msgs::Marker marker;
+        marker.header.frame_id = p_parent_frame_;
+        marker.header.stamp = ptr->header.stamp;
+        marker.id = id++;
+        marker.type = visualization_msgs::Marker::CYLINDER;
+        marker.lifetime = ros::Duration(0.1);
+        marker.pose.position.x = circle_msg.center.x;
+        marker.pose.position.y = circle_msg.center.y;
+        marker.pose.position.z = p_marker_height_ / 2.0;
+        marker.pose.orientation.w = 1.0;
+        marker.color.r = 0.5;
+        marker.color.g = 1.0;
+        marker.color.b = 0.5;
+        marker.color.a = 1.0;
+
+        marker.scale.x = circle.radius;
+        marker.scale.y = circle.radius;
+        marker.scale.z = p_marker_height_;
+
+        output_marker_array_.markers.push_back(marker);
+      }
     }
   }
 
