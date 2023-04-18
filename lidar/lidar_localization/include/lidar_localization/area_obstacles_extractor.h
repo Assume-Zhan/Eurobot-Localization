@@ -97,8 +97,8 @@ private:
 
   void allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr);
 
-  obstacle_detector::CircleObstacle doLowPassFilter(obstacle_detector::CircleObstacle);
-
+  void doLowPassFilter(obstacle_detector::Obstacles&, obstacle_detector::Obstacles);
+  
   void recordObstacles(obstacle_detector::Obstacles&, double);
 
   /**
@@ -118,8 +118,6 @@ private:
   bool checkRobotpose(geometry_msgs::Point);
   void robotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
   void allyRobotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
-  
-  obstacle_detector::CircleObstacle matchPreviousObs(obstacle_detector::CircleObstacle);
 
   /* ros node */
   ros::NodeHandle nh_;
