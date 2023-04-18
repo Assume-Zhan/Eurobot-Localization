@@ -218,7 +218,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
         ROS_INFO_STREAM("Not matched will push in");
         output_obstacles_array_.circles.push_back(ally_circle);
 
-        if(checkRobotpose(circle_msg.center)) continue;
+        if(checkRobotpose(ally_circle.center)) continue;
 
         // Mark the obstacles
         visualization_msgs::Marker marker;
@@ -227,8 +227,8 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
         marker.id = id++;
         marker.type = visualization_msgs::Marker::CYLINDER;
         marker.lifetime = ros::Duration(0.1);
-        marker.pose.position.x = circle_msg.center.x;
-        marker.pose.position.y = circle_msg.center.y;
+        marker.pose.position.x = ally_circle.center.x;
+        marker.pose.position.y = ally_circle.center.y;
         marker.pose.position.z = p_marker_height_ / 2.0;
         marker.pose.orientation.w = 1.0;
         marker.color.r = 0.5;
@@ -236,8 +236,8 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
         marker.color.b = 0.5;
         marker.color.a = 1.0;
 
-        marker.scale.x = circle.radius;
-        marker.scale.y = circle.radius;
+        marker.scale.x = 0.05;
+        marker.scale.y = 0.05;
         marker.scale.z = p_marker_height_;
 
         output_marker_array_.markers.push_back(marker);
