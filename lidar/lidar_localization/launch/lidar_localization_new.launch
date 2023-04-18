@@ -1,5 +1,5 @@
 <launch>
-    
+
     <arg name="robot_name" default="robot1"/>
     <arg name="robot_name_slash" default="robot1/"/>
     <arg name="active_rival_center" default="0"/>
@@ -39,10 +39,10 @@
         </node>
 
         <node name="obstacle_tracker_to_base" pkg="obstacle_detector" type="obstacle_tracker_node" > 
-                                                                                                                                            
+
             <param name="active" value="true"/>
             <remap from="raw_obstacles" to="detector_to_base"/>
-                                                   
+
             <param name="loop_rate" value="10.0"/>
             <param name="tracking_duration" value="0.5"/>
             <param name="min_correspondence_cost" value="3"/>
@@ -50,17 +50,17 @@
             <param name="process_variance" value="5"/>
             <param name="process_rate_variance" value="0.1"/>
             <param name="measurement_variance" value="1.0"/>
-                                                                                                                                            
+
             <param name="frame_id" value="$(arg robot_name_slash)base_footprint"/>
-                                                                                                                                            
+
             <remap from="tracked_obstacles" to="obstacles_to_base" />
         </node>
 
         <node name="obstacle_tracker_to_map" pkg="obstacle_detector" type="obstacle_tracker_node" > 
-                                                                                                                                            
+
             <param name="active" value="true"/>
             <remap from="raw_obstacles" to="detector_to_map"/>
-                                                   
+
             <param name="loop_rate" value="10.0"/>
             <param name="tracking_duration" value="0.5"/>
             <param name="min_correspondence_cost" value="3"/>
@@ -68,9 +68,9 @@
             <param name="process_variance" value="5"/>
             <param name="process_rate_variance" value="0.1"/>
             <param name="measurement_variance" value="1.0"/>
-                                                                                                                                            
+
             <param name="frame_id" value="$(arg robot_name_slash)map"/>
-                                                                                                                                            
+
             <remap from="tracked_obstacles" to="obstacles_to_map" />
         </node>
 
