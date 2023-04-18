@@ -154,10 +154,14 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
       obstacle_detector::CircleObstacle circle_msg;
       circle_msg = circle;
 	
-      // Central -> check obstacles on the other robot and average the closest obstacle
+      // Central : 
+      // 1. Merge 2 robots' obstacles
+      // 2. Check 2 robots' obstacles
+      // 3. Record and do low pass filter
       if(p_central_)
       {
-        for(const obstacle_detector::CircleObstacle& ally_circle : ally_obstacles_.circles)
+
+        for(auto& ally_circle : ally_obstacles_.circles)
         {
           if(length(ally_circle.center, circle_msg.center) < p_obstacle_merge_d_)
           {
@@ -168,13 +172,14 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
             circle_msg.velocity.y = (circle_msg.velocity.y + ally_circle.velocity.y) / 2;
             circle_msg.radius = (circle.radius + ally_circle.radius) / 2;
             circle_msg.true_radius = (circle.true_radius + ally_circle.true_radius) / 2;
+
+            // Pick the flag
+            ally_circle.center.z = 1;
           }
         }
         
         if(checkRobotpose(circle_msg.center)) continue;
-      }
-      
-      if(p_central_){
+
         // Mark the obstacles
         visualization_msgs::Marker marker;
         marker.header.frame_id = p_parent_frame_;
@@ -204,6 +209,15 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     }
 
   }
+
+  for(const obstacle_detector::CircleObstacle& ally_circle : ally_obstacles_.circles)
+  {
+    if(ally_circle.center.z == 0)
+    {
+      output_obstacles_array_.circles.push_back(ally_circle);
+    }
+  }
+
 
   static obstacle_detector::Obstacles prev;
   recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
@@ -292,7 +306,12 @@ void AreaObstaclesExtractor::doLowPassFilter(obstacle_detector::Obstacles& curr,
 }
 
 void AreaObstaclesExtractor::allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr){
-    ally_obstacles_ = *ptr; 
+    ally_obstacles_ = *ptr;
+
+    for(auto& ally_obs : ally_obstacles_.circles)
+    {
+      ally_obs.center.z = 0;
+    }
 }
 
 void AreaObstaclesExtractor::publishObstacles()
