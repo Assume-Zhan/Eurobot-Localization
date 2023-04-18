@@ -215,10 +215,9 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     {
       if(ally_circle.center.z == 0)
       {
-        ROS_INFO_STREAM("Not matched will push in");
-        output_obstacles_array_.circles.push_back(ally_circle);
-
         if(checkRobotpose(ally_circle.center)) continue;
+
+        output_obstacles_array_.circles.push_back(ally_circle);
 
         // Mark the obstacles
         visualization_msgs::Marker marker;
