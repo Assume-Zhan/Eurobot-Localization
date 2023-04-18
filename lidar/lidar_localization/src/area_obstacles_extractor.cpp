@@ -250,10 +250,14 @@ void AreaObstaclesExtractor::recordObstacles(obstacle_detector::Obstacles& circl
 
 }
 
-void AreaObstaclesExtractor::doLowPassFilter(obstacle_detector::Obstacles& curr, obstacle_detector::Obstacles prev){
-  for(auto& cur_obstacle : curr.circles){
-    for(auto prev_obstacle : prev.circles){
-      if(length(prev_obstacle.center, cur_obstacle.center) < 0.3){
+void AreaObstaclesExtractor::doLowPassFilter(obstacle_detector::Obstacles& curr, obstacle_detector::Obstacles prev)
+{
+  for(auto& cur_obstacle : curr.circles)
+  {
+    for(auto prev_obstacle : prev.circles)
+    {
+      if(length(prev_obstacle.center, cur_obstacle.center) < 0.3)
+      {
         cur_obstacle.velocity.x = cur_obstacle.velocity.x * p_obstacle_lpf_cur_ + prev_obstacle.velocity.x * (1 - p_obstacle_lpf_cur_);
         cur_obstacle.velocity.y = cur_obstacle.velocity.y * p_obstacle_lpf_cur_ + prev_obstacle.velocity.y * (1 - p_obstacle_lpf_cur_);
       }
