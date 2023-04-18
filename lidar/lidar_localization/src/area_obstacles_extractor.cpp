@@ -147,7 +147,6 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
   for (const obstacle_detector::CircleObstacle& circle : ptr->circles)
   {
-
     // Check obstacle boundary
     if (checkBoundary(circle.center))
     {
@@ -160,7 +159,6 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
       // 3. Record and do low pass filter
       if(p_central_)
       {
-
         for(auto& ally_circle : ally_obstacles_.circles)
         {
           if(ally_circle.center.z == 0 && length(ally_circle.center, circle_msg.center) < p_obstacle_merge_d_)
@@ -177,35 +175,12 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
             ally_circle.center.z = 1;
           }
         }
-        
+
+        // Check robot pose
         if(checkRobotpose(circle_msg.center)) continue;
 
-        // Mark the obstacles
-        visualization_msgs::Marker marker;
-        marker.header.frame_id = p_parent_frame_;
-        marker.header.stamp = ptr->header.stamp;
-        marker.id = id++;
-        marker.type = visualization_msgs::Marker::CYLINDER;
-        marker.lifetime = ros::Duration(0.1);
-        marker.pose.position.x = circle_msg.center.x;
-        marker.pose.position.y = circle_msg.center.y;
-        marker.pose.position.z = p_marker_height_ / 2.0;
-        marker.pose.orientation.w = 1.0;
-        marker.color.r = 0.5;
-        marker.color.g = 1.0;
-        marker.color.b = 0.5;
-        marker.color.a = 1.0;
-
-        marker.scale.x = circle.radius;
-        marker.scale.y = circle.radius;
-        marker.scale.z = p_marker_height_;
-
-        output_marker_array_.markers.push_back(marker);
+        pushMardedObstacles(ptr->header.stamp, circle_msg, id++);
       }
-
-
-      output_obstacles_array_.circles.push_back(circle_msg);
-
     }
 
   }
@@ -219,27 +194,8 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
         output_obstacles_array_.circles.push_back(ally_circle);
 
-        // Mark the obstacles
-        visualization_msgs::Marker marker;
-        marker.header.frame_id = p_parent_frame_;
-        marker.header.stamp = ptr->header.stamp;
-        marker.id = id++;
-        marker.type = visualization_msgs::Marker::CYLINDER;
-        marker.lifetime = ros::Duration(0.1);
-        marker.pose.position.x = ally_circle.center.x;
-        marker.pose.position.y = ally_circle.center.y;
-        marker.pose.position.z = p_marker_height_ / 2.0;
-        marker.pose.orientation.w = 1.0;
-        marker.color.r = 0.5;
-        marker.color.g = 1.0;
-        marker.color.b = 0.5;
-        marker.color.a = 1.0;
-
-        marker.scale.x = 0.05;
-        marker.scale.y = 0.05;
-        marker.scale.z = p_marker_height_;
-
-        output_marker_array_.markers.push_back(marker);
+        pushMardedObstacles(ptr->header.stamp, ally_circle, id++);
+        
       }
     }
   }
@@ -354,6 +310,32 @@ void AreaObstaclesExtractor::publishHaveObstacles()
   }
   pub_have_obstacles_.publish(output_have_obstacles_);
 }
+
+void AreaObstaclesExtractor::pushMardedObstacles(ros::Time time, obstacle_detector::CircleObstacle circle, int id)
+{
+  // Mark the obstacles
+  visualization_msgs::Marker marker;
+  marker.header.frame_id = p_parent_frame_;
+  marker.header.stamp = time;
+  marker.id = id;
+  marker.type = visualization_msgs::Marker::CYLINDER;
+  marker.lifetime = ros::Duration(0.1);
+  marker.pose.position.x = circle.center.x;
+  marker.pose.position.y = circle.center.y;
+  marker.pose.position.z = p_marker_height_ / 2.0;
+  marker.pose.orientation.w = 1.0;
+  marker.color.r = 0.5;
+  marker.color.g = 1.0;
+  marker.color.b = 0.5;
+  marker.color.a = 1.0;
+
+  marker.scale.x = circle.radius;
+  marker.scale.y = circle.radius;
+  marker.scale.z = p_marker_height_;
+
+  output_marker_array_.markers.push_back(marker);
+}
+
 
 void AreaObstaclesExtractor::publishMarkers()
 {

@@ -101,6 +101,8 @@ private:
   
   void recordObstacles(obstacle_detector::Obstacles&, double);
 
+  void pushMardedObstacles(ros::Time, obstacle_detector::CircleObstacle, int);
+
   /**
    * @brief Topic `obstacles_to_map` publisher function
    *
