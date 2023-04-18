@@ -76,7 +76,8 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
     {
       sub_obstacles_ = nh_.subscribe("obstacles_to_map", 10, &AreaObstaclesExtractor::obstacleCallback, this);
       pub_obstacles_array_ = nh_.advertise<obstacle_detector::Obstacles>("obstacle_array", 10);
-      if(p_central_) {
+      if(p_central_) 
+      {
         sub_ally_obstacles_ = nh_.subscribe(p_ally_obstacles_topic_, 10, &AreaObstaclesExtractor::allyObstacleCallback, this);  
         sub_robot_pose_ = nh_.subscribe("robot_pose", 10, &AreaObstaclesExtractor::robotPoseCallback, this);
         sub_ally_robot_pose_ = nh_.subscribe("ally_pose", 10, &AreaObstaclesExtractor::allyRobotPoseCallback, this);
@@ -87,7 +88,8 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
     else
     {
       pub_obstacles_array_.shutdown();
-      if(p_central_){
+      if(p_central_)
+      {
         sub_robot_pose_.shutdown();
         pub_have_obstacles_.shutdown();
         pub_marker_.shutdown();
@@ -149,7 +151,8 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
   }
 
-  if(p_central_){
+  if(p_central_)
+  {
     for(const obstacle_detector::CircleObstacle& ally_circle : ally_obstacles_.circles)
     {
       if(ally_circle.center.z == 0)
@@ -184,7 +187,8 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
   publishObstacles();
     
     
-  if(p_central_){
+  if(p_central_)
+  {
     publishMarkers();
     publishHaveObstacles();
   }
@@ -211,13 +215,16 @@ void AreaObstaclesExtractor::recordObstacles(obstacle_detector::Obstacles& circl
   // Use latest information for getting velocity of obstacles
   // 1. Iterate all Previous obstacles
   // 2. Iterate current obstacles
-  for(int i = 0 ; i < queueSize ; i++){
+  for(int i = 0 ; i < queueSize ; i++)
+  {
     geometry_msgs::Point checkpt = prev_output_obstacles_array_.front();
 
-    for(obstacle_detector::CircleObstacle& circle : circles.circles){
+    for(obstacle_detector::CircleObstacle& circle : circles.circles)
+    {
 
       // Match the best obstacle
-      if(length(circle.center, checkpt) < p_obstacle_error_){
+      if(length(circle.center, checkpt) < p_obstacle_vel_merge_d_)
+      {
         // Matched the best obstacle
         // Differentiate position to get velocity
         try
@@ -256,7 +263,7 @@ void AreaObstaclesExtractor::doLowPassFilter(obstacle_detector::Obstacles& curr,
   {
     for(auto prev_obstacle : prev.circles)
     {
-      if(length(prev_obstacle.center, cur_obstacle.center) < 0.3)
+      if(length(prev_obstacle.center, cur_obstacle.center) < p_obstacle_error_)
       {
         cur_obstacle.velocity.x = cur_obstacle.velocity.x * p_obstacle_lpf_cur_ + prev_obstacle.velocity.x * (1 - p_obstacle_lpf_cur_);
         cur_obstacle.velocity.y = cur_obstacle.velocity.y * p_obstacle_lpf_cur_ + prev_obstacle.velocity.y * (1 - p_obstacle_lpf_cur_);
@@ -333,9 +340,11 @@ bool AreaObstaclesExtractor::checkBoundary(geometry_msgs::Point p)
   return ret;
 }
 
-bool AreaObstaclesExtractor::checkRobotpose(geometry_msgs::Point p){
+bool AreaObstaclesExtractor::checkRobotpose(geometry_msgs::Point p)
+{
   if(length(input_robot_pose_.pose.pose.position, p) < p_obstacle_error_) return true;
-  if(length(input_ally_robot_pose_.pose.pose.position, p) < p_obstacle_error_) {
+  if(length(input_ally_robot_pose_.pose.pose.position, p) < p_obstacle_error_) 
+  {
 	  return true;
   }
   return false;
