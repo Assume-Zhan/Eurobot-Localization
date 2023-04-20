@@ -123,8 +123,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     // Check obstacle boundary
     if (checkBoundary(circle.center))
     {
-      obstacle_detector::CircleObstacle circle_msg;
-      circle_msg = circle;
+      obstacle_detector::CircleObstacle circle_msg = circle;
 	
       // Central : 
       // 1. Merge 2 robots' obstacles
@@ -152,6 +151,8 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
         pushMardedObstacles(ptr->header.stamp, circle_msg, id++);
       }
+
+      output_obstacles_array_.circles.push_back(circle_msg);
     }
 
   }
@@ -170,33 +171,27 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
         
       }
     }
-  }
-
-
-  static obstacle_detector::Obstacles prev;
-  recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
-
-  // Do low-pass filter
-  doLowPassFilter(output_obstacles_array_, prev);
-  
-  // Clear all obstacles
-  prev.circles.clear();
-  
-  // Push current obstacles into current array
-  for(auto obstacle : output_obstacles_array_.circles)
-  {
-    prev.circles.push_back(obstacle);
-  }
-
-
-  publishObstacles();
     
+    static obstacle_detector::Obstacles prev;
+    recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
+
+    // Do low-pass filter
+    doLowPassFilter(output_obstacles_array_, prev);
     
-  if(p_central_)
-  {
+    // Clear all obstacles
+    prev.circles.clear();
+    
+    // Push current obstacles into current array
+    for(auto obstacle : output_obstacles_array_.circles)
+    {
+      prev.circles.push_back(obstacle);
+    }
+
     publishMarkers();
     publishHaveObstacles();
   }
+
+  publishObstacles();
 }
 
 void AreaObstaclesExtractor::recordObstacles(obstacle_detector::Obstacles& circles, double time)
@@ -279,7 +274,7 @@ void AreaObstaclesExtractor::allyObstacleCallback(const obstacle_detector::Obsta
 
     ally_obstacles_ = *ptr;
 
-    // Use center z for obstacle time stamp
+    // Use center z for ally check flag
     for(auto& ally_obs : ally_obstacles_.circles) ally_obs.center.z = 0;
 }
 
