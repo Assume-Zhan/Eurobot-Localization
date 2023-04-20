@@ -116,79 +116,74 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
   output_obstacles_array_.circles.clear();
   output_marker_array_.markers.clear();
 
+  // Create a buffer to temperary store obstacles
+  obstacle_detector::Obstacles output_obstacles_buffer;
+
   int id = 0;
 
+  /* STEP 1. Extract all obstacles that in boundary and push in obstacle array */
   for (const obstacle_detector::CircleObstacle& circle : ptr->circles)
   {
     // Check obstacle boundary
     if (checkBoundary(circle.center))
     {
-      obstacle_detector::CircleObstacle circle_msg = circle;
-	
-      // Central : 
-      // 1. Merge 2 robots' obstacles
-      // 2. Check 2 robots' obstacles
-      // 3. Record and do low pass filter
-      if(p_central_)
-      {
-        for(auto& ally_circle : ally_obstacles_.circles)
-        {
-          if(ally_circle.center.z == 0 && length(ally_circle.center, circle_msg.center) < p_obstacle_merge_d_)
-          {
-            // Average the point
-            circle_msg.center = merge(circle_msg.center, ally_circle.center);
-            circle_msg.radius = circle_msg.true_radius = (circle.radius + ally_circle.radius) / 2;
-
-            // Pick the flag
-            ally_circle.center.z = 1;
-          }
-        }
-
-        // Check robot pose
-        if(checkRobotpose(circle_msg.center)) continue;
-
-        // Publish marked obstacle
-        pushMardedObstacles(ptr->header.stamp, circle_msg, id++);
-      }
-
-      output_obstacles_array_.circles.push_back(circle_msg);
+      output_obstacles_buffer.circles.push_back(circle);
     }
-
   }
 
   if(p_central_)
   {
-    for(const obstacle_detector::CircleObstacle& ally_circle : ally_obstacles_.circles)
+    /* STEP 2. ( Central ) Merge all obstacles with two robots */
+    int currObstaclesSize = output_obstacles_buffer.circles.size();
+    for(auto ally_circle : ally_obstacles_.circles)
     {
-      if(ally_circle.center.z == 0)
+      bool merged = false;
+      for(int idx = 0 ; idx < currObstaclesSize ; idx++)
       {
-        if(checkRobotpose(ally_circle.center)) continue;
+        obstacle_detector::CircleObstacle circle_msg = output_obstacles_array_.circles[idx];
+        if(length(ally_circle.center, circle_msg.center) < p_obstacle_merge_d_)
+        {
+          // Average the point
+          circle_msg.center = merge(circle_msg.center, ally_circle.center);
+          circle_msg.radius = circle_msg.true_radius = (circle_msg.radius + ally_circle.radius) / 2;
 
-        output_obstacles_array_.circles.push_back(ally_circle);
+          merged = true;
+          output_obstacles_buffer.circles.push_back(circle_msg);
 
-        pushMardedObstacles(ptr->header.stamp, ally_circle, id++);
-        
+          continue;
+        }
+
+        if(!merged) output_obstacles_buffer.circles.push_back(ally_circle);
+      }
+
+      // Push in output circle array when failed to merged the ally obstacle
+      if(!merged) output_obstacles_array_.circles.push_back(ally_circle);
+    }
+
+    /* STEP 3. ( Central ) Check robot pose */
+    for(auto& circle_msg : output_obstacles_buffer.circles)
+    {
+      if(!checkRobotpose(circle_msg.center))
+      {
+        output_obstacles_array_.circles.push_back(circle_msg);
+        pushMardedObstacles(ptr->header.stamp, circle_msg, id++);
       }
     }
 
-    static obstacle_detector::Obstacles prev;
+    /* STEP 4. ( Central ) Record current obstacles and calculate velocity */
     recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
 
+    static obstacle_detector::Obstacles prev;
+    
     // Do low-pass filter
     doLowPassFilter(output_obstacles_array_, prev);
     
-    // Clear all obstacles
-    prev.circles.clear();
-    
-    // Push current obstacles into current array
-    for(auto obstacle : output_obstacles_array_.circles)
-    {
-      prev.circles.push_back(obstacle);
-    }
+    prev.circles = output_obstacles_array_.circles;
 
     publishMarkers();
     publishHaveObstacles();
   }
+  else output_obstacles_array_ = output_obstacles_buffer;
 
   publishObstacles();
 }
@@ -272,9 +267,6 @@ void AreaObstaclesExtractor::doLowPassFilter(obstacle_detector::Obstacles& curr,
 void AreaObstaclesExtractor::allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr){
 
     ally_obstacles_ = *ptr;
-
-    // Use center z for ally check flag
-    for(auto& ally_obs : ally_obstacles_.circles) ally_obs.center.z = 0;
 }
 
 void AreaObstaclesExtractor::publishObstacles()
