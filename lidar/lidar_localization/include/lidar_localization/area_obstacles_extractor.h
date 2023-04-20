@@ -24,13 +24,8 @@
 
 #pragma once
 
-#include "geometry_msgs/Point.h"
-#include "obstacle_detector/CircleObstacle.h"
+// ROS library
 #include <ros/ros.h>
-#include <vector>
-#include <queue>
-
-#include <lidar_localization/util/math_util.h>
 #include <std_msgs/Bool.h>
 #include <std_srvs/Empty.h>
 #include <obstacle_detector/Obstacles.h>
@@ -39,15 +34,16 @@
 #include <geometry_msgs/Polygon.h>
 #include <geometry_msgs/Point32.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
-#include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <nav_msgs/Odometry.h>
 
-// TF2
-#include <tf2_ros/transform_listener.h>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
-#include <geometry_msgs/PointStamped.h>
-#include <geometry_msgs/TransformStamped.h>
+// Customized utility header fiile
+#include <lidar_localization/util/math_util.h>
+
+// Cpp tools
+#include <vector>
+#include <queue>
+
 
 namespace lidar_localization
 {
@@ -95,11 +91,24 @@ private:
    */
   void obstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr);
 
+  /**
+   * @brief Topic `ally_obstacles` callback function
+   *
+   * @param ptr The obstaacles data
+   */
   void allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr);
 
-  void doLowPassFilter(obstacle_detector::Obstacles&, obstacle_detector::Obstacles);
-  
   void recordObstacles(obstacle_detector::Obstacles&, double);
+
+  /**
+   * @brief Do low pass filter for each obstacles' velocity
+   *
+   * @param curr current obstacles data
+   * @param prev previous obstacles data
+   */
+  void doLowPassFilter(obstacle_detector::Obstacles& curr, obstacle_detector::Obstacles prev);
+
+  void pushMardedObstacles(ros::Time, obstacle_detector::CircleObstacle, int);
 
   /**
    * @brief Topic `obstacles_to_map` publisher function
@@ -108,6 +117,7 @@ private:
   void publishObstacles();
 
   void publishHaveObstacles();
+  
   /**
    * @brief Topic `obstaclefield_marker` publisher function
    *
@@ -132,8 +142,6 @@ private:
   ros::Publisher pub_obstacles_array_;
   ros::Publisher pub_have_obstacles_;
   ros::Publisher pub_marker_;
-
-  tf2_ros::Buffer tfBuffer;
 
   geometry_msgs::PoseWithCovarianceStamped input_robot_pose_;
   geometry_msgs::PoseWithCovarianceStamped input_ally_robot_pose_;
