@@ -135,10 +135,10 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
   {
     /* STEP 2. ( Central ) Merge all obstacles with two robots */
     int currObstaclesSize = output_obstacles_buffer.circles.size();
-    for(auto ally_circle : ally_obstacles_.circles)
+    for(auto ally_circle : ally_obstacles_.circles) /* Go throough all ally obstacles */
     {
       bool merged = false;
-      for(int idx = 0 ; idx < currObstaclesSize ; idx++)
+      for(int idx = 0 ; idx < currObstaclesSize ; idx++) /* Check all current obstacles and merge it */
       {
         obstacle_detector::CircleObstacle circle_msg = output_obstacles_array_.circles[idx];
         if(length(ally_circle.center, circle_msg.center) < p_obstacle_merge_d_)
@@ -148,15 +148,15 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
           circle_msg.radius = circle_msg.true_radius = (circle_msg.radius + ally_circle.radius) / 2;
 
           merged = true;
+
+          // Merge successful and push in buffer
           output_obstacles_buffer.circles.push_back(circle_msg);
 
           continue;
         }
-
-        if(!merged) output_obstacles_buffer.circles.push_back(ally_circle);
       }
 
-      // Push in output circle array when failed to merged the ally obstacle
+      // Push in output circle array when failed to merge the ally obstacle
       if(!merged) output_obstacles_array_.circles.push_back(ally_circle);
     }
 
@@ -165,6 +165,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     {
       if(!checkRobotpose(circle_msg.center))
       {
+        // Push in output when obstacle isn't our robot
         output_obstacles_array_.circles.push_back(circle_msg);
         pushMardedObstacles(ptr->header.stamp, circle_msg, id++);
       }
