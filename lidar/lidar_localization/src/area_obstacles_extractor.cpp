@@ -59,7 +59,7 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
   nh_local_.param<string>("parent_frame", p_parent_frame_, "map");
   nh_local_.param<string>("ally_obstacles_topic", p_ally_obstacles_topic_, "/robot2/obstacle_array");
 
-  nh_local_.param<double>("obstacle_height", p_marker_height_, 2);
+  nh_local_.param<double>("obstacle_height", p_marker_height_, 0.2);
   nh_local_.param<double>("obstacle_merge_d", p_obstacle_merge_d_, 0.1);
   nh_local_.param<double>("obstacle_vel_merge_d", p_obstacle_vel_merge_d_, 0.3);
   nh_local_.param<double>("obstacle_error", p_obstacle_error_, 0.1);
@@ -128,8 +128,6 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
             // Average the point
             circle_msg.center.x = (circle_msg.center.x + ally_circle.center.x) / 2;
             circle_msg.center.y = (circle_msg.center.y + ally_circle.center.y) / 2;
-            circle_msg.velocity.x = (circle_msg.velocity.x + ally_circle.velocity.x) / 2;
-            circle_msg.velocity.y = (circle_msg.velocity.y + ally_circle.velocity.y) / 2;
             circle_msg.radius = (circle.radius + ally_circle.radius) / 2;
             circle_msg.true_radius = (circle.true_radius + ally_circle.true_radius) / 2;
 
@@ -269,12 +267,11 @@ void AreaObstaclesExtractor::doLowPassFilter(obstacle_detector::Obstacles& curr,
 }
 
 void AreaObstaclesExtractor::allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr){
+
     ally_obstacles_ = *ptr;
 
-    for(auto& ally_obs : ally_obstacles_.circles)
-    {
-      ally_obs.center.z = 0;
-    }
+    // Use center z for obstacle time stamp
+    for(auto& ally_obs : ally_obstacles_.circles) ally_obs.center.z = 0;
 }
 
 void AreaObstaclesExtractor::publishObstacles()
@@ -283,12 +280,8 @@ void AreaObstaclesExtractor::publishObstacles()
 }
 
 void AreaObstaclesExtractor::publishHaveObstacles()
-{
-  output_have_obstacles_.data = false;
-  if (output_obstacles_array_.circles.size())
-  {
-    output_have_obstacles_.data = true;
-  }
+{ 
+  output_have_obstacles_.data = output_obstacles_array_.circles.size();
   pub_have_obstacles_.publish(output_have_obstacles_);
 }
 
@@ -305,13 +298,13 @@ void AreaObstaclesExtractor::pushMardedObstacles(ros::Time time, obstacle_detect
   marker.pose.position.y = circle.center.y;
   marker.pose.position.z = p_marker_height_ / 2.0;
   marker.pose.orientation.w = 1.0;
-  marker.color.r = 0.5;
-  marker.color.g = 1.0;
-  marker.color.b = 0.5;
-  marker.color.a = 1.0;
 
-  marker.scale.x = circle.radius;
-  marker.scale.y = circle.radius;
+  // Color setting
+  marker.color.r = marker.color.b = 0.5;
+  marker.color.g = marker.color.a = 1.0;
+
+  // Marker scale setting
+  marker.scale.x = marker.scale.y = circle.radius;
   marker.scale.z = p_marker_height_;
 
   output_marker_array_.markers.push_back(marker);
@@ -325,15 +318,10 @@ void AreaObstaclesExtractor::publishMarkers()
 
 bool AreaObstaclesExtractor::checkBoundary(geometry_msgs::Point p)
 {
-  bool ret = true;
+  if (p.x < p_x_min_range_ || p.x > p_x_max_range_) return false;
+  if (p.y < p_y_min_range_ || p.y > p_y_max_range_) return false;
 
-  // playing area boundary
-  if (p.x < p_x_min_range_ || p.x > p_x_max_range_)
-    ret = false;
-  if (p.y < p_y_min_range_ || p.y > p_y_max_range_)
-    ret = false;
-
-  return ret;
+  return true;
 }
 
 bool AreaObstaclesExtractor::checkRobotpose(geometry_msgs::Point p)
