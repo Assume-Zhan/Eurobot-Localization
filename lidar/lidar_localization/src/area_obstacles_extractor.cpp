@@ -136,10 +136,8 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
           if(ally_circle.center.z == 0 && length(ally_circle.center, circle_msg.center) < p_obstacle_merge_d_)
           {
             // Average the point
-            circle_msg.center.x = (circle_msg.center.x + ally_circle.center.x) / 2;
-            circle_msg.center.y = (circle_msg.center.y + ally_circle.center.y) / 2;
-            circle_msg.radius = (circle.radius + ally_circle.radius) / 2;
-            circle_msg.true_radius = (circle.true_radius + ally_circle.true_radius) / 2;
+            circle_msg.center = merge(circle_msg.center, ally_circle.center);
+            circle_msg.radius = circle_msg.true_radius = (circle.radius + ally_circle.radius) / 2;
 
             // Pick the flag
             ally_circle.center.z = 1;
@@ -149,6 +147,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
         // Check robot pose
         if(checkRobotpose(circle_msg.center)) continue;
 
+        // Publish marked obstacle
         pushMardedObstacles(ptr->header.stamp, circle_msg, id++);
       }
 
@@ -171,7 +170,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
         
       }
     }
-    
+
     static obstacle_detector::Obstacles prev;
     recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
 

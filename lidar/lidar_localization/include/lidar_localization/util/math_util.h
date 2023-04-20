@@ -16,6 +16,15 @@ double length(T& pose1)
   return sqrt(pow(pose1.x, 2.) + pow(pose1.y, 2.));
 }
 
+template <class T, class S>
+T merge(T& pose1, S& pose2)
+{
+  T merged_center;
+  merged_center.x = (pose1.x + pose2.x) / 2;
+  merged_center.y = (pose1.y + pose2.y) / 2;
+  return merged_center;
+}
+
 double length(double x, double y)
 {
   return sqrt(pow(x, 2.) + pow(y, 2.));
