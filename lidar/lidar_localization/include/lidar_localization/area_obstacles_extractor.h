@@ -30,7 +30,6 @@
 #include <std_srvs/Empty.h>
 #include <obstacle_detector/Obstacles.h>
 #include <costmap_converter/ObstacleArrayMsg.h>
-#include <costmap_converter/ObstacleMsg.h>
 #include <geometry_msgs/Polygon.h>
 #include <geometry_msgs/Point32.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
@@ -43,7 +42,6 @@
 // Cpp tools
 #include <vector>
 #include <queue>
-
 
 namespace lidar_localization
 {
@@ -98,7 +96,13 @@ private:
    */
   void allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr);
 
-  void recordObstacles(obstacle_detector::Obstacles&, double);
+  /**
+   * @brief Record and calculate obstacles
+   *
+   * @param circles The current obstaacles data
+   * @param time time different for calculation velocity
+   */
+  void recordObstacles(obstacle_detector::Obstacles& circles, double time);
 
   /**
    * @brief Do low pass filter for each obstacles' velocity
@@ -108,7 +112,14 @@ private:
    */
   void doLowPassFilter(obstacle_detector::Obstacles& curr, obstacle_detector::Obstacles prev);
 
-  void pushMardedObstacles(ros::Time, obstacle_detector::CircleObstacle, int);
+  /**
+   * @brief Publish marked obstacles
+   *
+   * @param time publish time stamp
+   * @param circle current obstacles data
+   * @param id specified which id to use
+   */
+  void pushMardedObstacles(ros::Time time, obstacle_detector::CircleObstacle circle, int id);
 
   /**
    * @brief Topic `obstacles_to_map` publisher function
@@ -116,6 +127,10 @@ private:
    */
   void publishObstacles();
 
+  /**
+   * @brief Topic `have_obstacle` publisher function
+   *
+   */
   void publishHaveObstacles();
   
   /**
@@ -124,9 +139,36 @@ private:
    */
   void publishMarkers();
 
-  bool checkBoundary(geometry_msgs::Point);
-  bool checkRobotpose(geometry_msgs::Point);
+  /**
+   * @brief check whether point is in boundary
+   *
+   * @param p specified which point to check
+   *
+   */
+  bool checkBoundary(geometry_msgs::Point p);
+
+  /**
+   * @brief Check if the point is near our 2 robots
+   *
+   * @param p specified which point to check
+   *
+   */
+  bool checkRobotpose(geometry_msgs::Point p);
+
+  /**
+   * @brief Subscribe robot pose
+   *
+   * @param ptr robot pose pointer
+   *
+   */
   void robotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
+
+  /**
+   * @brief Subscribe ally robot pose
+   *
+   * @param ptr ally robot pose pointer
+   *
+   */
   void allyRobotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
 
   /* ros node */
@@ -150,7 +192,6 @@ private:
   obstacle_detector::Obstacles ally_obstacles_;
   std_msgs::Bool output_have_obstacles_;
   visualization_msgs::MarkerArray output_marker_array_;
-  /* private variables */
 
   /* ros param */
   bool p_active_;
@@ -160,25 +201,15 @@ private:
   double p_x_max_range_;
   double p_y_min_range_;
   double p_y_max_range_;
-  std::vector<double> p_excluded_x_;
-  std::vector<double> p_excluded_y_;
-  std::vector<double> p_excluded_radius_;
+
   double p_marker_height_;
-  double p_avoid_min_distance_;
-  double p_avoid_max_distance_;
   double p_obstacle_merge_d_;
   double p_obstacle_vel_merge_d_;
   double p_obstacle_error_;
   double p_obstacle_lpf_cur_;
-  double p_sample_number_;
   double p_timeout_;
 
   std::string p_parent_frame_;
   std::string p_ally_obstacles_topic_;
-
-  double p_ally_excluded_radius_;
-
-  std::vector<geometry_msgs::Point> exclude_poses_;
-
 };
 }  // namespace lidar_localization

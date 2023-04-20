@@ -60,14 +60,10 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
   nh_local_.param<string>("ally_obstacles_topic", p_ally_obstacles_topic_, "/robot2/obstacle_array");
 
   nh_local_.param<double>("obstacle_height", p_marker_height_, 2);
-  nh_local_.param<double>("avoid_min_distance", p_avoid_min_distance_, 0.1);
-  nh_local_.param<double>("avoid_max_distance", p_avoid_max_distance_, 0.5);
-  nh_local_.param<double>("ally_excluded_radius", p_ally_excluded_radius_, p_avoid_min_distance_);
   nh_local_.param<double>("obstacle_merge_d", p_obstacle_merge_d_, 0.1);
   nh_local_.param<double>("obstacle_vel_merge_d", p_obstacle_vel_merge_d_, 0.3);
   nh_local_.param<double>("obstacle_error", p_obstacle_error_, 0.1);
   nh_local_.param<double>("obstacle_lpf_cur", p_obstacle_lpf_cur_, 0.5);
-  nh_local_.param<double>("sample_number", p_sample_number_, 10.0);
   nh_local_.param<double>("timeout", p_timeout_, 0.3);
 
   if (p_active_ != prev_active)
@@ -343,10 +339,8 @@ bool AreaObstaclesExtractor::checkBoundary(geometry_msgs::Point p)
 bool AreaObstaclesExtractor::checkRobotpose(geometry_msgs::Point p)
 {
   if(length(input_robot_pose_.pose.pose.position, p) < p_obstacle_error_) return true;
-  if(length(input_ally_robot_pose_.pose.pose.position, p) < p_obstacle_error_) 
-  {
-	  return true;
-  }
+  if(length(input_ally_robot_pose_.pose.pose.position, p) < p_obstacle_error_) return true;
+
   return false;
 }
 

@@ -80,17 +80,17 @@
             <param name="y_max_range" value="1.8"/>
             <param name="x_min_range" value="0.2"/>
             <param name="y_min_range" value="0.2"/>
+            
+            <param name="obstacle_merge_d" value="0.15"/>
+            <param name="obstacle_vel_merge_d" value="0.2"/>
+            <param name="obstacle_error" value="0.2"/>
 
             <param name="ally_obstacles_topic" value="/robot2/obstacle_array" if="$(eval arg('robot_name')=='robot1')"/>
             <param name="ally_obstacles_topic" value="/robot1/obstacle_array" if="$(eval arg('robot_name')=='robot2')"/>
 
-            <param name="central" value="true" if="$(eval arg('active_rival_center')==1)"/>
-            <param name="central" value="false" if="$(eval arg('active_rival_center')==0)"/>
+            <param name="central" value="$(eval true if arg('active_rival_center')==1 else false)"/>
 
             <param name="parent_frame" value="$(arg robot_name_slash)map"/>
-            <param name="obstacle_merge_d" value="0.15"/>
-            <param name="obstacle_vel_merge_d" value="0.2"/>
-            <param name="obstacle_error" value="0.2"/>
 
             <remap from="robot_pose" to="/robot1/ekf_pose" if="$(eval arg('robot_name')=='robot1')"/>
             <remap from="robot_pose" to="/robot2/ekf_pose" if="$(eval arg('robot_name')=='robot2')"/>
