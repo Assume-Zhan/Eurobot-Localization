@@ -37,11 +37,22 @@ AreaObstaclesExtractor::AreaObstaclesExtractor(ros::NodeHandle& nh, ros::NodeHan
 AreaObstaclesExtractor::~AreaObstaclesExtractor()
 {
   nh_local_.deleteParam("active");
-  nh_local_.deleteParam("p_x_min_range_");
-  nh_local_.deleteParam("p_x_max_range_");
-  nh_local_.deleteParam("p_y_min_range_");
-  nh_local_.deleteParam("p_y_max_range_");
-  nh_local_.deleteParam("obstacle_radius");
+  nh_local_.deleteParam("central");
+
+  nh_local_.deleteParam("x_min_range");
+  nh_local_.deleteParam("x_max_range");
+  nh_local_.deleteParam("y_min_range");
+  nh_local_.deleteParam("y_max_range");
+
+  nh_local_.deleteParam("parent_frame");
+  nh_local_.deleteParam("ally_obstacles_topic");
+  
+  nh_local_.deleteParam("obstacle_height");
+  nh_local_.deleteParam("obstacle_merge_d");
+  nh_local_.deleteParam("obstacle_vel_merge_d");
+  nh_local_.deleteParam("obstacle_error");
+  nh_local_.deleteParam("obstacle_lpf_cur");
+  nh_local_.deleteParam("timeout");
 }
 
 bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res)
@@ -57,7 +68,7 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
   nh_local_.param<double>("y_max_range", p_y_max_range_, 3.0);
 
   nh_local_.param<string>("parent_frame", p_parent_frame_, "map");
-  nh_local_.param<string>("ally_obstacles_topic", p_ally_obstacles_topic_, "/robot2/obstacle_array");
+  nh_local_.param<string>("ally_obstacles_topic", p_ally_obstacles_topic_, "obstacle_array");
 
   nh_local_.param<double>("obstacle_height", p_marker_height_, 0.2);
   nh_local_.param<double>("obstacle_merge_d", p_obstacle_merge_d_, 0.1);
@@ -235,8 +246,6 @@ void AreaObstaclesExtractor::recordObstacles(obstacle_detector::Obstacles& circl
     prev_output_obstacles_array_.pop();
     prev_output_obstacles_array_.push(checkpt);
   }
-
-  ROS_INFO_STREAM("[Area Extractor] : Check previous queue size " << queueSize);
 
   // Put new obstales with timestamp in queue
   // Use z to store time information
