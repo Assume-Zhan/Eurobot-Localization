@@ -3,11 +3,14 @@
 	<arg name="robot_name" default="robot1"/>
 	<arg name="robot_name_slash" default="robot1/"/>
 	<arg name="active_rival_center" default="0"/>
+	<arg name="color" default="b"/>
 
     <group ns="$(arg robot_name)">
         <node name="ekf" pkg="eurobot_localization" type="ekf" >
-            <rosparam file="$(find eurobot_localization)/config/global_filter/global_filter.yaml"/>
+            <rosparam file="$(find eurobot_localization)/config/global_filter/global_filter_blue.yaml" if="$(eval arg('color')=='b')"/>
+            <rosparam file="$(find eurobot_localization)/config/global_filter/global_filter_green.yaml" if="$(eval arg('color')=='g')"/>
 			<param name="robot_name" value="$(arg robot_name_slash)"/>
+
             <remap from="odom" to="global_filter"/>
         </node>
     </group>
@@ -17,6 +20,7 @@
 		<arg name="robot_name" default="$(arg robot_name)"/>
 		<arg name="robot_name_slash" default="$(arg robot_name_slash)"/>
         <arg name="active_rival_center" default="$(arg active_rival_center)"/>
+	    <arg name="color" value="$(arg color)"/>
     </include>
 
 	<include file="$(find eurobot_localization)/launch/rival/rival_localization.launch">
