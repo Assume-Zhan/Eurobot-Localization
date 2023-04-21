@@ -3,6 +3,7 @@
     <arg name="robot_name" default="robot1"/>
     <arg name="robot_name_slash" default="robot1/"/>
     <arg name="active_rival_center" default="0"/>
+	<arg name="color" default="b"/>
 
     <group ns="$(arg robot_name)">
 
@@ -30,7 +31,8 @@
         </node>
 
         <node name="lidar_localization" pkg="lidar_localization" type="lidar_localization_node" output="log">
-            <rosparam file="$(find lidar_localization)/params/lidar_localization_params_2023.yaml" command="load" />
+            <rosparam file="$(find lidar_localization)/params/lidar_localization_params_blue.yaml" command="load" if="$(eval arg('color')=='b')"/>
+            <rosparam file="$(find lidar_localization)/params/lidar_localization_params_green.yaml" command="load" if="$(eval arg('color')=='g')"/>
             <remap from="obstacles" to="obstacles_to_base"/>
             <param name="beacon_parent_frame_id" value="$(arg robot_name_slash)map"/>
             <param name="beacon_frame_id_prefix" value="$(arg robot_name_slash)beacon"/>
