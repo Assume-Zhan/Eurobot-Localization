@@ -1,3 +1,6 @@
+# ------------------
+# Beacon setting
+# Blue
 beacon_ax: 0.05
 beacon_ay: -0.094
 
@@ -6,6 +9,7 @@ beacon_by: -0.094
 
 beacon_cx: 1.5
 beacon_cy: 2.094
+# ------------------
 
 odom_freq: 100
 # initial pose
