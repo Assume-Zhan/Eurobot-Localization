@@ -36,6 +36,7 @@ class Ekf
     // ekf
     void predict_diff(double v, double w);
     void predict_omni(double v_x, double v_y, double w, double dt);
+    void predict_omni(double v_x, double v_y, double w, double dt, Eigen::Matrix3d odom_sigma);
     void update_landmark();
     void update_gps(Eigen::Vector3d gps_pose, Eigen::Matrix3d gps_cov);
 

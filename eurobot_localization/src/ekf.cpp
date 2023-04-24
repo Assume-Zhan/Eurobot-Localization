@@ -223,6 +223,75 @@ void Ekf::predict_omni(double v_x, double v_y, double w, double dt)
     // cout << "predict sigma " << robotstate_.sigma << endl;
 }
 
+void Ekf::predict_omni(double v_x, double v_y, double w, double dt, Eigen::Matrix3d odom_sigma)
+{
+    // TODO ekf predict function for omni
+    double d_x;
+    double d_y;
+    double d_theta;
+    if(dt == 0){
+        d_x = v_x / p_odom_freq_;
+        d_y = v_y / p_odom_freq_;
+        d_theta = w / p_odom_freq_;
+    }
+    else{
+        d_x = v_x * dt;
+        d_y = v_y * dt;
+        d_theta = w * dt;
+    }
+    double theta = robotstate_.mu(2);
+    double theta_ = theta + d_theta / 2;
+    double s_theta = sin(theta);
+    double c_theta = cos(theta);
+    double s__theta = sin(theta_);
+    double c__theta = cos(theta_);
+    double var_x = 0;
+    double var_y = 0;
+    double var_theta = 0;
+
+    double x_pre = 0;
+    double y_pre = 0;
+    double theta_pre = 0;
+
+    Eigen::Matrix3d G;
+    Eigen::Matrix3d W;
+    Eigen::Vector3d stdev_vec;
+    Eigen::Vector3d error_vec;
+    Eigen::DiagonalMatrix<double, 3> cov_motion;
+
+    Eigen::Vector3d state_past;
+    Eigen::Matrix3d cov_past;
+    state_past = robotstate_.mu;
+    cov_past = robotstate_.sigma;
+
+    // Jacobian matrix for Ekf linearization
+    G << 1.0, 0.0, -d_x * s_theta - d_y * c_theta, 0.0, 1.0, d_x * c_theta - d_y * s_theta, 0.0, 0.0, 1.0;
+
+    W << c__theta, -s__theta, -d_x * s__theta / 2 - d_y * c__theta / 2, s__theta, c__theta,
+        d_x * c__theta / 2 - d_y * s__theta / 2, 0.0, 0.0, 1.0;
+
+    // calculate model covariance
+    error_vec << d_x, d_y, d_theta;
+    stdev_vec = P_omni_model_ * error_vec;
+    var_x = stdev_vec(0) * stdev_vec(0);
+    var_y = stdev_vec(1) * stdev_vec(1);
+    var_theta = stdev_vec(2) * stdev_vec(2);
+    cov_motion = Eigen::Vector3d{ var_x, var_y, var_theta }.asDiagonal();
+
+    // Mean of Prediction
+    x_pre = state_past(0) + d_x * c__theta - d_y * s__theta;
+    y_pre = state_past(1) + d_x * s__theta + d_y * c__theta;
+    theta_pre = state_past(2) + d_theta;
+    robotstate_.mu << x_pre, y_pre, theta_pre;
+
+    // Covariance of Prediction
+    robotstate_.sigma = G * cov_past * G.transpose() + W * cov_motion * W.transpose();
+    // cout << "predict sigma " << robotstate_.sigma << endl;
+
+    /* Update robot state mean */
+    robotstate_.mu << x_pre, y_pre, theta_pre;
+}
+
 void Ekf::update_landmark()
 {
     // ekf update step:
@@ -384,11 +453,21 @@ void Ekf::update_gps(Eigen::Vector3d gps_pose, Eigen::Matrix3d gps_cov)
         //       dy / q, -dx / q, -1.0,
         //       0.0, 0.0, 0.0;
 
+        /* COMMENT : transpose from base to map ( not used ) */
         H << 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0;
 
+        /* COMMENT : denominator for kalman gain ( previous + measurment covariance ) */
         S = H * cur_cov * H.transpose() + Eigen::Matrix3d(gps_cov);
+
+        /* COMMENT : kalman gain K */
         K = cur_cov * H.transpose() * S.inverse();
+
+        /* COMMENT : update current pose with kalman gain */
         mu = cur_pose + K * d_z;
+
+        /* COMMENT : update covariance = previous cov - kalman gain * transpose * previous cov
+         * = ( 1 - kalman gain * transpose ) * previous cov
+         */
         sigma = (Eigen::Matrix3d::Identity() - K * H) * cur_cov;
 
         robotstate_.mu = mu;
@@ -515,20 +594,34 @@ void Ekf::odomCallback(const nav_msgs::Odometry::ConstPtr& odom_msg)
     double v_y = odom_msg->twist.twist.linear.y;
     double w = odom_msg->twist.twist.angular.z;
 
+    Eigen::Matrix3d odom_sigma;
+    odom_sigma(0, 0) = odom_msg->twist.covariance[0];   // x-x
+    odom_sigma(0, 1) = odom_msg->twist.covariance[1];   // x-y
+    odom_sigma(0, 2) = odom_msg->twist.covariance[5];   // x-theta
+    odom_sigma(1, 0) = odom_msg->twist.covariance[6];   // y-x
+    odom_sigma(1, 1) = odom_msg->twist.covariance[7];   // y-y
+    odom_sigma(1, 2) = odom_msg->twist.covariance[11];  // y-theta
+    odom_sigma(2, 0) = odom_msg->twist.covariance[30];  // theta-x
+    odom_sigma(2, 1) = odom_msg->twist.covariance[31];  // theta-y
+    odom_sigma(2, 2) = odom_msg->twist.covariance[35];  // theta-theta
+
     // cout << "vx: " << v_x << "vy: " << v_y << "w: " << w << endl;
     // for calculate time cost
     // struct timespec tt1, tt2;
     // clock_gettime(CLOCK_REALTIME, &tt1);
-
-    // predict_diff(v_x, w);
-    predict_omni(v_x, v_y, w, dt_);
-    // predict_omni(v_x, v_y, imu_w);
+    
+    predict_omni(v_x, v_y, w, dt_); /* ucekf prediction */
     // ROS_INFO("Predict_omni = %f %f %f", robotstate_.mu(0), robotstate_.mu(1), robotstate_.mu(2));
-    update_landmark();
+    
+    update_landmark();              /* ucekf update */
     // ROS_INFO("update_landmark = %f %f %f", robotstate_.mu(0), robotstate_.mu(1), robotstate_.mu(2));
-    update_gps(gps_mu, gps_sigma);
+    
+    predict_omni(v_x, v_y, w, dt_, odom_sigma); /* ekf prediction */
+
+    update_gps(gps_mu, gps_sigma);  /* ekf update */
     // ROS_INFO("gps_update = %f %f %f", robotstate_.mu(0), robotstate_.mu(1), robotstate_.mu(2));
-    update_gps(beacon_mu, beacon_sigma);
+
+    // update_gps(beacon_mu, beacon_sigma);
     // ROS_INFO("---------");
 
     // clock_gettime(CLOCK_REALTIME, &tt2);
@@ -570,27 +663,8 @@ void Ekf::gpsCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& 
 
 void Ekf::viveCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg){
 
-    static tf2_ros::TransformListener tfListener(tfBuffer);
-
-    // Get TF transform from vive to map
-    geometry_msgs::TransformStamped transformStamped;
-    try{
-        transformStamped = tfBuffer.lookupTransform("robot1/base_footprint", "robot1/vive_frame", ros::Time(0));
-    }
-    catch (tf2::TransformException &ex) {
-        ROS_WARN("%s", ex.what());
-        return;
-    }
-
-    geometry_msgs::PoseStamped vive_to_map;
-    geometry_msgs::PoseStamped base_to_map;
-    vive_to_map.header.frame_id = "robot1/vive_frame";
-    vive_to_map.header.stamp = pose_msg->header.stamp;
-    vive_to_map.pose = pose_msg->pose.pose;
-    tf2::doTransform(vive_to_map, base_to_map, transformStamped);
-
     tf2::Quaternion q;
-    tf2::fromMsg(base_to_map.pose.orientation, q);
+    tf2::fromMsg(pose_msg->pose.pose.orientation, q);
     tf2::Matrix3x3 qt(q);
     double _, yaw;
     qt.getRPY(_, _, yaw);
