@@ -225,71 +225,34 @@ void Ekf::predict_omni(double v_x, double v_y, double w, double dt)
 
 void Ekf::predict_omni(double v_x, double v_y, double w, double dt, Eigen::Matrix3d odom_sigma)
 {
-    // TODO ekf predict function for omni
-    double d_x;
-    double d_y;
-    double d_theta;
-    if(dt == 0){
-        d_x = v_x / p_odom_freq_;
-        d_y = v_y / p_odom_freq_;
-        d_theta = w / p_odom_freq_;
-    }
-    else{
-        d_x = v_x * dt;
-        d_y = v_y * dt;
-        d_theta = w * dt;
-    }
-    double theta = robotstate_.mu(2);
-    double theta_ = theta + d_theta / 2;
-    double s_theta = sin(theta);
-    double c_theta = cos(theta);
+    Eigen::Vector3d d_state;
+
+    /* COMMENT : get current velocity vector matrix */
+    if(dt == 0) d_state << (v_x / p_odom_freq_), 
+                           (v_y / p_odom_freq_), 
+                           (w / p_odom_freq_);
+    else d_state << (v_x * dt), 
+                    (v_y * dt), 
+                    (w * dt);
+
+    double theta_ = robotstate_.mu(2) + d_state(2) / 2;
     double s__theta = sin(theta_);
     double c__theta = cos(theta_);
-    double var_x = 0;
-    double var_y = 0;
-    double var_theta = 0;
 
-    double x_pre = 0;
-    double y_pre = 0;
-    double theta_pre = 0;
+    Eigen::Matrix3d A;
+    A << 1, 0, 0, 0, 1, 0, 0, 0, 1;
 
-    Eigen::Matrix3d G;
-    Eigen::Matrix3d W;
-    Eigen::Vector3d stdev_vec;
-    Eigen::Vector3d error_vec;
-    Eigen::DiagonalMatrix<double, 3> cov_motion;
+    Eigen::Matrix3d B;
+    B << c__theta, -s__theta, 0, s__theta, c__theta, 0, 0, 0, 1;
 
-    Eigen::Vector3d state_past;
     Eigen::Matrix3d cov_past;
-    state_past = robotstate_.mu;
     cov_past = robotstate_.sigma;
 
-    // Jacobian matrix for Ekf linearization
-    G << 1.0, 0.0, -d_x * s_theta - d_y * c_theta, 0.0, 1.0, d_x * c_theta - d_y * s_theta, 0.0, 0.0, 1.0;
-
-    W << c__theta, -s__theta, -d_x * s__theta / 2 - d_y * c__theta / 2, s__theta, c__theta,
-        d_x * c__theta / 2 - d_y * s__theta / 2, 0.0, 0.0, 1.0;
-
-    // calculate model covariance
-    error_vec << d_x, d_y, d_theta;
-    stdev_vec = P_omni_model_ * error_vec;
-    var_x = stdev_vec(0) * stdev_vec(0);
-    var_y = stdev_vec(1) * stdev_vec(1);
-    var_theta = stdev_vec(2) * stdev_vec(2);
-    cov_motion = Eigen::Vector3d{ var_x, var_y, var_theta }.asDiagonal();
-
-    // Mean of Prediction
-    x_pre = state_past(0) + d_x * c__theta - d_y * s__theta;
-    y_pre = state_past(1) + d_x * s__theta + d_y * c__theta;
-    theta_pre = state_past(2) + d_theta;
-    robotstate_.mu << x_pre, y_pre, theta_pre;
-
-    // Covariance of Prediction
-    robotstate_.sigma = G * cov_past * G.transpose() + W * cov_motion * W.transpose();
-    // cout << "predict sigma " << robotstate_.sigma << endl;
-
     /* Update robot state mean */
-    robotstate_.mu << x_pre, y_pre, theta_pre;
+    robotstate_.mu = A * robotstate_.mu + B * d_state;
+
+    /* Update robot state covariance ( sigma ) */
+    robotstate_.sigma = A * cov_past * A.transpose() + odom_sigma;
 }
 
 void Ekf::update_landmark()
@@ -610,16 +573,20 @@ void Ekf::odomCallback(const nav_msgs::Odometry::ConstPtr& odom_msg)
     // struct timespec tt1, tt2;
     // clock_gettime(CLOCK_REALTIME, &tt1);
     
-    predict_omni(v_x, v_y, w, dt_); /* ucekf prediction */
-    // ROS_INFO("Predict_omni = %f %f %f", robotstate_.mu(0), robotstate_.mu(1), robotstate_.mu(2));
-    
-    update_landmark();              /* ucekf update */
-    // ROS_INFO("update_landmark = %f %f %f", robotstate_.mu(0), robotstate_.mu(1), robotstate_.mu(2));
-    
-    predict_omni(v_x, v_y, w, dt_, odom_sigma); /* ekf prediction */
+    if(if_gps == true)
+    {
+        /* Update with ekf */
+        predict_omni(v_x, v_y, w, dt_, odom_sigma); /* ekf prediction */
 
-    update_gps(gps_mu, gps_sigma);  /* ekf update */
-    // ROS_INFO("gps_update = %f %f %f", robotstate_.mu(0), robotstate_.mu(1), robotstate_.mu(2));
+        update_gps(gps_mu, gps_sigma);  /* ekf update */
+    }
+    else
+    {
+        /* Update with ucekf */
+        predict_omni(v_x, v_y, w, dt_); /* ucekf prediction */
+        
+        update_landmark();              /* ucekf update */
+    }
 
     // update_gps(beacon_mu, beacon_sigma);
     // ROS_INFO("---------");
