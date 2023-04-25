@@ -15,7 +15,18 @@ odom_freq: 100
 # initial pose
 initial_x: 0
 initial_y: 0
-initial_theta: 0
+initial_theta: 0 # ! In degree !
+
+# initial covariance
+initial_cov_x: 0.0001
+initial_cov_x_y: 0.0001
+initial_cov_x_yaw: 0.0001
+initial_cov_y_x: 0.0001
+initial_cov_y_y: 0.0001
+initial_cov_y_yaw: 0.0001
+initial_cov_yaw_x: 0.0001
+initial_cov_yaw_y: 0.0001
+initial_cov_yaw_yaw: 0.0001
 
 # differential drive model const.
 predict_cov_a1: 1.5

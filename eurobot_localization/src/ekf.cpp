@@ -50,34 +50,50 @@ void Ekf::initialize()
 
     beacon_in_map_ = { beacon_a, beacon_b, beacon_c };
 
+    double initial_cov[9];
+    nh_local_.param<double>("initial_cov_x", initial_cov[0], 0.0005);
+    nh_local_.param<double>("initial_cov_x_y", initial_cov[1], 0.0005);
+    nh_local_.param<double>("initial_cov_x_yaw", initial_cov[2], 0.0005);
+    nh_local_.param<double>("initial_cov_y_x", initial_cov[3], 0.0005);
+    nh_local_.param<double>("initial_cov_y_y", initial_cov[4], 0.0005);
+    nh_local_.param<double>("initial_cov_y_yaw", initial_cov[5], 0.0005);
+    nh_local_.param<double>("initial_cov_yaw_x", initial_cov[6], 0.0005);
+    nh_local_.param<double>("initial_cov_yaw_y", initial_cov[7], 0.0005);
+    nh_local_.param<double>("initial_cov_yaw_yaw", initial_cov[8], 0.0005);
+
     // for debug
     update_beacon_ = { Eigen::Vector2d(0.0, 0.0), Eigen::Vector2d(0.0, 0.0), Eigen::Vector2d(0.0, 0.0) };
 
     // for robot state
-    mu_0_ << p_initial_x_, p_initial_y_, degToRad(p_initial_theta_deg_);
-    robotstate_.mu << mu_0_;
-    robotstate_.sigma << 0, 0, 0, 0, 0, 0, 0, 0, 0;
+    robotstate_.mu << p_initial_x_, p_initial_y_, degToRad(p_initial_theta_deg_);
+    robotstate_.sigma << initial_cov[0], initial_cov[1], initial_cov[2], 
+                         initial_cov[3], initial_cov[4], initial_cov[5], 
+                         initial_cov[6], initial_cov[7], initial_cov[8];
 
+    // Odom callback frequency, get dt for calculation
     nh_.param<double>("odom_freq", p_odom_freq_, 100.0);
     dt_ = 1.0 / p_odom_freq_;
 
     // ekf parameter
     // prediction
-    // differential drive
+    // differential drive /* NOT used */
     nh_local_.param<double>("predict_cov_a1", p_a1_, 1.5);
     nh_local_.param<double>("predict_cov_a2", p_a2_, 2.5);
     nh_local_.param<double>("predict_cov_a3", p_a3_, 1.5);
     nh_local_.param<double>("predict_cov_a4", p_a4_, 2.5);
+
     // omnidirectional drive
     nh_local_.param<double>("predict_const_x", p_const_x, 2.0);
     nh_local_.param<double>("predict_const_y", p_const_y, 2.0);
     nh_local_.param<double>("predict_const_theta", p_const_theta, 0.3);
     P_omni_model_ = Eigen::Vector3d{ p_const_x, p_const_y, p_const_theta }.asDiagonal();
+
     // measurement
     nh_local_.param<double>("update_cov_1", p_Q1_, 0.01);
     nh_local_.param<double>("update_cov_2", p_Q2_, 0.01);
     nh_local_.param<double>("update_cov_3", p_Q3_, 0.02);
     Q_ = Eigen::Vector3d{ p_Q1_, p_Q2_, p_Q3_ }.asDiagonal();
+
     // use log(j_k)
     nh_local_.param<double>("mini_likelihood", p_mini_likelihood_, -10000.0);
     nh_local_.param<double>("mini_likelihood_update", p_mini_likelihood_update_, 0.4);
@@ -116,6 +132,9 @@ void Ekf::initialize()
     duration_ = 0.0;
     first_cb = false;
     t_last = 0.0;
+
+    cos_theta_ = 1;
+    sin_theta_ = 0;
 
     // Set timer period
     update_timer_.setPeriod(ros::Duration(1 / p_timer_frequency_), false);
@@ -159,7 +178,7 @@ void Ekf::predict_diff(double v, double w)
 
 void Ekf::predict_omni(double v_x, double v_y, double w, double dt)
 {
-    // TODO ekf predict function for omni
+    /* ucekf prediction function for omni wheel */
     double d_x;
     double d_y;
     double d_theta;
@@ -225,6 +244,7 @@ void Ekf::predict_omni(double v_x, double v_y, double w, double dt)
 
 void Ekf::predict_omni(double v_x, double v_y, double w, double dt, Eigen::Matrix3d odom_sigma)
 {
+    /* ekf prediction function for omni wheel */
     Eigen::Vector3d d_state;
 
     /* COMMENT : get current velocity vector matrix */
@@ -372,29 +392,15 @@ void Ekf::update_landmark()
 
 void Ekf::update_gps(Eigen::Vector3d gps_pose, Eigen::Matrix3d gps_cov)
 {
+    /* Update function for basic ekf */
     if (if_gps == true)
     {
-        // ROS_INFO("update gps");
-        // ROS_INFO("gps pose = %f %f %f", gps_pose(0), gps_pose(1), gps_pose(2));
         Eigen::Vector3d cur_pose;
         Eigen::Matrix3d cur_cov;
         cur_pose = robotstate_.mu;
         cur_cov = robotstate_.sigma;
 
-        Eigen::Vector3d z;
-        Eigen::Vector3d z_hat;
         Eigen::Vector3d d_z;
-
-        double z_r = sqrt(pow(gps_pose(0), 2) + pow(gps_pose(1), 2));
-        double z_hat_r = sqrt(pow(cur_pose(0), 2) + pow(cur_pose(1), 2));
-        double z_phi = -M_PI + atan2(gps_pose(1), gps_pose(0)) - gps_pose(2);
-        double z_hat_phi = -M_PI + atan2(cur_pose(1), cur_pose(0)) - cur_pose(2);
-        z_phi = angleLimitChecking(z_phi);
-        z_hat_phi = angleLimitChecking(z_hat_phi);
-
-        // d_z << (z_r - z_hat_r),
-        //        (z_phi - z_hat_phi),
-        //         0;
 
         d_z << gps_pose(0) - cur_pose(0), gps_pose(1) - cur_pose(1), angleLimitChecking(gps_pose(2) - cur_pose(2));
 
@@ -403,18 +409,6 @@ void Ekf::update_gps(Eigen::Vector3d gps_pose, Eigen::Matrix3d gps_cov)
         Eigen::Matrix3d K;
         Eigen::Vector3d mu;
         Eigen::Matrix3d sigma;
-
-        // double dx = z_r * cos(z_hat_r);
-        // double dy = z_r * sin(z_hat_r);
-
-        double dx = -gps_pose(0);
-        double dy = -gps_pose(1);
-        double q = pow(z_r, 2);
-        double q_sqrt = z_r;
-
-        // H << -(dx / q_sqrt), -(dy / q_sqrt), 0.0,
-        //       dy / q, -dx / q, -1.0,
-        //       0.0, 0.0, 0.0;
 
         /* COMMENT : transpose from base to map ( not used ) */
         H << 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0;

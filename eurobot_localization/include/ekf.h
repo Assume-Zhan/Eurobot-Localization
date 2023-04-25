@@ -90,7 +90,6 @@ class Ekf
     std::vector<Eigen::Vector2d> update_beacon_;
 
     // for robot state
-    Eigen::Vector3d mu_0_;
     RobotState robotstate_;
     RobotState vive_state_;
     RobotState lidar_state_;
