@@ -526,9 +526,9 @@ void Ekf::setposeCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstP
     robotstate_.sigma(2, 1) = pose_msg->pose.covariance[31];  // theta-y
     robotstate_.sigma(2, 2) = pose_msg->pose.covariance[35];  // theta-theta
 
-    cout << "set initial x at " << x << endl;
-    cout << "set initial y at " << y << endl;
-    cout << "set initial theta at " << yaw << endl;
+    ROS_INFO_STREAM("set initial x at " << x << "\n");
+    ROS_INFO_STREAM("set initial y at " << y << "\n");
+    ROS_INFO_STREAM("set initial theta at " << yaw << "\n");
 }
 
 void Ekf::odomCallback(const nav_msgs::Odometry::ConstPtr& odom_msg)
@@ -562,7 +562,6 @@ void Ekf::odomCallback(const nav_msgs::Odometry::ConstPtr& odom_msg)
     odom_sigma(2, 1) = odom_msg->twist.covariance[31];  // theta-y
     odom_sigma(2, 2) = odom_msg->twist.covariance[35];  // theta-theta
 
-    // cout << "vx: " << v_x << "vy: " << v_y << "w: " << w << endl;
     // for calculate time cost
     // struct timespec tt1, tt2;
     // clock_gettime(CLOCK_REALTIME, &tt1);
@@ -588,7 +587,6 @@ void Ekf::odomCallback(const nav_msgs::Odometry::ConstPtr& odom_msg)
     // clock_gettime(CLOCK_REALTIME, &tt2);
     // count_ += 1;
     // duration_ += (tt2.tv_nsec-tt1.tv_nsec)*1e-9;
-    // cout << "average time cost is " << duration_/count_ << "s" << endl;
 
     publishEkfPose(stamp);  // stamp = acturally when does tf been generated
     publishGlobalFilter(stamp);
@@ -753,7 +751,7 @@ void Ekf::obstaclesCallback(const obstacle_detector::Obstacles::ConstPtr& obstac
 {
     if_new_obstacles_ = false;
     beacon_from_scan_.clear();  // drop out all element in list
-    // cout << "obstacle to map frame is: " << endl;
+    
     for (int i = 0; i < obstacle_msg->circles.size(); i++)
     {
         obstacle_detector::CircleObstacle circle = obstacle_msg->circles[i];
@@ -768,13 +766,12 @@ void Ekf::obstaclesCallback(const obstacle_detector::Obstacles::ConstPtr& obstac
         {
             double distance = euclideanDistance(xy_map, i);
             if (distance < p_max_obstacle_distance_)
-            {  // alst time in real world
+            {   
+                // alst time in real world
                 // experience we take < 0.5
-                // cout << xy_map << endl;
                 beacon_from_scan_.push_back(xy);
             }
         }
-        // cout << xy << endl;
         // beacon_from_scan_.push_back(xy);
     }
     if_new_obstacles_ = true;
