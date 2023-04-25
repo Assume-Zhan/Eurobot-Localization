@@ -50,8 +50,7 @@ void Ekf::initialize()
     update_beacon_ = { Eigen::Vector2d(0.0, 0.0), Eigen::Vector2d(0.0, 0.0), Eigen::Vector2d(0.0, 0.0) };
 
     // for robot state
-    mu_0_ << p_initial_x_, p_initial_y_, degToRad(p_initial_theta_deg_);
-    robotstate_.mu << mu_0_;
+    robotstate_.mu << p_initial_x_, p_initial_y_, degToRad(p_initial_theta_deg_);
     robotstate_.sigma << 0, 0, 0, 0, 0, 0, 0, 0, 0;
 
     nh_.param<double>("/ekf/odom_freq", p_odom_freq_, 50.0);
