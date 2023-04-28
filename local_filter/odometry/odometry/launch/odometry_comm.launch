@@ -27,6 +27,7 @@
         <param name="covariance_multi_vz" value="0.5"/>
 		<param name="using_nav_vel_cb" value="false"/>
 		<param name="using_dynamic_reconf" value="false"/>
+		<param name="use_stm_integral" value="false"/>
 
     </node>
     <!-- Odometry communication (rosserial server) -->

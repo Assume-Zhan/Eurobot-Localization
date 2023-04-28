@@ -146,6 +146,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
         if(checkRobotpose(circle_msg.center)) continue;
 
         pushMardedObstacles(ptr->header.stamp, circle_msg, id++);
+        output_obstacles_array_.circles.push_back(circle_msg);
       }
     }
 
