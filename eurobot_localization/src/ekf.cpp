@@ -671,8 +671,8 @@ void Ekf::updateTimerCallback(const ros::TimerEvent &e){
         gps_sigma(2, 2) = lidar_state_.sigma(2, 2);  // theta-theta
     }
     else if(update_vive_ && !update_lidar_){
-        gps_mu(0) = cos_theta_ * (vive_state_.mu(0) - 1.5) - sin_theta_ * (vive_state_.mu(1) - 1.0) + 1.5;
-        gps_mu(1) = sin_theta_ * (vive_state_.mu(0) - 1.5) + cos_theta_ * (vive_state_.mu(1) - 1.0) + 1.0;
+        gps_mu(0) = vive_state_.mu(0);
+        gps_mu(1) = vive_state_.mu(1);
         gps_mu(2) = vive_state_.mu(2);
 
         gps_sigma(0, 0) = vive_state_.sigma(0, 0);   // x-x
