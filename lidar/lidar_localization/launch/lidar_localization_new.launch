@@ -31,8 +31,14 @@
         </node>
 
         <node name="lidar_localization" pkg="lidar_localization" type="lidar_localization_node" output="log">
-            <rosparam file="$(find lidar_localization)/params/lidar_localization_params_blue.yaml" command="load" if="$(eval arg('color')=='b')"/>
-            <rosparam file="$(find lidar_localization)/params/lidar_localization_params_green.yaml" command="load" if="$(eval arg('color')=='g')"/>
+
+            <!-- Choose which color to use -->
+            <rosparam file="$(find lidar_localization)/params/lidar_loc_blue_params.yaml" command="load" if="$(eval arg('color')=='b')"/>
+            <rosparam file="$(find lidar_localization)/params/lidar_loc_green_params.yaml" command="load" if="$(eval arg('color')=='g')"/>
+            
+            <!-- Load basic params -->
+            <rosparam file="$(find lidar_localization)/params/lidar_loc_basic_params.yaml" command="load"/>
+            
             <remap from="obstacles" to="obstacles_to_base"/>
             <param name="beacon_parent_frame_id" value="$(arg robot_name_slash)map"/>
             <param name="beacon_frame_id_prefix" value="$(arg robot_name_slash)beacon"/>

@@ -4,15 +4,6 @@ cov_x: 0.1
 cov_y: 0.1
 cov_yaw: 1
 
-beacon_1_x: 0.05
-beacon_1_y: -0.094
-
-beacon_2_x: 2.95
-beacon_2_y: -0.094
-
-beacon_3_x: 1.5
-beacon_3_y: 2.094
-
 theta: 0
 
 obstacle_topic: obstacles_to_base
