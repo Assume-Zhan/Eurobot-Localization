@@ -1,0 +1,51 @@
+odom_freq: 100
+# initial pose
+initial_x: 0
+initial_y: 0
+initial_theta: 0
+
+# initial covariance
+initial_cov_x: 0.0001
+initial_cov_x_y: 0.0001
+initial_cov_x_yaw: 0.0001
+initial_cov_y_x: 0.0001
+initial_cov_y_y: 0.0001
+initial_cov_y_yaw: 0.0001
+initial_cov_yaw_x: 0.0001
+initial_cov_yaw_y: 0.0001
+initial_cov_yaw_yaw: 0.0001
+
+# differential drive model const.
+predict_cov_a1: 1.5
+predict_cov_a2: 2.5
+predict_cov_a3: 1.5
+predict_cov_a4: 2.5
+
+# omnidrive model const.
+#predict_const_x: 10
+predict_const_x: 10
+#predict_const_y: 10
+predict_const_y: 10
+predict_const_theta: 10
+#predict_const_theta: 10
+# predict_const_x: 5
+# predict_const_y: 5
+# # predict_const_theta: 5
+# predict_const_theta: 1.5
+
+# measurement covariance
+update_cov_1: 0.015
+update_cov_2: 0.015
+update_cov_3: 0.015
+#update_cov_1: 0.015
+#update_cov_2: 0.015
+#update_cov_3: 0.015
+
+# update param=
+mini_likelihood: -10000.0
+mini_likelihood_update: 0.35
+#mini_likelihood_update: 0.65
+max_obstacle_distance: 0.25
+
+timer_frequency: 10
+velocity_lpf_gain: 0.5

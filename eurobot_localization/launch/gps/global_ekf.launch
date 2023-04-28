@@ -7,8 +7,14 @@
 
     <group ns="$(arg robot_name)">
         <node name="ekf" pkg="eurobot_localization" type="ekf" >
+
+            <!-- Beacon settings for blue or green -->
             <rosparam file="$(find eurobot_localization)/config/global_filter/global_filter_blue.yaml" if="$(eval arg('color')=='b')"/>
             <rosparam file="$(find eurobot_localization)/config/global_filter/global_filter_green.yaml" if="$(eval arg('color')=='g')"/>
+
+            <!-- Load basic settings -->
+            <rosparam file="$(find eurobot_localization)/config/global_filter/global_filter_basic.yaml"/>
+
 			<param name="robot_name" value="$(arg robot_name_slash)"/>
 
             <remap from="odom" to="global_filter"/>
