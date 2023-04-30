@@ -3,9 +3,11 @@
 	<arg name="robot_name" default=""/>
 	<arg name="robot_name_slash" default=""/>
 
-    <node pkg="odometry" type="odometry_node" name="odometry_node" output="screen">
+	<arg name="param" default="1"/>
 
-        <rosparam file="$(find odometry)/param/odometry_comm.yaml"/>
+    <node pkg="odometry" type="odometry_node" name="odometry_node">
+
+        <rosparam file="$(find odometry)/param/odometry_comm.yaml" if="$(eval arg('param')==1)"/>
 
         <param name="twist_topic" value="/$(arg robot_name)/Toposition"/>
         <param name="odom_topic" value="/$(arg robot_name)/odom"/>
@@ -16,6 +18,7 @@
         <remap from="/ekf_pose" to="/$(arg robot_name)/ekf_pose_in_odom"/>
 
     </node>
+    
     <!-- Odometry communication (rosserial server) -->
     <node pkg="rosserial_server" type="serial_node" name="rosserial_server_dp" output="screen">
         <param name="port" value="/dev/USB0-2" />

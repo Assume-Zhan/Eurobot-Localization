@@ -8,12 +8,12 @@ publish: true
 update_params: false
 
 # Covariance for "const" part
-covariance_x: 0.05
-covariance_y: 0.05
-covariance_z: 0.1
-covariance_vx: 0.05
-covariance_vy: 0.05
-covariance_vz: 0.2
+covariance_x: 0.0005
+covariance_y: 0.0005
+covariance_z: 0.01
+covariance_vx: 0.0005
+covariance_vy: 0.0005
+covariance_vz: 0.02
 
 # Covariance for "multiple" part
 covariance_multi_vx: 0.5
