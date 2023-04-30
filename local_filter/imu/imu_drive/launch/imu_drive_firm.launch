@@ -11,7 +11,7 @@
         <arg name="robot_name_slash" value="$(arg robot_name_slash)"/> 
     </include>
 
-    <node pkg="imu_drive" type="imu_drive_node" name="imu_node" output="screen">
+    <node pkg="imu_drive" type="imu_drive_node" name="imu_node">
 
         <rosparam command="load" file="$(find imu_drive)/param/imu_drive_firm.yaml" if="$(eval arg('param')==1)"/>
 
