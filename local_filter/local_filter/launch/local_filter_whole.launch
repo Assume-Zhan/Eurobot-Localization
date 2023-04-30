@@ -10,7 +10,6 @@
         <!-- Local filter by robot localization -->
         <node pkg="robot_localization" type="ekf_localization_node" name="ekf_velocity" clear_params="true">
             <!-- <param name="tf_prefix" value="Tera" /> -->
-            <rosparam command="load" file="$(find local_filter)/param/local_filter.yaml" />
             <remap from="odometry/filtered" to="global_filter" />
             <remap from="set_pose" to="initialpose" />
             <remap from="/diagnostics" to="~diagnostics" />

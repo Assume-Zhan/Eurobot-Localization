@@ -312,6 +312,10 @@ void IMU::DynamicParamCallback(imu_drive::imu_drive_paramConfig &config, uint32_
 
         ROS_INFO_STREAM("[IMU DRIVE] : covariance multiplicant linear is set to " << this->p_cov_multi_acl_);
     }
+
+    this->imu_output_.angular_velocity_covariance = this->imu_output_backup_.angular_velocity_covariance;
+    this->imu_output_.linear_acceleration_covariance = this->imu_output_backup_.linear_acceleration_covariance;
+
 }
 
 

@@ -333,6 +333,8 @@ void Odometry::DynamicParamCallback(odometry::odometry_paramConfig &config, uint
 
         ROS_INFO_STREAM("[Odometry] : vz covariance multiplicant set to " << this->covariance_multi_[2]);
     }
+    
+    this->odometry_output_.twist.covariance = this->odometry_output_backup_.twist.covariance;
 
 }
 

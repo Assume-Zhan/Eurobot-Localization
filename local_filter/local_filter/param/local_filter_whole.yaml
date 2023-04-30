@@ -39,7 +39,7 @@ odometry_node:
   use_stm_integral: false
 
   # Open Dynamic reconfigure service
-  using_dynamic_reconf: false
+  using_dynamic_reconf: true
 
 # ----------------------
 # ------ IMU node ------
@@ -69,6 +69,8 @@ imu_node:
 
   # Low pass filter -> beleive previous
   filter_prev: 0.1
+
+  using_dynamic_reconf: true
 
 # ----------------------
 # ------ EKF node ------
