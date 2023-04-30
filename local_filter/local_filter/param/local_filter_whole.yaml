@@ -12,12 +12,12 @@ odometry_node:
   update_params: false
 
   # Covariance for "const" part
-  covariance_x: 0.05
-  covariance_y: 0.05
-  covariance_z: 0.1
-  covariance_vx: 0.05
-  covariance_vy: 0.05
-  covariance_vz: 0.2
+  covariance_x: 0.00012
+  covariance_y: 0.00012
+  covariance_z: 0.003
+  covariance_vx: 0.00012
+  covariance_vy: 0.00012
+  covariance_vz: 0.003
 
   # Covariance for "multiple" part
   covariance_multi_vx: 0.5
@@ -47,12 +47,12 @@ imu_node:
   update_params: false
 
   # Covariance for "const" part
-  covariance_vx: 0.05
-  covariance_vy: 0.05
-  covariance_vz: 0.1
-  covariance_ax: 0.11
-  covariance_ay: 0.11
-  covariance_az: 0.2
+  covariance_vx: 0.005
+  covariance_vy: 0.005
+  covariance_vz: 0.01
+  covariance_ax: 0.01
+  covariance_ay: 0.01
+  covariance_az: 0.01
 
   # Covariance for "multiple" part
   cov_multi_vel: 0.2
