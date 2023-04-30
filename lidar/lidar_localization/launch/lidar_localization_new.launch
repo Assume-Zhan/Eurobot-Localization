@@ -37,6 +37,9 @@
             <rosparam file="$(find lidar_localization)/params/lidar_loc_green_params.yaml" command="load" if="$(eval arg('color')=='g')"/>
             
             <remap from="obstacles" to="obstacles_to_base"/>
+
+            <remap from="ekf_pose" to="/$(arg robot_name_slash)ekf_pose"/>
+
             <param name="beacon_parent_frame_id" value="$(arg robot_name_slash)map"/>
             <param name="beacon_frame_id_prefix" value="$(arg robot_name_slash)beacon"/>
             <param name="robot_parent_frame_id" value="$(arg robot_name_slash)map"/>

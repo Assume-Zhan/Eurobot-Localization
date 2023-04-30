@@ -52,6 +52,8 @@ LidarLocalization::~LidarLocalization()
   nh_local_.deleteParam("beacon_frame_id_prefix");
   nh_local_.deleteParam("robot_parent_frame_id");
   nh_local_.deleteParam("robot_frame_id");
+  nh_local_.deleteParam("ekfpose_topic");
+  nh_local_.deleteParam("toposition_topic");
 }
 
 bool LidarLocalization::updateParams(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res)
@@ -72,8 +74,12 @@ bool LidarLocalization::updateParams(std_srvs::Empty::Request& req, std_srvs::Em
   get_param_ok = nh_local_.param<double>("beacon_3_y", p_beacon_3_y_, 3.05);
   get_param_ok = nh_local_.param<double>("theta", p_theta_, 0);
 
+  get_param_ok = nh_local_.param<double>("threshold", p_threshold_, 0.24);
+  get_param_ok = nh_local_.param<double>("cov_dec", p_cov_dec_, 0.01);
+
   get_param_ok = nh_local_.param<string>("obstacle_topic", p_obstacle_topic_, "obstacles");
   get_param_ok = nh_local_.param<string>("toposition_topic", p_toposition_topic_, "/Toposition");
+  get_param_ok = nh_local_.param<string>("ekfpose_topic", p_ekfpose_topic_, "ekf_pose");
   get_param_ok = nh_local_.param<string>("beacon_parent_frame_id", p_beacon_parent_frame_id_, "map");
   get_param_ok = nh_local_.param<string>("beacon_frame_id_prefix", p_beacon_frame_id_prefix_, "beacon");
   get_param_ok = nh_local_.param<string>("robot_parent_frame_id", p_robot_parent_frame_id_, "map");
@@ -85,6 +91,7 @@ bool LidarLocalization::updateParams(std_srvs::Empty::Request& req, std_srvs::Em
     {
       sub_obstacles_ = nh_.subscribe(p_obstacle_topic_, 10, &LidarLocalization::obstacleCallback, this);
       sub_toposition_ = nh_.subscribe(p_toposition_topic_, 10, &LidarLocalization::cmdvelCallback, this);
+      sub_ekfpose_ = nh_.subscribe(p_ekfpose_topic_, 10, &LidarLocalization::ekfposeCallback, this);
       pub_location_ = nh_.advertise<geometry_msgs::PoseWithCovarianceStamped>("lidar_bonbonbon", 10);
       pub_beacon_ = nh_.advertise<geometry_msgs::PoseArray>("beacons", 10);
     }
@@ -121,6 +128,11 @@ void LidarLocalization::cmdvelCallback(const geometry_msgs::Twist::ConstPtr& ptr
   robot_to_map_vel_.y = ptr->linear.y;
   robot_to_map_vel_.z = ptr->angular.z;  
 
+}
+
+void LidarLocalization::ekfposeCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr)
+{
+  this->ekf_pose_ = ptr->pose.pose.position;
 }
 
 void LidarLocalization::obstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr)
@@ -488,14 +500,19 @@ void LidarLocalization::publishLocation()
   output_robot_pose_.header.frame_id = p_robot_parent_frame_id_;
   output_robot_pose_.header.stamp = now;
 
+  double error_length = length(output_robot_pose_.pose.pose.position, ekf_pose_);
+  double cov_x = (error_length > p_threshold_) ? p_cov_x_ * p_cov_dec_ : p_cov_x_;
+  double cov_y = (error_length > p_threshold_) ? p_cov_y_ * p_cov_dec_ : p_cov_y_;
+  double cov_yaw = (error_length > p_threshold_) ? p_cov_yaw_ * p_cov_dec_ : p_cov_yaw_;
+
   // clang-format off
                                        // x         y         z  pitch roll yaw
-    output_robot_pose_.pose.covariance = {p_cov_x_, 0,        0, 0,    0,   0,
-                                          0,        p_cov_y_, 0, 0,    0,   0,
+    output_robot_pose_.pose.covariance = {cov_x, 0,           0, 0,    0,   0,
+                                          0,        cov_y,    0, 0,    0,   0,
                                           0,        0,        0, 0,    0,   0,
                                           0,        0,        0, 0,    0,   0,
                                           0,        0,        0, 0,    0,   0,
-                                          0,        0,        0, 0,    0,   p_cov_yaw_};
+                                          0,        0,        0, 0,    0,   cov_yaw};
   // clang-format on
   pub_location_.publish(output_robot_pose_);
 }

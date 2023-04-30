@@ -123,6 +123,13 @@ private:
   void obstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr);
 
   /**
+   * @brief Topic `obstacles` callback function
+   *
+   * @param ptr The obstaacles data
+   */
+  void ekfposeCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
+
+  /**
    * @brief Topic `lidar_pose` publisher function
    *
    */
@@ -194,6 +201,7 @@ private:
   /* ros inter-node */
   ros::Subscriber sub_obstacles_;
   ros::Subscriber sub_toposition_;
+  ros::Subscriber sub_ekfpose_;
   ros::Publisher pub_location_;
   ros::Publisher pub_beacon_;
   tf2_ros::Buffer tf2_buffer_;
@@ -209,6 +217,8 @@ private:
   geometry_msgs::Point beacon_velocity_[3];
   geometry_msgs::Point beacon_to_robot_[3];
   geometry_msgs::Point beacon_found_[3];
+
+  geometry_msgs::Point ekf_pose_;
 
   geometry_msgs::Point robot_to_map_vel_;
 
@@ -226,11 +236,15 @@ private:
   double p_beacon_3_y_;
   double p_theta_;
 
+  double p_threshold_;
+  double p_cov_dec_;
+
   std::string p_obstacle_topic_;
   std::string p_toposition_topic_;
   std::string p_beacon_parent_frame_id_;
   std::string p_beacon_frame_id_prefix_;
   std::string p_robot_parent_frame_id_;
   std::string p_robot_frame_id_;
+  std::string p_ekfpose_topic_;
 };
 }  // namespace lidar_localization

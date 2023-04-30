@@ -78,6 +78,9 @@ lidar_localization:
 
   theta: 0
 
+  threshold: 0.24
+  cov_dec: 0.01
+
   obstacle_topic: obstacles_to_base
   beacon_parent_frame_id: map
   beacon_frame_id_prefix: beacon
