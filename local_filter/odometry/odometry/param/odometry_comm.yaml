@@ -1,0 +1,32 @@
+# Active this node
+active: true
+
+# Set publish to this node
+publish: true
+
+# Open param service
+update_params: false
+
+# Covariance for "const" part
+covariance_x: 0.05
+covariance_y: 0.05
+covariance_z: 0.1
+covariance_vx: 0.05
+covariance_vy: 0.05
+covariance_vz: 0.2
+
+# Covariance for "multiple" part
+covariance_multi_vx: 0.5
+covariance_multi_vy: 0.5
+covariance_multi_vz: 0.5
+
+# Dynamic adjustment from :
+  # True: /cmd_vel
+  # False: /ekf_pose_in_odom
+using_nav_vel_cb: false
+
+# Open if STM has integral information
+use_stm_integral: false
+
+# Open Dynamic reconfigure service
+using_dynamic_reconf: false
