@@ -1,0 +1,24 @@
+# Set the usage of the node
+active: true
+publish: true
+
+# Open param service
+update_params: false
+
+# Covariance for "const" part
+covariance_vx: 0.05
+covariance_vy: 0.05
+covariance_vz: 0.1
+covariance_ax: 0.11
+covariance_ay: 0.11
+covariance_az: 0.2
+
+# Covariance for "multiple" part
+cov_multi_vel: 0.2
+cov_multi_acl: 0.2
+
+# Use which topic to dynamic adjust covariance
+using_nav_vel_cb: false
+
+# Low pass filter -> beleive previous
+filter_prev: 0.1
