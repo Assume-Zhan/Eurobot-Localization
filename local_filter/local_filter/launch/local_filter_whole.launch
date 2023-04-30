@@ -5,7 +5,7 @@
 
     <group ns="$(arg robot_name)">
 
-        <rosparam command="load" file="$(find local_filter)/param/local_filter.yaml" />
+        <rosparam command="load" file="$(find local_filter)/param/local_filter_whole.yaml" />
 
         <!-- Local filter by robot localization -->
         <node pkg="robot_localization" type="ekf_localization_node" name="ekf_velocity" clear_params="true">

@@ -11,6 +11,8 @@
 
     <node pkg="imu_drive" type="imu_drive_node" name="imu_node" output="screen">
 
+        <rosparam command="load" file="$(find imu_drive)/param/imu_drive_firm.yaml" />
+
         <param name="sub_topic" value="/$(arg robot_name)/imu/data"/>
         <param name="pub_topic" value="/$(arg robot_name)/imu/data_cov"/>
         <remap from="/cmd_vel" to="/$(arg robot_name)/cmd_vel"/>
