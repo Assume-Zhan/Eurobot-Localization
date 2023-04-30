@@ -1,28 +1,28 @@
-frequency: 100
-silent_tf_failure: false
-sensor_timeout: 0.01
-two_d_mode: true
-
-smooth_lagged_data: false
-history_length: 0.4
-
-dynamic_process_noise_covariance: false
-
-predict_to_current_time: false
-
-print_diagnostics: false
-
-# debug 
-debug: false
-debug_out_file: /path/to/debug/file.txt
-
-# frames
-map_frame: map
-odom_frame: odom
-base_link_frame: base_footprint
-world_frame: odom
-transform_time_offset: 0.05
-transform_timeout: 0
+frequency: 100                                                                                                                              
+silent_tf_failure: false                                                                                                                    
+sensor_timeout: 0.01                                                                                                                        
+two_d_mode: true                                                                                                                            
+                                                                                                                                            
+smooth_lagged_data: false # to deal with lagged data                                                                                        
+history_length: 0.4                                                                                                                         
+                                                                                                                                            
+dynamic_process_noise_covariance: false                                                                                                     
+                                                                                                                                            
+predict_to_current_time: false # Why ?                                                                                                      
+                                                                                                                                            
+print_diagnostics: false #  Why ?                                                                                                           
+                                                                                                                                            
+# debug                                                                                                                                     
+debug: false                                                                                                                                
+debug_out_file: /path/to/debug/file.txt                                                                                                     
+                                                                                                                                            
+# frames                                                                                                                                    
+map_frame: map                                                                                                                              
+odom_frame: odom                                                                                                                            
+base_link_frame: base_footprint                                                                                                             
+world_frame: map                                                                                                                            
+transform_time_offset: 0.05                                                                                                                 
+transform_timeout: 0   
 
 # sensors
 # config: [x,   y,   z,
@@ -31,11 +31,11 @@ transform_timeout: 0
 #          r.,  p.,  y.,
 #          x.., y.., z..]
 odom0: odom
-odom0_config: [false, false, false,
-               false, false, false,
-               true,  true,  false,
-               false, false, true,
-               false, false, false]
+odom0_config: [false, false, false, 
+               false, false, false, 
+               true,  true,  false, 
+               false, false, true,   # yaw.
+               false, false, false] 
 odom0_queue_size: 20
 odom0_differential: false
 odom0_relative: false
@@ -53,21 +53,50 @@ imu0_queue_size: 100
 imu0_differential: false
 imu0_relative: false
 imu0_nodelay: true
-
-imu0_twist_rejection_threshold: 1000000000000.0
+imu0_twist_rejection_threshold: 1000000000000.0                                                                                             
 imu0_linear_acceleration_rejection_threshold: 1000000000000.0
 
 imu0_remove_gravitational_acceleration: false
 
+pose0: lidar_bonbonbon
+pose0_config: [true, true, false,
+              false, false, true,    
+              false, false, false,     # secure x., y. have accurate covariance matrix value
+              false, false, false,
+              false,  false,  false]
+pose0_queue_size: 50
+pose0_differential: false
+pose0_relative: false
+pose0_nodelay: true
 
-initial_state: [0.0,  0.0,  0.0,
+initial_state: [0.0,   0.0,   0.0,
                 0.0,   0.0,   0.0,
                 0.0,   0.0,   0.0,
                 0.0,   0.0,   0.0,
                 0.0,   0.0,   0.0]
 
 publish_tf: true
-publish_acceleration: true
+publish_acceleration: false # true->false
+
+pose1: vive_bonbonbon
+pose1_config: [true, true, false,
+             false, false, true,
+             true, true, false,     # secure x., y. have accurate covariance matrix value
+             false, false, false,
+             false,  false,  false]
+pose1_queue_size: 50
+pose1_differential: false
+pose1_relative: false
+pose1_nodelay: true
+
+initial_state: [0.0,   0.0,   0.0,
+                0.0,   0.0,   0.0,
+                0.0,   0.0,   0.0,
+                0.0,   0.0,   0.0,
+                0.0,   0.0,   0.0]
+
+publish_tf: true
+publish_acceleration: false # true->false
 
 # control
 # acc_config: [x., y., z., r., p., y.]
@@ -96,7 +125,7 @@ process_noise_covariance: [0.005, 0,     0,    0,    0,    0,     0,     0,     
                            0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0.01, 0,    0,
                            0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0,    0.01, 0,
                            0,     0,     0,    0,    0,    0,     0,     0,     0,    0,    0,    0,    0,    0,    0]
-                           
+
 initial_estimate_covariance: [0.01, 0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
                               0,    0.01, 0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
                               0,    0,    1e-9, 0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
@@ -112,3 +141,4 @@ initial_estimate_covariance: [0.01, 0,    0,    0,    0,    0,    0,    0,    0,
                               0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     1e-9, 0,    0,
                               0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    1e-9, 0,
                               0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    1e-9]
+

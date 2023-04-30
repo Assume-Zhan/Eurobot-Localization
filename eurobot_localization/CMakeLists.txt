@@ -140,6 +140,7 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/eurobot_localization_node.cpp)
 add_executable(ekf src/ekf.cpp)
 add_executable(uc_ekf src/uc_ekf.cpp)
+add_executable(rival_localization src/rival_localization.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -148,12 +149,14 @@ add_executable(uc_ekf src/uc_ekf.cpp)
 # set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
 target_link_libraries(ekf ${catkin_LIBRARIES}) 
 target_link_libraries(uc_ekf ${catkin_LIBRARIES}) 
+target_link_libraries(rival_localization ${catkin_LIBRARIES}) 
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ekf ${catkin_EXPORTED_TARGETS})
 add_dependencies(uc_ekf ${catkin_EXPORTED_TARGETS})
+add_dependencies(rival_localization ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node

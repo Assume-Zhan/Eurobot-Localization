@@ -27,6 +27,9 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
 
     bool prev_active = p_active_;
 
+    double covariance[6];
+    double multi_covariance[3];
+
     /* get param */
     if(this->nh_local_.param<bool>("active", p_active_, true)){
         ROS_INFO_STREAM("[Odometry] : active set to " << p_active_);
@@ -56,49 +59,49 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
         ROS_INFO_STREAM("[Odometry] : update params set to " << p_update_params_); 
     }
     
-    if(this->nh_local_.param<double>("covariance_x", p_covariance_, 0.)){
-        ROS_INFO_STREAM("[Odometry] : x covariance set to " << p_covariance_);
-        this->odometry_output_.twist.covariance[0] = p_covariance_;
+    if(this->nh_local_.param<double>("covariance_x", covariance[0], 0.)){
+        ROS_INFO_STREAM("[Odometry] : x covariance set to " << covariance[0]);
+        this->odometry_output_.twist.covariance[0] = covariance[0];
     }
 
-    if(this->nh_local_.param<double>("covariance_y", p_covariance_, 0.)){
-        ROS_INFO_STREAM("[Odometry] : y covariance set to " << p_covariance_);
-        this->odometry_output_.twist.covariance[7] = p_covariance_;
+    if(this->nh_local_.param<double>("covariance_y", covariance[1], 0.)){
+        ROS_INFO_STREAM("[Odometry] : y covariance set to " << covariance[1]);
+        this->odometry_output_.twist.covariance[7] = covariance[1];
     }
 
-    if(this->nh_local_.param<double>("covariance_z", p_covariance_, 0.)){
-        ROS_INFO_STREAM("[Odometry] : z covariance set to " << p_covariance_); 
-        this->odometry_output_.twist.covariance[14] = p_covariance_;
+    if(this->nh_local_.param<double>("covariance_z", covariance[2], 0.)){
+        ROS_INFO_STREAM("[Odometry] : z covariance set to " << covariance[2]); 
+        this->odometry_output_.twist.covariance[14] = covariance[2];
     }
 
-    if(this->nh_local_.param<double>("covariance_vx", p_covariance_, 0.)){
-        ROS_INFO_STREAM("[Odometry] : vx covariance set to " << p_covariance_); 
-        this->odometry_output_.twist.covariance[21] = p_covariance_;
+    if(this->nh_local_.param<double>("covariance_vx", covariance[3], 0.)){
+        ROS_INFO_STREAM("[Odometry] : vx covariance set to " << covariance[3]); 
+        this->odometry_output_.twist.covariance[21] = covariance[3];
     }
 
-    if(this->nh_local_.param<double>("covariance_vy", p_covariance_, 0.)){
-        ROS_INFO_STREAM("[Odometry] : vy covariance set to " << p_covariance_); 
-        this->odometry_output_.twist.covariance[28] = p_covariance_;
+    if(this->nh_local_.param<double>("covariance_vy", covariance[4], 0.)){
+        ROS_INFO_STREAM("[Odometry] : vy covariance set to " << covariance[4]); 
+        this->odometry_output_.twist.covariance[28] = covariance[4];
     }
 
-    if(this->nh_local_.param<double>("covariance_vz", p_covariance_, 0.)){
-        ROS_INFO_STREAM("[Odometry] : vz covariance set to " << p_covariance_); 
-        this->odometry_output_.twist.covariance[35] = p_covariance_;
+    if(this->nh_local_.param<double>("covariance_vz", covariance[5], 0.)){
+        ROS_INFO_STREAM("[Odometry] : vz covariance set to " << covariance[5]); 
+        this->odometry_output_.twist.covariance[35] = covariance[5];
     }
 
-    if(this->nh_local_.param<double>("covariance_multi_vx", p_covariance_multi_, 0.)){
-        ROS_INFO_STREAM("[Odometry] : vx covariance multiplicant set to " << p_covariance_multi_); 
-        covariance_multi_[0] = p_covariance_multi_;
+    if(this->nh_local_.param<double>("covariance_multi_vx", multi_covariance[0], 0.)){
+        ROS_INFO_STREAM("[Odometry] : vx covariance multiplicant set to " << multi_covariance[0]); 
+        covariance_multi_[0] = multi_covariance[0];
     }
 
-    if(this->nh_local_.param<double>("covariance_multi_vy", p_covariance_multi_, 0.)){
-        ROS_INFO_STREAM("[Odometry] : vy covariance multiplicant set to " << p_covariance_multi_); 
-        covariance_multi_[1] = p_covariance_multi_;
+    if(this->nh_local_.param<double>("covariance_multi_vy", multi_covariance[1], 0.)){
+        ROS_INFO_STREAM("[Odometry] : vy covariance multiplicant set to " << multi_covariance[1]); 
+        covariance_multi_[1] = multi_covariance[1];
     }
 
-    if(this->nh_local_.param<double>("covariance_multi_vz", p_covariance_multi_, 0.)){
-        ROS_INFO_STREAM("[Odometry] : vz covariance multiplicant set to " << p_covariance_multi_); 
-        covariance_multi_[2] = p_covariance_multi_;
+    if(this->nh_local_.param<double>("covariance_multi_vz", multi_covariance[2], 0.)){
+        ROS_INFO_STREAM("[Odometry] : vz covariance multiplicant set to " << multi_covariance[2]); 
+        covariance_multi_[2] = multi_covariance[2];
     }
 
     if(this->nh_local_.param<bool>("using_nav_vel_cb", p_sub_from_nav_, 0.)){
@@ -108,6 +111,10 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
     if(this->nh_local_.param<bool>("using_dynamic_reconf", p_use_dynamic_reconf_, true)){
         ROS_INFO_STREAM("[Odometry] : using dynamic reconfigure is set to " << p_use_dynamic_reconf_); 
 	}
+
+    if(this->nh_local_.param<bool>("use_stm_integral", p_use_stm_integral_, true)){
+        ROS_INFO_STREAM("[Odometry] : use stm integral " << p_use_stm_integral_); 
+    }
 
     if(p_active_ != prev_active) {
 
@@ -121,7 +128,7 @@ bool Odometry::UpdateParams(std_srvs::Empty::Request &req, std_srvs::Empty::Resp
                 this->vel_sub_ = nh_.subscribe("/cmd_vel", 10, &Odometry::P_VelocityCallback, this);
             }
             else{
-                this->vel_sub_ = nh_.subscribe("/ekf_pose", 10, &Odometry::VelocityCallback, this);
+                this->vel_sub_ = nh_.subscribe("/ekf_pose_in_odom", 10, &Odometry::VelocityCallback, this);
             }
 
             if(this->p_update_params_){
@@ -163,8 +170,20 @@ void Odometry::TwistCallback(const geometry_msgs::Twist::ConstPtr &msg){
 
     this->odometry_output_.header.seq = sequence;
     this->odometry_output_.header.stamp = ros::Time::now();
+    
+    if(p_use_stm_integral_){
+        this->odometry_output_.pose.pose.position.x = msg->angular.x;                                                                           
+        this->odometry_output_.pose.pose.position.y = msg->angular.y;                                                                           
+                                                                                                                                            
+        tf2::Quaternion quaternion;                                                                                                             
+        quaternion.setRPY(0, 0, msg->linear.z);                                                                                                 
 
-    this->odometry_output_.twist.twist = *msg;
+        this->odometry_output_.pose.pose.orientation = tf2::toMsg(quaternion);
+    }
+
+    this->odometry_output_.twist.twist.linear.x = msg->linear.x;
+    this->odometry_output_.twist.twist.linear.y = msg->linear.y;
+    this->odometry_output_.twist.twist.angular.z = msg->angular.z;
 
     if(this->p_publish_) this->publish();
 

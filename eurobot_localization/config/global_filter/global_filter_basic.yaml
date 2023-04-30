@@ -1,17 +1,19 @@
-beacon_ax: 0.05885
-beacon_ay: -0.1182
-
-beacon_bx: 2.935
-beacon_by: -0.09771
-
-beacon_cx: 1.508
-beacon_cy: 2.09646
-
 odom_freq: 100
 # initial pose
 initial_x: 0
 initial_y: 0
 initial_theta: 0
+
+# initial covariance
+initial_cov_x: 0.0001
+initial_cov_x_y: 0.0001
+initial_cov_x_yaw: 0.0001
+initial_cov_y_x: 0.0001
+initial_cov_y_y: 0.0001
+initial_cov_y_yaw: 0.0001
+initial_cov_yaw_x: 0.0001
+initial_cov_yaw_y: 0.0001
+initial_cov_yaw_yaw: 0.0001
 
 # differential drive model const.
 predict_cov_a1: 1.5
@@ -41,6 +43,9 @@ update_cov_3: 0.015
 
 # update param=
 mini_likelihood: -10000.0
-mini_likelihood_update: 0.1
+mini_likelihood_update: 0.35
 #mini_likelihood_update: 0.65
-max_obstacle_distance: 0.5
+max_obstacle_distance: 0.25
+
+timer_frequency: 10
+velocity_lpf_gain: 0.5

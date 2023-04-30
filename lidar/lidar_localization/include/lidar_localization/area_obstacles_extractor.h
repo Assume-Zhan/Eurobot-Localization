@@ -24,10 +24,8 @@
 
 #pragma once
 
+// ROS library
 #include <ros/ros.h>
-#include <vector>
-
-#include <lidar_localization/util/math_util.h>
 #include <std_msgs/Bool.h>
 #include <std_srvs/Empty.h>
 #include <obstacle_detector/Obstacles.h>
@@ -36,9 +34,16 @@
 #include <geometry_msgs/Polygon.h>
 #include <geometry_msgs/Point32.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
-#include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <nav_msgs/Odometry.h>
+
+// Customized utility header fiile
+#include <lidar_localization/util/math_util.h>
+
+// Cpp tools
+#include <vector>
+#include <queue>
+
 
 namespace lidar_localization
 {
@@ -87,12 +92,32 @@ private:
   void obstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr);
 
   /**
+   * @brief Topic `ally_obstacles` callback function
+   *
+   * @param ptr The obstaacles data
+   */
+  void allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr);
+
+  void recordObstacles(obstacle_detector::Obstacles&, double);
+
+  /**
+   * @brief Do low pass filter for each obstacles' velocity
+   *
+   * @param curr current obstacles data
+   * @param prev previous obstacles data
+   */
+  void doLowPassFilter(obstacle_detector::Obstacles& curr, obstacle_detector::Obstacles prev);
+
+  void pushMardedObstacles(ros::Time, obstacle_detector::CircleObstacle, int);
+
+  /**
    * @brief Topic `obstacles_to_map` publisher function
    *
    */
   void publishObstacles();
 
   void publishHaveObstacles();
+  
   /**
    * @brief Topic `obstaclefield_marker` publisher function
    *
@@ -100,7 +125,8 @@ private:
   void publishMarkers();
 
   bool checkBoundary(geometry_msgs::Point);
-  void robotPoseCallback(const nav_msgs::Odometry::ConstPtr& ptr);
+  bool checkRobotpose(geometry_msgs::Point);
+  void robotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
   void allyRobotPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr);
 
   /* ros node */
@@ -112,19 +138,23 @@ private:
   ros::Subscriber sub_obstacles_;
   ros::Subscriber sub_robot_pose_;
   ros::Subscriber sub_ally_robot_pose_;
+  ros::Subscriber sub_ally_obstacles_;
   ros::Publisher pub_obstacles_array_;
   ros::Publisher pub_have_obstacles_;
   ros::Publisher pub_marker_;
 
-  nav_msgs::Odometry input_robot_pose_;
+  geometry_msgs::PoseWithCovarianceStamped input_robot_pose_;
   geometry_msgs::PoseWithCovarianceStamped input_ally_robot_pose_;
-  costmap_converter::ObstacleArrayMsg output_obstacles_array_;
+  obstacle_detector::Obstacles output_obstacles_array_;
+  std::queue<geometry_msgs::Point> prev_output_obstacles_array_;
+  obstacle_detector::Obstacles ally_obstacles_;
   std_msgs::Bool output_have_obstacles_;
   visualization_msgs::MarkerArray output_marker_array_;
   /* private variables */
 
   /* ros param */
   bool p_active_;
+  bool p_central_;
 
   double p_x_min_range_;
   double p_x_max_range_;
@@ -136,6 +166,15 @@ private:
   double p_marker_height_;
   double p_avoid_min_distance_;
   double p_avoid_max_distance_;
+  double p_obstacle_merge_d_;
+  double p_obstacle_vel_merge_d_;
+  double p_obstacle_error_;
+  double p_obstacle_lpf_cur_;
+  double p_sample_number_;
+  double p_timeout_;
+
+  std::string p_parent_frame_;
+  std::string p_ally_obstacles_topic_;
 
   double p_ally_excluded_radius_;
 

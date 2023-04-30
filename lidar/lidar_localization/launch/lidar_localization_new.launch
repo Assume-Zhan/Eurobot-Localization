@@ -1,21 +1,44 @@
 <launch>
-    
-	<arg name="robot_name" default="robot1"/>
-	<arg name="robot_name_slash" default="robot1/"/>
 
-	<group ns="$(arg robot_name)">
+    <arg name="robot_name" default="robot1"/>
+    <arg name="robot_name_slash" default="robot1/"/>
+    <arg name="active_rival_center" default="0"/>
+	<arg name="color" default="b"/>
 
-        <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)laser_frame" />
+    <group ns="$(arg robot_name)">
+
+        <!-- node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)laser_frame" / -->
+        <node name="base_link_to_vive" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0.999 0.035 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)vive_frame" />
+
+        <!-- NEW ROBOT1 -->
+        <!-- <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 -0.6676 -0.7444 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)laser_frame" /> -->
+
+        <!-- NEW ROBOT2 -->
+        <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 -0.6676 -0.7444 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)laser_frame" />
 
 
         <!-- lidar localization -->
-        <node name="beacon_extractor" pkg="obstacle_detector" type="obstacle_extractor_node">
+        <node name="obstacle_detector_to_base" pkg="obstacle_detector" type="obstacle_extractor_node">
             <rosparam file="$(find lidar_localization)/params/beacon_excrator_params.yaml" command="load" />
-			<param name="frame_id" value="$(arg robot_name_slash)base_footprint"/>
+            <param name="frame_id" value="$(arg robot_name_slash)base_footprint"/>
+            <remap from="raw_obstacles" to="detector_to_base"/>
+        </node>
+
+        <node name="obstacle_detector_to_map" pkg="obstacle_detector" type="obstacle_extractor_node">
+            <rosparam file="$(find lidar_localization)/params/beacon_excrator_params.yaml" command="load" />
+            <param name="frame_id" value="$(arg robot_name_slash)map"/>
+            <remap from="raw_obstacles" to="detector_to_map"/>
         </node>
 
         <node name="lidar_localization" pkg="lidar_localization" type="lidar_localization_node" output="log">
-            <rosparam file="$(find lidar_localization)/params/lidar_localization_params_2023.yaml" command="load" />
+
+            <!-- Choose which color to use -->
+            <rosparam file="$(find lidar_localization)/params/lidar_loc_blue_params.yaml" command="load" if="$(eval arg('color')=='b')"/>
+            <rosparam file="$(find lidar_localization)/params/lidar_loc_green_params.yaml" command="load" if="$(eval arg('color')=='g')"/>
+            
+            <!-- Load basic params -->
+            <rosparam file="$(find lidar_localization)/params/lidar_loc_basic_params.yaml" command="load"/>
+            
             <remap from="obstacles" to="obstacles_to_base"/>
             <param name="beacon_parent_frame_id" value="$(arg robot_name_slash)map"/>
             <param name="beacon_frame_id_prefix" value="$(arg robot_name_slash)beacon"/>
@@ -23,10 +46,11 @@
             <param name="robot_frame_id" value="$(arg robot_name_slash)base_footprint"/>
         </node>
 
-        <node name="obstacle_tracker" pkg="obstacle_detector" type="obstacle_tracker_node" > 
-                                                                                                                                            
+        <node name="obstacle_tracker_to_base" pkg="obstacle_detector" type="obstacle_tracker_node" > 
+
             <param name="active" value="true"/>
-                                                   
+            <remap from="raw_obstacles" to="detector_to_base"/>
+
             <param name="loop_rate" value="10.0"/>
             <param name="tracking_duration" value="0.5"/>
             <param name="min_correspondence_cost" value="3"/>
@@ -34,10 +58,53 @@
             <param name="process_variance" value="5"/>
             <param name="process_rate_variance" value="0.1"/>
             <param name="measurement_variance" value="1.0"/>
-                                                                                                                                            
+
             <param name="frame_id" value="$(arg robot_name_slash)base_footprint"/>
-                                                                                                                                            
+
             <remap from="tracked_obstacles" to="obstacles_to_base" />
         </node>
-	</group>
+
+        <node name="obstacle_tracker_to_map" pkg="obstacle_detector" type="obstacle_tracker_node" > 
+
+            <param name="active" value="true"/>
+            <remap from="raw_obstacles" to="detector_to_map"/>
+
+            <param name="loop_rate" value="10.0"/>
+            <param name="tracking_duration" value="0.5"/>
+            <param name="min_correspondence_cost" value="3"/>
+            <param name="std_correspondence_dev" value="0.15"/>
+            <param name="process_variance" value="5"/>
+            <param name="process_rate_variance" value="0.1"/>
+            <param name="measurement_variance" value="1.0"/>
+
+            <param name="frame_id" value="$(arg robot_name_slash)map"/>
+
+            <remap from="tracked_obstacles" to="obstacles_to_map" />
+        </node>
+
+        <!-- Area extractor -->
+        <node name="area_obstacles_extractor" pkg="lidar_localization" type="area_obstacles_extractor_node">
+            <param name="x_max_range" value="2.8"/>
+            <param name="y_max_range" value="1.8"/>
+            <param name="x_min_range" value="0.2"/>
+            <param name="y_min_range" value="0.2"/>
+
+            <param name="ally_obstacles_topic" value="/robot2/obstacle_array" if="$(eval arg('robot_name')=='robot1')"/>
+            <param name="ally_obstacles_topic" value="/robot1/obstacle_array" if="$(eval arg('robot_name')=='robot2')"/>
+
+            <param name="central" value="true" if="$(eval arg('active_rival_center')==1)"/>
+            <param name="central" value="false" if="$(eval arg('active_rival_center')==0)"/>
+
+            <param name="parent_frame" value="$(arg robot_name_slash)map"/>
+            <param name="obstacle_merge_d" value="0.15"/>
+            <param name="obstacle_vel_merge_d" value="0.2"/>
+            <param name="obstacle_error" value="0.2"/>
+
+            <remap from="robot_pose" to="/robot1/ekf_pose" if="$(eval arg('robot_name')=='robot1')"/>
+            <remap from="robot_pose" to="/robot2/ekf_pose" if="$(eval arg('robot_name')=='robot2')"/>
+            <remap from="ally_pose" to="/robot2/ekf_pose" if="$(eval arg('robot_name')=='robot1')"/>
+            <remap from="ally_pose" to="/robot1/ekf_pose" if="$(eval arg('robot_name')=='robot2')"/>
+        </node>
+
+    </group>
 </launch>

@@ -55,3 +55,10 @@ roslaunch eurobot_localization global_ekf_without_lidar.launch
 ```bash=1
 roslaunch eurobot_localization eurobot_localization.launch
 ```
+
+### Local machine setup configure
+
+- Port name
+- Static TF for laser frame and imu frame
+
+

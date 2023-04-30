@@ -1,0 +1,21 @@
+<launch>
+
+	<arg name="active_robot1" default="1"/>
+    <arg name="active_robot2" default="0"/>
+	<arg name="color" default="b"/>
+
+	<include file="$(find eurobot_localization)/launch/eurobot_localization.launch" if="$(eval arg('active_robot1')==1)">
+		<arg name="robot_name" value="robot1"/>
+		<arg name="robot_name_slash" value="robot1/"/>
+		<arg name="active_rival_center" value="$(eval eval('_'+'_import_'+'_(&quot;subprocess&quot;)').Popen(['rosnode', 'list'], stdout=eval('_'+'_import_'+'_(&quot;subprocess&quot;)').PIPE).communicate()[0].decode('utf-8').find('/robot2/rival_localization') == -1)"/>
+	    <arg name="color" value="$(arg color)"/>
+	</include>
+
+	<include file="$(find eurobot_localization)/launch/eurobot_localization.launch" if="$(eval arg('active_robot2')==1)">
+		<arg name="robot_name" value="robot2"/>
+		<arg name="robot_name_slash" value="robot2/"/>
+		<arg name="active_rival_center" value="$(eval 0 if (arg('active_robot1') == 1 or eval('_'+'_import_'+'_(&quot;subprocess&quot;)').Popen(['rosnode', 'list'], stdout=eval('_'+'_import_'+'_(&quot;subprocess&quot;)').PIPE).communicate()[0].decode('utf-8').find('/robot1/rival_localization') != -1) else 1)"/>
+	    <arg name="color" value="$(arg color)"/>
+	</include>
+
+</launch>

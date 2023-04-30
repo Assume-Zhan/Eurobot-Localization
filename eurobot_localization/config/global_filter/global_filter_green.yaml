@@ -1,0 +1,12 @@
+# ------------------
+# Beacon setting
+# Blue
+beacon_ax: 0.05
+beacon_ay: 2.094
+
+beacon_bx: 2.95
+beacon_by: 2.094
+
+beacon_cx: 1.5
+beacon_cy: -0.094
+# ------------------

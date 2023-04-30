@@ -37,6 +37,7 @@
 #include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/Twist.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 #include <tf2_ros/buffer.h>
@@ -108,6 +109,13 @@ private:
   bool updateParams(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res);
 
   /**
+   * @brief Topic `cmd_vel` callback function
+   *
+   * @param ptr The command velocity data
+   */
+  void cmdvelCallback(const geometry_msgs::Twist::ConstPtr& ptr);
+
+  /**
    * @brief Topic `obstacles` callback function
    *
    * @param ptr The obstaacles data
@@ -172,6 +180,12 @@ private:
    */
   void getRobotPose();
 
+  /**
+   * @brief Broadcast beaconTF
+   *
+   */
+  void broadcastBeacon();
+
   /* ros node */
   ros::NodeHandle nh_;
   ros::NodeHandle nh_local_;
@@ -179,6 +193,7 @@ private:
 
   /* ros inter-node */
   ros::Subscriber sub_obstacles_;
+  ros::Subscriber sub_toposition_;
   ros::Publisher pub_location_;
   ros::Publisher pub_beacon_;
   tf2_ros::Buffer tf2_buffer_;
@@ -195,6 +210,8 @@ private:
   geometry_msgs::Point beacon_to_robot_[3];
   geometry_msgs::Point beacon_found_[3];
 
+  geometry_msgs::Point robot_to_map_vel_;
+
   /* ros param */
   bool p_active_;
 
@@ -210,6 +227,7 @@ private:
   double p_theta_;
 
   std::string p_obstacle_topic_;
+  std::string p_toposition_topic_;
   std::string p_beacon_parent_frame_id_;
   std::string p_beacon_frame_id_prefix_;
   std::string p_robot_parent_frame_id_;

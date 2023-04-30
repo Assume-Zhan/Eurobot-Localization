@@ -151,6 +151,12 @@ int main(int argc, char **argv) {
   nh_private.param<bool>("point_cloud_preservative", point_cloud_preservative,
                          point_cloud_preservative);
 
+  double offset_a;
+  nh_private.param<double>("offset_a", offset_a, 1.0);
+
+  double offset_b;
+  nh_private.param<double>("offset_b", offset_b, 0.0);
+
   ros::ServiceServer stop_scan_service = nh.advertiseService("stop_scan",
                                          stop_scan);
   ros::ServiceServer start_scan_service = nh.advertiseService("start_scan",
@@ -213,7 +219,7 @@ int main(int argc, char **argv) {
 
         if (index >= 0 && index < size) {
           if (scan.points[i].range >= scan.config.min_range) {
-            scan_msg.ranges[index] = scan.points[i].range;
+            scan_msg.ranges[index] = scan.points[i].range * offset_a + offset_b;
             scan_msg.intensities[index] = scan.points[i].intensity;
           }
         }

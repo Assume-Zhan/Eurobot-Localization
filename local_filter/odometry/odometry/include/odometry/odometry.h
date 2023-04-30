@@ -6,6 +6,8 @@
 #include "std_srvs/Empty.h"
 #include "std_msgs/Float64.h"
 
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <dynamic_reconfigure/server.h>
 #include "odometry/odometry_paramConfig.h"
 
@@ -62,6 +64,7 @@ private :
     bool p_update_params_;
 	bool p_sub_from_nav_;
 	bool p_use_dynamic_reconf_;
+    bool p_use_stm_integral_;
 
     double p_covariance_;
 	double p_covariance_multi_;
