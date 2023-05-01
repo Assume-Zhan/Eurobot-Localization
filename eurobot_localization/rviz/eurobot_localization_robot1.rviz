@@ -8,8 +8,8 @@ Panels:
         - /Grid1
         - /TF1/Frames1
         - /Odometry1/Covariance1
-        - /Odometry2
         - /Odometry2/Covariance1
+        - /Map1
       Splitter Ratio: 0.5
     Tree Height: 725
   - Class: rviz/Selection
@@ -72,7 +72,141 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        cam_a:
+          Value: true
+        cam_a_ref:
+          Value: true
+        cam_b:
+          Value: true
+        cam_b_ref:
+          Value: true
+        cam_c_ref:
+          Value: true
+        camera1_aligned_depth_to_color_frame:
+          Value: true
+        camera1_color_frame:
+          Value: true
+        camera1_color_optical_frame:
+          Value: true
+        camera1_depth_frame:
+          Value: true
+        camera1_depth_optical_frame:
+          Value: true
+        camera1_infra1_frame:
+          Value: true
+        camera1_infra1_optical_frame:
+          Value: true
+        camera1_infra2_frame:
+          Value: true
+        camera1_infra2_optical_frame:
+          Value: true
+        camera1_link:
+          Value: true
+        camera2_aligned_depth_to_color_frame:
+          Value: true
+        camera2_color_frame:
+          Value: true
+        camera2_color_optical_frame:
+          Value: true
+        camera2_depth_frame:
+          Value: true
+        camera2_depth_optical_frame:
+          Value: true
+        camera2_infra1_frame:
+          Value: true
+        camera2_infra1_optical_frame:
+          Value: true
+        camera2_infra2_frame:
+          Value: true
+        camera2_infra2_optical_frame:
+          Value: true
+        camera2_link:
+          Value: true
+        camera3_accel_frame:
+          Value: true
+        camera3_accel_optical_frame:
+          Value: true
+        camera3_aligned_depth_to_color_frame:
+          Value: true
+        camera3_color_frame:
+          Value: true
+        camera3_color_optical_frame:
+          Value: true
+        camera3_depth_frame:
+          Value: true
+        camera3_depth_optical_frame:
+          Value: true
+        camera3_gyro_frame:
+          Value: true
+        camera3_gyro_optical_frame:
+          Value: true
+        camera3_infra1_frame:
+          Value: true
+        camera3_infra1_optical_frame:
+          Value: true
+        camera3_infra2_frame:
+          Value: true
+        camera3_infra2_optical_frame:
+          Value: true
+        camera3_link:
+          Value: true
+        camera_color_frame_1:
+          Value: true
+        camera_color_frame_2:
+          Value: true
+        camera_color_frame_3:
+          Value: true
         map:
+          Value: true
+        marker1_1:
+          Value: true
+        marker1_2:
+          Value: true
+        marker2_1:
+          Value: true
+        marker2_2:
+          Value: true
+        marker3_1:
+          Value: true
+        object0:
+          Value: true
+        object1:
+          Value: true
+        object10:
+          Value: true
+        object11:
+          Value: true
+        object12:
+          Value: true
+        object13:
+          Value: true
+        object14:
+          Value: true
+        object15:
+          Value: true
+        object16:
+          Value: true
+        object17:
+          Value: true
+        object18:
+          Value: true
+        object19:
+          Value: true
+        object2:
+          Value: true
+        object3:
+          Value: true
+        object4:
+          Value: true
+        object5:
+          Value: true
+        object6:
+          Value: true
+        object7:
+          Value: true
+        object8:
+          Value: true
+        object9:
           Value: true
         robot1/base_footprint:
           Value: true
@@ -98,7 +232,31 @@ Visualization Manager:
           Value: true
         robot1/vive_frame:
           Value: false
+        robot1_vivepose:
+          Value: true
         robot2/map:
+          Value: true
+        survive1_LH0:
+          Value: true
+        survive1_LH1:
+          Value: true
+        survive1_LH2:
+          Value: true
+        survive1_map:
+          Value: true
+        survive1_map0:
+          Value: true
+        survive1_map1:
+          Value: true
+        survive1_map2:
+          Value: true
+        survive1_map_avg:
+          Value: true
+        survive1_world:
+          Value: true
+        trackerB:
+          Value: true
+        world_frame:
           Value: true
       Marker Alpha: 1
       Marker Scale: 1
@@ -266,6 +424,16 @@ Visualization Manager:
       Topic: /robot1/global_filter
       Unreliable: false
       Value: false
+    - Alpha: 0.699999988079071
+      Class: rviz/Map
+      Color Scheme: costmap
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic: /robot1/move_base/global_costmap/costmap
+      Unreliable: false
+      Use Timestamp: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -293,7 +461,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 3.025000810623169
+      Angle: 6.280001163482666
       Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
@@ -303,10 +471,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: -175.86813354492188
+      Scale: -120.1458511352539
       Target Frame: <Fixed Frame>
-      X: 1.7939666509628296
-      Y: 0.5140701532363892
+      X: 1.436632513999939
+      Y: 0.9826315641403198
     Saved: ~
 Window Geometry:
   Displays:

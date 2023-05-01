@@ -10,7 +10,7 @@ obstacle_detector_to_base:
   discard_converted_segments: false
   transform_coordinates: true
 
-  min_group_points: 2
+  min_group_points: 5
 
   max_group_distance: 0.04
   distance_proportion: 0.00628
@@ -32,7 +32,7 @@ obstacle_detector_to_map:
   discard_converted_segments: false
   transform_coordinates: true
 
-  min_group_points: 2
+  min_group_points: 5
 
   max_group_distance: 0.04
   distance_proportion: 0.00628
