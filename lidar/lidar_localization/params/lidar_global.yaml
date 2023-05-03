@@ -93,6 +93,6 @@ area_obstacles_extractor:
   y_max_range: 1.8
   x_min_range: 0.2
   y_min_range: 0.2
-  obstacle_merge_d: 0.15
-  obstacle_vel_merge_d: 0.2
+  obstacle_merge_d: 0.3
+  obstacle_vel_merge_d: 0.35
   obstacle_error: 0.2

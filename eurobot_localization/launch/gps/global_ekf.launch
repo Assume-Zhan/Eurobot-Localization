@@ -29,7 +29,7 @@
 	    <arg name="color" value="$(arg color)"/>
     </include>
 
-	<include file="$(find eurobot_localization)/launch/rival/rival_localization.launch">
+	<include file="$(find eurobot_localization)/launch/rival/rival_localization_plus.launch">
         <arg name="robot_name" default="$(arg robot_name)"/>
         <arg name="robot_name_slash" default="$(arg robot_name_slash)"/>
         <arg name="active_rival_center" default="$(arg active_rival_center)"/>

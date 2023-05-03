@@ -141,6 +141,7 @@ include_directories(
 add_executable(ekf src/ekf.cpp)
 add_executable(uc_ekf src/uc_ekf.cpp)
 add_executable(rival_localization src/rival_localization.cpp)
+add_executable(rival_localization_plus src/rival_localization_plus.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -150,6 +151,7 @@ add_executable(rival_localization src/rival_localization.cpp)
 target_link_libraries(ekf ${catkin_LIBRARIES}) 
 target_link_libraries(uc_ekf ${catkin_LIBRARIES}) 
 target_link_libraries(rival_localization ${catkin_LIBRARIES}) 
+target_link_libraries(rival_localization_plus ${catkin_LIBRARIES}) 
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -157,6 +159,7 @@ target_link_libraries(rival_localization ${catkin_LIBRARIES})
 add_dependencies(ekf ${catkin_EXPORTED_TARGETS})
 add_dependencies(uc_ekf ${catkin_EXPORTED_TARGETS})
 add_dependencies(rival_localization ${catkin_EXPORTED_TARGETS})
+add_dependencies(rival_localization_plus ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node

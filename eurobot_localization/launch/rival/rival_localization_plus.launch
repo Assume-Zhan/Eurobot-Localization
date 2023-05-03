@@ -1,0 +1,32 @@
+<launch>
+    
+    <arg name="robot_name" default="robot1"/>
+    <arg name="robot_name_slash" default="robot1/"/>
+    <arg name="active_rival_center" default="1"/>
+
+    <group ns="$(arg robot_name)" if="$(eval arg('active_rival_center')==1)">
+        <node name="rival_localization_plus" pkg="eurobot_localization" type="rival_localization_plus">
+            <param name="fusion_active" type="bool" value="true"/> <!-- fusion lidar & tracker rival pose-->
+            <param name="rival1_active" type="bool" value="true"/>
+            <param name="rival2_active" type="bool" value="true"/>
+            <param name="freq" type="double" value="10"/>
+            <param name="rival1_topic_name" type="string" value="/rival1/odom"/>
+            <param name="rival2_topic_name" type="string" value="/rival2/odom"/>
+
+            <param name="lidar_topic_name" type="string" value="/robot1/obstacle_array" if="$(eval arg('robot_name')=='robot1')"/>
+            <param name="lidar_topic_name" type="string" value="/robot2/obstacle_array" if="$(eval arg('robot_name')=='robot2')"/>
+
+            <param name="lidar_pub_topic_name" type="string" value="/RivalObstacle"/>
+            <param name="time_out" type="double" value="0.1"/>
+            <param name="correction_sample_number" type="int" value="100"/>
+            <param name="do_correction" type="bool" value="true"/>
+            <param name="tracking_tole" type="double" value="0.2"/>
+            <param name="match_tole" type="double" value="0.2"/>     <!-- unit is meter -->
+            <param name="boundary_upper_x" type="double" value="3"/> <!-- unit is meter -->
+            <param name="boundary_down_x" type="double" value="0"/>  <!-- unit is meter -->
+            <param name="boundary_upper_y" type="double" value="2"/> <!-- unit is meter -->
+            <param name="boundary_down_y" type="double" value="0"/>  <!-- unit is meter -->
+        </node>
+    </group>
+
+</launch>
