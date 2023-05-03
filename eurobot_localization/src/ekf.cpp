@@ -104,7 +104,6 @@ void Ekf::initialize()
     // for obstacle filtering
     nh_local_.param<double>("max_obstacle_distance", p_max_obstacle_distance_, 0.5);
     nh_local_.param<double>("timer_frequency", p_timer_frequency_, 10);
-    nh_local_.param<double>("offset_lpf_gain", p_offset_lpf_gain_, 0.5);
     nh_local_.param<double>("velocity_lpf_gain", p_velocity_lpf_gain_, 0.5);
 
     // for beacon piller detection
@@ -122,7 +121,6 @@ void Ekf::initialize()
     vive_sub_ = nh_.subscribe("vive_bonbonbon", 10, &Ekf::viveCallback, this);
     beacon_sub_ = nh_.subscribe("beacon_bonbonbon", 10, &Ekf::gpsCallback, this);
     ekf_pose_pub_ = nh_.advertise<geometry_msgs::PoseWithCovarianceStamped>("ekf_pose", 10);
-    debug_pub_ = nh_.advertise<std_msgs::Float64>("ekf_debugger", 10);
     global_filter_pub_ = nh_.advertise<nav_msgs::Odometry>("ekf_pose_in_odom", 10);
     update_beacon_pub_ = nh_.advertise<obstacle_detector::Obstacles>("update_beacon", 10);
     update_timer_ = nh_.createTimer(ros::Duration(1.0), &Ekf::updateTimerCallback, this, false, false);
@@ -132,9 +130,6 @@ void Ekf::initialize()
     duration_ = 0.0;
     first_cb = false;
     t_last = 0.0;
-
-    cos_theta_ = 1;
-    sin_theta_ = 0;
 
     // Set timer period
     update_timer_.setPeriod(ros::Duration(1 / p_timer_frequency_), false);
@@ -647,10 +642,6 @@ void Ekf::viveCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr&
 
 
 void Ekf::updateTimerCallback(const ros::TimerEvent &e){
-    
-    std_msgs::Float64 data;
-    data.data = offset_theta_;
-    debug_pub_.publish(data);
 
     if(!(update_lidar_ || update_vive_)) return;
 
@@ -684,32 +675,6 @@ void Ekf::updateTimerCallback(const ros::TimerEvent &e){
         gps_sigma(2, 0) = vive_state_.sigma(2, 0);  // theta-x
         gps_sigma(2, 1) = vive_state_.sigma(2, 1);  // theta-y
         gps_sigma(2, 2) = vive_state_.sigma(2, 2);  // theta-theta
-    }
-    
-    if(update_lidar_ && update_vive_){
-        double theorem_x = lidar_state_.mu(0) - 1.5;
-        double theorem_y = lidar_state_.mu(1) - 1.;
-        double pratical_x = vive_state_.mu(0) - 1.5;
-        double pratical_y = vive_state_.mu(1) - 1.;
-        double denominator = (theorem_x * theorem_x + theorem_y * theorem_y);
-
-        cos_theta_ = (theorem_x * pratical_x + theorem_y * pratical_y) / (denominator);
-        sin_theta_ = (theorem_x * pratical_y - theorem_y * pratical_x) / (denominator);
-
-        if(denominator == 0){
-            cos_theta_ = 1;
-            sin_theta_ = 0; 
-        }
-        else{
-            cos_theta_ = (theorem_x * pratical_x + theorem_y * pratical_y) / (denominator);
-            sin_theta_ = (theorem_x * pratical_y - theorem_y * pratical_x) / (denominator);
-        }
-
-        cos_theta_ = cos_theta_ * p_offset_lpf_gain_ + prev_cos_theta_ * (1 - p_offset_lpf_gain_);
-        sin_theta_ = sin_theta_ * p_offset_lpf_gain_ + prev_sin_theta_ * (1 - p_offset_lpf_gain_);
-
-        offset_theta_ = atan2(sin_theta_, cos_theta_);
-        // ROS_INFO_STREAM("[EKF] : current offset " << offset_theta_);
     }
     
     if_gps = true;  
