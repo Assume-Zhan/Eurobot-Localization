@@ -16,7 +16,7 @@
         <!-- <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 -0.6676 -0.7444 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)laser_frame" /> -->
 
         <!-- NEW ROBOT2 -->
-        <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 -0.7615 0.6481 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)laser_frame" />
+        <node name="base_link_to_laser" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 -0.7036 0.7105 $(arg robot_name_slash)base_footprint $(arg robot_name_slash)laser_frame" />
 
 
         <!-- lidar localization -->

@@ -416,9 +416,9 @@ bool LidarLocalization::validateBeaconGeometry()
   }
   else
   {
-    ROS_INFO_STREAM("reacon distance: " << real_beacon_distance[0][1] << ", " << real_beacon_distance[0][2] << ", "
+    ROS_INFO_STREAM_THROTTLE(2, "reacon distance: " << real_beacon_distance[0][1] << ", " << real_beacon_distance[0][2] << ", "
                                         << real_beacon_distance[1][2]);
-    ROS_WARN_STREAM("beacon distance: " << beacon_distance[0][1] << ", " << beacon_distance[0][2] << ", "
+    ROS_WARN_STREAM_THROTTLE(2, "beacon distance: " << beacon_distance[0][1] << ", " << beacon_distance[0][2] << ", "
                                         << beacon_distance[1][2]);
     return false;
   }
@@ -428,7 +428,7 @@ void LidarLocalization::getRobotPose()
 {
   if (!validateBeaconGeometry())
   {
-    ROS_WARN_STREAM("geometry error");
+    ROS_WARN_STREAM_THROTTLE(2, "geometry error");
     return;
   }
 
