@@ -322,6 +322,7 @@ void LidarLocalization::findBeacon()
         min_distance = circle.beacon_distance[i];
         beacons_[i].real.x = circle.center.x;
         beacons_[i].real.y = circle.center.y;
+        beacons_[i].beaconError = min_distance;
       }
     }
   }
@@ -445,9 +446,15 @@ void LidarLocalization::publishLocation()
   double cov_y = (error_length > p_threshold_) ? p_cov_y_ * p_cov_dec_ : p_cov_y_;
   double cov_yaw = (error_length > p_threshold_) ? p_cov_yaw_ * p_cov_dec_ : p_cov_yaw_;
 
+  double geometryError = 0;
+  for(int i = 0 ; i < 3 ; i++) geometryError += beacons_[i].beaconError;
+
+  /* TODO : debug and test */
+  ROS_WARN_STREAM_THROTTLE(2, "[Lidar localization] : current beacons error " << geometryError);
+
   // clang-format off
                                        // x         y         z  pitch roll yaw
-  output_robot_pose_.pose.covariance = {cov_x, 0,           0, 0,    0,   0,
+  output_robot_pose_.pose.covariance = {cov_x,    0,        0, 0,    0,   0,
                                         0,        cov_y,    0, 0,    0,   0,
                                         0,        0,        0, 0,    0,   0,
                                         0,        0,        0, 0,    0,   0,
