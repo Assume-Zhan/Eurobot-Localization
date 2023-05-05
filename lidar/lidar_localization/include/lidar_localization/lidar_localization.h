@@ -51,6 +51,8 @@
 
 namespace lidar_localization
 {
+
+
 /**
  * @struct ObstacleCircle
  * @brief for restore obstacle circles
@@ -70,6 +72,27 @@ typedef struct ObstacleCircle
   double beacon_distance[BEACON_NUMBER];
 
 } ObstacleCircle;
+
+
+
+/**
+ * @struct BeaconRef
+ * @brief for restore beacons
+ */
+typedef struct BeaconRef 
+{
+  /* -- Real beacon center (obstacle) -- */
+  geometry_msgs::Point real;
+
+  /* -- Ideal beacon center (tf) -- */
+  geometry_msgs::Point ideal;
+
+  /* Min error */
+  double beaconError;
+
+} BeaconRef;
+
+
 
 /**
  * @class LidarLocalization
@@ -210,6 +233,8 @@ private:
   geometry_msgs::Point beacon_to_map_[3];
   geometry_msgs::Point beacon_to_robot_[3];
   geometry_msgs::Point beacon_found_[3];
+
+  BeaconRef beacons_[BEACON_NUMBER];
 
   geometry_msgs::Point ekf_pose_;
 

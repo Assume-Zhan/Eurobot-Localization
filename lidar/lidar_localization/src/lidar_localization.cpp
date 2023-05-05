@@ -165,6 +165,9 @@ void LidarLocalization::obstacleCallback(const obstacle_detector::Obstacles::Con
     for (int i = 0 ; i < 3 ; i++)
     {
       obstaclecircle.beacon_distance[i] = length(obstaclecircle.center, beacon_to_robot_[i]);
+
+      // new 
+      obstaclecircle.beacon_distance[i] = length(obstaclecircle.center, beacons_[i].ideal.x);
     }
     realtime_circles_.push_back(obstaclecircle);
   }
@@ -251,8 +254,7 @@ void LidarLocalization::getBeacontoMap()
   {
     try
     {
-      transform = tf2_buffer_.lookupTransform(p_beacon_parent_frame_id_, p_beacon_frame_id_prefix_ + std::to_string(i),
-                                              ros::Time());
+      transform = tf2_buffer_.lookupTransform(p_beacon_parent_frame_id_, p_beacon_frame_id_prefix_ + std::to_string(i), ros::Time());
 
       beacon_to_map_[i - 1].x = transform.transform.translation.x;
       beacon_to_map_[i - 1].y = transform.transform.translation.y;
@@ -288,6 +290,10 @@ void LidarLocalization::getBeacontoRobot()
       double y = transform.transform.translation.y;
       beacon_to_robot_[i - 1].x = x;
       beacon_to_robot_[i - 1].y = y;
+
+      // new structure
+      beacons_[i - 1].ideal.x = x;
+      beacons_[i - 1].ideal.y = y;
     }
     catch (const tf2::TransformException& ex)
     {
