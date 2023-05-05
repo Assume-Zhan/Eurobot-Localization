@@ -78,6 +78,7 @@ lidar_localization:
 
   theta: 0
 
+  beacon_tolerance: 0.14  # Should be less than "max_obstacle_distance" in global_filter_basic.yaml
   threshold: 0.24
   cov_dec: 0.01
 

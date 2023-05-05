@@ -102,7 +102,7 @@ void Ekf::initialize()
     // mini_likelihood_update_ = 25.0;
 
     // for obstacle filtering
-    nh_local_.param<double>("max_obstacle_distance", p_max_obstacle_distance_, 0.5);
+    nh_local_.param<double>("max_obstacle_distance", p_max_obstacle_distance_, 0.15);
     nh_local_.param<double>("timer_frequency", p_timer_frequency_, 10);
     nh_local_.param<double>("velocity_lpf_gain", p_velocity_lpf_gain_, 0.5);
 

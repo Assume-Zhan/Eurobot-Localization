@@ -74,6 +74,7 @@ bool LidarLocalization::updateParams(std_srvs::Empty::Request& req, std_srvs::Em
   get_param_ok = nh_local_.param<double>("beacon_3_y", p_beacon_3_y_, 3.05);
   get_param_ok = nh_local_.param<double>("theta", p_theta_, 0);
 
+  get_param_ok = nh_local_.param<double>("beacon_tolerance", p_beacon_tolerance_, 0.13);
   get_param_ok = nh_local_.param<double>("threshold", p_threshold_, 0.24);
   get_param_ok = nh_local_.param<double>("cov_dec", p_cov_dec_, 0.01);
 
@@ -408,14 +409,15 @@ bool LidarLocalization::validateBeaconGeometry()
     }
   }
 
-  if (is_whthin_tolerance(beacon_distance[0][1], real_beacon_distance[0][1], 0.15) &&
-      is_whthin_tolerance(beacon_distance[0][2], real_beacon_distance[0][2], 0.15) &&
-      is_whthin_tolerance(beacon_distance[1][2], real_beacon_distance[1][2], 0.15))
+  if (is_whthin_tolerance(beacon_distance[0][1], real_beacon_distance[0][1], p_beacon_tolerance_) &&
+      is_whthin_tolerance(beacon_distance[0][2], real_beacon_distance[0][2], p_beacon_tolerance_) &&
+      is_whthin_tolerance(beacon_distance[1][2], real_beacon_distance[1][2], p_beacon_tolerance_))
   {
     return true;
   }
   else
   {
+    ROS_INFO_STREAM_THROTTLE(2, "[LiDAR Localization] : current beacon tolerance " << p_beacon_tolerance_);
     ROS_INFO_STREAM_THROTTLE(2, "reacon distance: " << real_beacon_distance[0][1] << ", " << real_beacon_distance[0][2] << ", "
                                         << real_beacon_distance[1][2]);
     ROS_WARN_STREAM_THROTTLE(2, "beacon distance: " << beacon_distance[0][1] << ", " << beacon_distance[0][2] << ", "

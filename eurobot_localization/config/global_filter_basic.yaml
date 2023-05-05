@@ -45,7 +45,7 @@ update_cov_3: 0.015
 mini_likelihood: -10000.0
 mini_likelihood_update: 0.35
 #mini_likelihood_update: 0.65
-max_obstacle_distance: 0.25
+max_obstacle_distance: 0.16 # Should be a little larger than "max_obstacle_distance" in global_filter_basic.yaml
 
 timer_frequency: 10
 velocity_lpf_gain: 0.5

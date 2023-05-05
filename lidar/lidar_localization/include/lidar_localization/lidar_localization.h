@@ -236,6 +236,8 @@ private:
   double p_beacon_3_y_;
   double p_theta_;
 
+  double p_beacon_tolerance_;
+
   double p_threshold_;
   double p_cov_dec_;
 
