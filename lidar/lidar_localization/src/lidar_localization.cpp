@@ -164,10 +164,7 @@ void LidarLocalization::obstacleCallback(const obstacle_detector::Obstacles::Con
     obstaclecircle.velocity = obstacle.velocity;
     for (int i = 0 ; i < 3 ; i++)
     {
-      obstaclecircle.beacon_distance[i] = length(obstaclecircle.center, beacon_to_robot_[i]);
-
-      // new 
-      obstaclecircle.beacon_distance[i] = length(obstaclecircle.center, beacons_[i].ideal.x);
+      obstaclecircle.beacon_distance[i] = length(obstaclecircle.center, beacons_[i].ideal);
     }
     realtime_circles_.push_back(obstaclecircle);
   }
@@ -288,10 +285,7 @@ void LidarLocalization::getBeacontoRobot()
 
       double x = transform.transform.translation.x;
       double y = transform.transform.translation.y;
-      beacon_to_robot_[i - 1].x = x;
-      beacon_to_robot_[i - 1].y = y;
-
-      // new structure
+      
       beacons_[i - 1].ideal.x = x;
       beacons_[i - 1].ideal.y = y;
     }
@@ -326,8 +320,8 @@ void LidarLocalization::findBeacon()
       if (circle.beacon_distance[i] <= min_distance)
       {
         min_distance = circle.beacon_distance[i];
-        beacon_found_[i].x = circle.center.x;
-        beacon_found_[i].y = circle.center.y;
+        beacons_[i].real.x = circle.center.x;
+        beacons_[i].real.y = circle.center.y;
       }
     }
   }
@@ -341,7 +335,7 @@ bool LidarLocalization::validateBeaconGeometry()
   {
     for (int j = 0; j < 3; j++)
     {
-      beacon_distance[i][j] = length(beacon_found_[i], beacon_found_[j]);
+      beacon_distance[i][j] = length(beacons_[i].real, beacons_[j].real);
     }
   }
 
@@ -381,7 +375,7 @@ void LidarLocalization::getRobotPose()
   vector<double> dist_beacon_robot;
   for (int i = 0; i < 3; ++i)
   {
-    dist_beacon_robot.push_back(length(beacon_found_[i]));
+    dist_beacon_robot.push_back(length(beacons_[i].real));
   }
 
   // least squares method to solve Ax=b
@@ -417,7 +411,7 @@ void LidarLocalization::getRobotPose()
     {
       double theta = atan2(beacon_to_map_[i].y - output_robot_pose_.pose.pose.position.y,
                            beacon_to_map_[i].x - output_robot_pose_.pose.pose.position.x) -
-                     atan2(beacon_found_[i].y, beacon_found_[i].x);
+                     atan2(beacons_[i].real.y, beacons_[i].real.x);
 
       robot_sin += sin(theta);
       robot_cos += cos(theta);
@@ -453,12 +447,12 @@ void LidarLocalization::publishLocation()
 
   // clang-format off
                                        // x         y         z  pitch roll yaw
-    output_robot_pose_.pose.covariance = {cov_x, 0,           0, 0,    0,   0,
-                                          0,        cov_y,    0, 0,    0,   0,
-                                          0,        0,        0, 0,    0,   0,
-                                          0,        0,        0, 0,    0,   0,
-                                          0,        0,        0, 0,    0,   0,
-                                          0,        0,        0, 0,    0,   cov_yaw};
+  output_robot_pose_.pose.covariance = {cov_x, 0,           0, 0,    0,   0,
+                                        0,        cov_y,    0, 0,    0,   0,
+                                        0,        0,        0, 0,    0,   0,
+                                        0,        0,        0, 0,    0,   0,
+                                        0,        0,        0, 0,    0,   0,
+                                        0,        0,        0, 0,    0,   cov_yaw};
   // clang-format on
   pub_location_.publish(output_robot_pose_);
 }
@@ -473,8 +467,8 @@ void LidarLocalization::publishBeacons()
   for (int i = 0; i < 3; ++i)
   {
     geometry_msgs::Pose pose;
-    pose.position.x = beacon_found_[i].x;
-    pose.position.y = beacon_found_[i].y;
+    pose.position.x = beacons_[i].real.x;
+    pose.position.y = beacons_[i].real.y;
     output_beacons_.poses.push_back(pose);
   }
 

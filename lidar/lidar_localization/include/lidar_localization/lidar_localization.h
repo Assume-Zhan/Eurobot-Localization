@@ -230,10 +230,7 @@ private:
   geometry_msgs::PoseArray output_beacons_;
 
   /* private variables */
-  geometry_msgs::Point beacon_to_map_[3];
-  geometry_msgs::Point beacon_to_robot_[3];
-  geometry_msgs::Point beacon_found_[3];
-
+  geometry_msgs::Point beacon_to_map_[BEACON_NUMBER];
   BeaconRef beacons_[BEACON_NUMBER];
 
   geometry_msgs::Point ekf_pose_;
