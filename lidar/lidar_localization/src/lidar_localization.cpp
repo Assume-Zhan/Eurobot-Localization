@@ -348,15 +348,17 @@ bool LidarLocalization::validateBeaconGeometry()
     }
   }
 
-  if (is_whthin_tolerance(beacon_distance[0][1], real_beacon_distance[0][1], p_beacon_tolerance_) &&
-      is_whthin_tolerance(beacon_distance[0][2], real_beacon_distance[0][2], p_beacon_tolerance_) &&
-      is_whthin_tolerance(beacon_distance[1][2], real_beacon_distance[1][2], p_beacon_tolerance_))
+  double tolerance = p_beacon_tolerance_ + robot_to_map_vel_.z * 0.08;
+
+  if (is_whthin_tolerance(beacon_distance[0][1], real_beacon_distance[0][1], tolerance) &&
+      is_whthin_tolerance(beacon_distance[0][2], real_beacon_distance[0][2], tolerance) &&
+      is_whthin_tolerance(beacon_distance[1][2], real_beacon_distance[1][2], tolerance))
   {
     return true;
   }
   else
   {
-    ROS_INFO_STREAM_THROTTLE(2, "[Lidar Localization] : current beacon tolerance " << p_beacon_tolerance_);
+    ROS_INFO_STREAM_THROTTLE(2, "[Lidar Localization] : current beacon tolerance " << tolerance);
     ROS_INFO_STREAM_THROTTLE(2, "reacon distance: " << real_beacon_distance[0][1] << ", " << real_beacon_distance[0][2] << ", "
                                         << real_beacon_distance[1][2]);
     ROS_WARN_STREAM_THROTTLE(2, "beacon distance: " << beacon_distance[0][1] << ", " << beacon_distance[0][2] << ", "
