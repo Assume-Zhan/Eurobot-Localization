@@ -243,7 +243,7 @@ OdomInfo RivalMulti::tracking(std::string rival_name, OdomInfo last_rival, std::
         }
         i++;
     }
-    double time_delay = ros::Time::now().toSec() - Lidar_vec.at(index).header.stamp.toSec();
+    double time_delay = Lidar_vec.at(index).header.stamp.toSec() - last_rival.header.stamp.toSec();
  
     if(time_delay > time_out){
         // Tracking time out, remove tracking boundary

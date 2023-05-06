@@ -4,12 +4,9 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Status1
-        - /Grid1
         - /TF1/Frames1
         - /Odometry1/Covariance1
         - /Odometry2/Covariance1
-        - /Map1
       Splitter Ratio: 0.5
     Tree Height: 725
   - Class: rviz/Selection
@@ -68,196 +65,10 @@ Visualization Manager:
       Unreliable: false
       Value: true
     - Class: rviz/TF
-      Enabled: true
+      Enabled: false
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        cam_a:
-          Value: true
-        cam_a_ref:
-          Value: true
-        cam_b:
-          Value: true
-        cam_b_ref:
-          Value: true
-        cam_c_ref:
-          Value: true
-        camera1_aligned_depth_to_color_frame:
-          Value: true
-        camera1_color_frame:
-          Value: true
-        camera1_color_optical_frame:
-          Value: true
-        camera1_depth_frame:
-          Value: true
-        camera1_depth_optical_frame:
-          Value: true
-        camera1_infra1_frame:
-          Value: true
-        camera1_infra1_optical_frame:
-          Value: true
-        camera1_infra2_frame:
-          Value: true
-        camera1_infra2_optical_frame:
-          Value: true
-        camera1_link:
-          Value: true
-        camera2_aligned_depth_to_color_frame:
-          Value: true
-        camera2_color_frame:
-          Value: true
-        camera2_color_optical_frame:
-          Value: true
-        camera2_depth_frame:
-          Value: true
-        camera2_depth_optical_frame:
-          Value: true
-        camera2_infra1_frame:
-          Value: true
-        camera2_infra1_optical_frame:
-          Value: true
-        camera2_infra2_frame:
-          Value: true
-        camera2_infra2_optical_frame:
-          Value: true
-        camera2_link:
-          Value: true
-        camera3_accel_frame:
-          Value: true
-        camera3_accel_optical_frame:
-          Value: true
-        camera3_aligned_depth_to_color_frame:
-          Value: true
-        camera3_color_frame:
-          Value: true
-        camera3_color_optical_frame:
-          Value: true
-        camera3_depth_frame:
-          Value: true
-        camera3_depth_optical_frame:
-          Value: true
-        camera3_gyro_frame:
-          Value: true
-        camera3_gyro_optical_frame:
-          Value: true
-        camera3_infra1_frame:
-          Value: true
-        camera3_infra1_optical_frame:
-          Value: true
-        camera3_infra2_frame:
-          Value: true
-        camera3_infra2_optical_frame:
-          Value: true
-        camera3_link:
-          Value: true
-        camera_color_frame_1:
-          Value: true
-        camera_color_frame_2:
-          Value: true
-        camera_color_frame_3:
-          Value: true
-        map:
-          Value: true
-        marker1_1:
-          Value: true
-        marker1_2:
-          Value: true
-        marker2_1:
-          Value: true
-        marker2_2:
-          Value: true
-        marker3_1:
-          Value: true
-        object0:
-          Value: true
-        object1:
-          Value: true
-        object10:
-          Value: true
-        object11:
-          Value: true
-        object12:
-          Value: true
-        object13:
-          Value: true
-        object14:
-          Value: true
-        object15:
-          Value: true
-        object16:
-          Value: true
-        object17:
-          Value: true
-        object18:
-          Value: true
-        object19:
-          Value: true
-        object2:
-          Value: true
-        object3:
-          Value: true
-        object4:
-          Value: true
-        object5:
-          Value: true
-        object6:
-          Value: true
-        object7:
-          Value: true
-        object8:
-          Value: true
-        object9:
-          Value: true
-        robot1/base_footprint:
-          Value: true
-        robot1/beacon01:
-          Value: false
-        robot1/beacon02:
-          Value: false
-        robot1/beacon03:
-          Value: false
-        robot1/beacon1:
-          Value: true
-        robot1/beacon2:
-          Value: true
-        robot1/beacon3:
-          Value: true
-        robot1/imu_link:
-          Value: false
-        robot1/laser_frame:
-          Value: false
-        robot1/map:
-          Value: true
-        robot1/odom:
-          Value: true
-        robot1/vive_frame:
-          Value: false
-        robot1_vivepose:
-          Value: true
-        robot2/map:
-          Value: true
-        survive1_LH0:
-          Value: true
-        survive1_LH1:
-          Value: true
-        survive1_LH2:
-          Value: true
-        survive1_map:
-          Value: true
-        survive1_map0:
-          Value: true
-        survive1_map1:
-          Value: true
-        survive1_map2:
-          Value: true
-        survive1_map_avg:
-          Value: true
-        survive1_world:
-          Value: true
-        trackerB:
-          Value: true
-        world_frame:
-          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -265,38 +76,15 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          robot1/map:
-            robot1/beacon1:
-              {}
-            robot1/beacon2:
-              {}
-            robot1/beacon3:
-              {}
-            robot1/odom:
-              robot1/base_footprint:
-                robot1/beacon01:
-                  {}
-                robot1/beacon02:
-                  {}
-                robot1/beacon03:
-                  {}
-                robot1/imu_link:
-                  {}
-                robot1/laser_frame:
-                  {}
-                robot1/vive_frame:
-                  {}
-          robot2/map:
-            {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /robot1/obstacle_marker
       Name: MarkerArray
       Namespaces:
-        "": true
+        {}
       Queue Size: 100
       Value: true
     - Circles color: 170; 0; 0
@@ -320,7 +108,7 @@ Visualization Manager:
       Queue Size: 10
       Segments color: 170; 170; 0
       Segments thickness: 0.029999999329447746
-      Topic: /RivalObstacle
+      Topic: /robot2/obstacles_to_base
       Unreliable: false
       Value: true
     - Alpha: 1
@@ -430,15 +218,54 @@ Visualization Manager:
       Draw Behind: false
       Enabled: true
       Name: Map
-      Topic: /robot1/move_base/global_costmap/costmap
+      Topic: /robot2/move_base/global_costmap/costmap
       Unreliable: false
       Use Timestamp: false
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /robot2/obstacle_marker
+      Name: MarkerArray
+      Namespaces:
+        "": true
+      Queue Size: 100
+      Value: true
+    - Alpha: 1
+      Axes Length: 1
+      Axes Radius: 0.10000000149011612
+      Class: rviz/PoseWithCovariance
+      Color: 255; 25; 0
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Head Length: 0.30000001192092896
+      Head Radius: 0.10000000149011612
+      Name: PoseWithCovariance
+      Queue Size: 10
+      Shaft Length: 1
+      Shaft Radius: 0.05000000074505806
+      Shape: Arrow
+      Topic: /robot2/ekf_pose
+      Unreliable: false
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: robot1/map
+    Fixed Frame: robot2/map
     Frame Rate: 30
   Name: root
   Tools:
@@ -450,7 +277,7 @@ Visualization Manager:
     - Class: rviz/Measure
     - Class: rviz/SetInitialPose
       Theta std deviation: 0.2617993950843811
-      Topic: /robot1/initialpose
+      Topic: /robot2/initialpose
       X std deviation: 0.5
       Y std deviation: 0.5
     - Class: rviz/SetGoal
@@ -461,7 +288,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 6.280001163482666
+      Angle: 9.40501880645752
       Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
@@ -471,10 +298,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: -120.1458511352539
+      Scale: -209.3596649169922
       Target Frame: <Fixed Frame>
-      X: 1.436632513999939
-      Y: 0.9826315641403198
+      X: 1.962266206741333
+      Y: 1.018917441368103
     Saved: ~
 Window Geometry:
   Displays:
