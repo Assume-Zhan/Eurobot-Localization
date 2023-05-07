@@ -213,6 +213,9 @@ private:
   /* Get beacon prediction function */
   void updateBeacons();
 
+  /* Function for getting initial pose */
+  void getInitPose(const obstacle_detector::Obstacles::ConstPtr& ptr);
+
   /* ros node */
   ros::NodeHandle nh_;
   ros::NodeHandle nh_local_;
@@ -242,6 +245,8 @@ private:
   geometry_msgs::Point robot_to_map_vel_;
 
   bool failed_tf_;
+
+  bool inited_;
 
   /* ros param */
   bool p_active_;

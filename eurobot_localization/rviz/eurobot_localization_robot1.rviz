@@ -290,7 +290,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: true
-      Enabled: false
+      Enabled: true
       Head Length: 0.30000001192092896
       Head Radius: 0.10000000149011612
       Name: PoseWithCovariance
@@ -300,7 +300,7 @@ Visualization Manager:
       Shape: Arrow
       Topic: /robot1/ekf_pose
       Unreliable: false
-      Value: false
+      Value: true
     - Angle Tolerance: 0.10000000149011612
       Class: rviz/Odometry
       Covariance:
@@ -409,7 +409,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: true
-      Enabled: true
+      Enabled: false
       Head Length: 0.30000001192092896
       Head Radius: 0.10000000149011612
       Name: PoseWithCovariance
@@ -419,7 +419,7 @@ Visualization Manager:
       Shape: Arrow
       Topic: /robot2/ekf_pose
       Unreliable: false
-      Value: true
+      Value: false
     - Class: rviz/TF
       Enabled: false
       Frame Timeout: 15
@@ -462,7 +462,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 21.810049057006836
+      Angle: 25.05005645751953
       Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
@@ -472,10 +472,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: -220.97718811035156
+      Scale: 188.43386840820312
       Target Frame: <Fixed Frame>
-      X: 2.3327436447143555
-      Y: 0.9552817344665527
+      X: 2.7860774993896484
+      Y: 0.6524925231933594
     Saved: ~
 Window Geometry:
   Displays:

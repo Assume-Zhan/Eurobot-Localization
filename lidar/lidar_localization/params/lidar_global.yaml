@@ -81,7 +81,7 @@ lidar_localization:
   beacon_tolerance: 0.14  # Should be less than "max_obstacle_distance" in global_filter_basic.yaml
   threshold: 0.24
   cov_dec: 0.01
-  predict_magnification: 0.065
+  predict_magnification: 0.065 # Highly depends on rate of odometry ( /Toposition )
 
   obstacle_topic: obstacles_to_base
   beacon_parent_frame_id: map
