@@ -86,6 +86,7 @@ bool LidarLocalization::updateParams(std_srvs::Empty::Request& req, std_srvs::Em
   get_param_ok = nh_local_.param<double>("beacon_tolerance", p_beacon_tolerance_, 0.13);
   get_param_ok = nh_local_.param<double>("threshold", p_threshold_, 0.24);
   get_param_ok = nh_local_.param<double>("cov_dec", p_cov_dec_, 0.01);
+  get_param_ok = nh_local_.param<double>("predict_magnification", p_predict_magnification_, 0.1);
 
   get_param_ok = nh_local_.param<string>("obstacle_topic", p_obstacle_topic_, "obstacles");
   get_param_ok = nh_local_.param<string>("toposition_topic", p_toposition_topic_, "/Toposition");
@@ -197,7 +198,7 @@ void LidarLocalization::updateBeacons()
   double _, yaw;
   qt.getRPY(_, _, yaw);
 
-  yaw += robot_to_map_vel_.z * 0.1;
+  yaw += robot_to_map_vel_.z * p_predict_magnification_;
   tf2::Quaternion yaw_quaternion;
   yaw_quaternion.setRPY(0, 0, yaw);
 

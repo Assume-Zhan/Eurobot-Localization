@@ -259,6 +259,8 @@ private:
 
   double p_beacon_tolerance_;
 
+  double p_predict_magnification_;
+
   double p_threshold_;
   double p_cov_dec_;
 
