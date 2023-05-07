@@ -94,6 +94,7 @@ bool LidarLocalization::updateParams(std_srvs::Empty::Request& req, std_srvs::Em
   get_param_ok = nh_local_.param<string>("beacon_parent_frame_id", p_beacon_parent_frame_id_, "map");
   get_param_ok = nh_local_.param<string>("robot_parent_frame_id", p_robot_parent_frame_id_, "map");
   get_param_ok = nh_local_.param<string>("robot_frame_id", p_robot_frame_id_, "base_footprint");
+  get_param_ok = nh_local_.param<string>("beacon_predict_frame_id", p_predict_frame_id_, "predict");
 
   get_param_ok = nh_local_.param<string>("beacon_frame_id_prefix", p_beacon_frame_id_prefix_, "beacon");
 
@@ -143,7 +144,7 @@ void LidarLocalization::cmdvelCallback(const geometry_msgs::Twist::ConstPtr& ptr
 
 void LidarLocalization::ekfposeCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ptr)
 {
-  this->ekf_pose_ = ptr->pose.pose.position;
+  this->ekf_pose_ = ptr->pose.pose;
 }
 
 /* MAIN */
@@ -167,7 +168,7 @@ void LidarLocalization::obstacleCallback(const obstacle_detector::Obstacles::Con
     obstaclecircle.velocity = obstacle.velocity;
     for (int i = 0 ; i < 3 ; i++)
     {
-      obstaclecircle.beacon_distance[i] = length(obstaclecircle.center, beacons_[i].ideal);
+      obstaclecircle.beacon_distance[i] = length(obstaclecircle.center, predict_beacons_[i].ideal);
     }
     realtime_circles_.push_back(obstaclecircle);
   }
@@ -186,19 +187,29 @@ void LidarLocalization::updateBeacons()
   transform.header.frame_id = p_robot_parent_frame_id_;
   transform.child_frame_id = p_predict_frame_id_;
 
-  transform.transform.translation.x = ekf_pose_.x;
-  transform.transform.translation.y = ekf_pose_.y;
+  transform.transform.translation.x = ekf_pose_.position.x;
+  transform.transform.translation.y = ekf_pose_.position.y;
   transform.transform.translation.z = 0;
 
+  tf2::Quaternion q;
+  tf2::fromMsg(ekf_pose_.orientation, q);
+  tf2::Matrix3x3 qt(q);
+  double _, yaw;
+  qt.getRPY(_, _, yaw);
+
+  yaw += robot_to_map_vel_.z * 0.1;
   tf2::Quaternion yaw_quaternion;
-  yaw_quaternion.setRPY(0, 0, ekf_pose_.z);
+  yaw_quaternion.setRPY(0, 0, yaw);
 
   transform.transform.rotation.x = yaw_quaternion.getX();
   transform.transform.rotation.y = yaw_quaternion.getY();
   transform.transform.rotation.z = yaw_quaternion.getZ();
   transform.transform.rotation.w = yaw_quaternion.getW();
 
-  static_broadcaster_.sendTransform(transform);
+  failed_tf_ = !(ekf_pose_.orientation.x + ekf_pose_.orientation.y + ekf_pose_.orientation.z + ekf_pose_.orientation.w);
+
+  if(!failed_tf_) static_broadcaster_.sendTransform(transform);
+  else return;
 
   /* Get beacon transform from the tf to map */
   bool tf_ok = true;
@@ -206,7 +217,7 @@ void LidarLocalization::updateBeacons()
   {
     try
     {
-      transform = tf2_buffer_.lookupTransform(p_robot_parent_frame_id_, p_beacon_frame_id_prefix_ + std::to_string(i), ros::Time());
+      transform = tf2_buffer_.lookupTransform(p_predict_frame_id_, p_beacon_frame_id_prefix_ + std::to_string(i), ros::Time());
 
       predict_beacons_[i - 1].ideal.x = transform.transform.translation.x;
       predict_beacons_[i - 1].ideal.y = transform.transform.translation.y;
@@ -498,7 +509,7 @@ void LidarLocalization::publishLocation()
   output_robot_pose_.header.frame_id = p_robot_parent_frame_id_;
   output_robot_pose_.header.stamp = now;
 
-  double error_length = length(output_robot_pose_.pose.pose.position, ekf_pose_);
+  double error_length = length(output_robot_pose_.pose.pose.position, ekf_pose_.position);
   double cov_x = (error_length > p_threshold_) ? p_cov_x_ * p_cov_dec_ : p_cov_x_;
   double cov_y = (error_length > p_threshold_) ? p_cov_y_ * p_cov_dec_ : p_cov_y_;
   double cov_yaw = (error_length > p_threshold_) ? p_cov_yaw_ * p_cov_dec_ : p_cov_yaw_;

@@ -39,12 +39,14 @@
             <remap from="obstacles" to="obstacles_to_base"/>
 
             <remap from="ekf_pose" to="/$(arg robot_name_slash)ekf_pose"/>
-            <remap from="toposition_topic" to="/$(arg robot_name_slash)/cmd_vel"/>
+            <remap from="/Toposition" to="/$(arg robot_name_slash)Toposition"/>
 
             <param name="beacon_parent_frame_id" value="$(arg robot_name_slash)map"/>
             <param name="beacon_frame_id_prefix" value="$(arg robot_name_slash)beacon"/>
             <param name="robot_parent_frame_id" value="$(arg robot_name_slash)map"/>
             <param name="robot_frame_id" value="$(arg robot_name_slash)base_footprint"/>
+            
+            <param name="beacon_predict_frame_id" value="$(arg robot_name_slash)predict"/>
         </node>
 
         <node name="obstacle_tracker_to_base" pkg="obstacle_detector" type="obstacle_tracker_node" > 

@@ -7,8 +7,9 @@ Panels:
         - /TF1/Frames1
         - /Odometry1/Covariance1
         - /Odometry2/Covariance1
+        - /TF2/Frames1
       Splitter Ratio: 0.5
-    Tree Height: 752
+    Tree Height: 793
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -65,10 +66,136 @@ Visualization Manager:
       Unreliable: false
       Value: true
     - Class: rviz/TF
-      Enabled: false
+      Enabled: true
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        cam_a:
+          Value: true
+        cam_a_ref:
+          Value: true
+        cam_b:
+          Value: true
+        cam_b_ref:
+          Value: true
+        cam_c_ref:
+          Value: true
+        camera1_aligned_depth_to_color_frame:
+          Value: true
+        camera1_color_frame:
+          Value: true
+        camera1_color_optical_frame:
+          Value: true
+        camera1_depth_frame:
+          Value: true
+        camera1_depth_optical_frame:
+          Value: true
+        camera1_infra1_frame:
+          Value: true
+        camera1_infra1_optical_frame:
+          Value: true
+        camera1_infra2_frame:
+          Value: true
+        camera1_infra2_optical_frame:
+          Value: true
+        camera1_link:
+          Value: true
+        camera2_aligned_depth_to_color_frame:
+          Value: true
+        camera2_color_frame:
+          Value: true
+        camera2_color_optical_frame:
+          Value: true
+        camera2_depth_frame:
+          Value: true
+        camera2_depth_optical_frame:
+          Value: true
+        camera2_infra1_frame:
+          Value: true
+        camera2_infra1_optical_frame:
+          Value: true
+        camera2_infra2_frame:
+          Value: true
+        camera2_infra2_optical_frame:
+          Value: true
+        camera2_link:
+          Value: true
+        camera3_aligned_depth_to_color_frame:
+          Value: true
+        camera3_color_frame:
+          Value: true
+        camera3_color_optical_frame:
+          Value: true
+        camera3_depth_frame:
+          Value: true
+        camera3_depth_optical_frame:
+          Value: true
+        camera3_infra1_frame:
+          Value: true
+        camera3_infra1_optical_frame:
+          Value: true
+        camera3_infra2_frame:
+          Value: true
+        camera3_infra2_optical_frame:
+          Value: true
+        camera3_link:
+          Value: true
+        camera_color_frame_1:
+          Value: true
+        camera_color_frame_2:
+          Value: true
+        camera_color_frame_3:
+          Value: true
+        map:
+          Value: true
+        robot1/base_footprint:
+          Value: true
+        robot1/beacon1:
+          Value: false
+        robot1/beacon2:
+          Value: false
+        robot1/beacon3:
+          Value: false
+        robot1/imu_link:
+          Value: false
+        robot1/laser_frame:
+          Value: false
+        robot1/map:
+          Value: true
+        robot1/odom:
+          Value: true
+        robot1/predict:
+          Value: true
+        robot1/vive_frame:
+          Value: false
+        robot1_base:
+          Value: false
+        robot1_camera:
+          Value: false
+        robot2/base_footprint:
+          Value: true
+        robot2/beacon1:
+          Value: true
+        robot2/beacon2:
+          Value: true
+        robot2/beacon3:
+          Value: true
+        robot2/imu_link:
+          Value: true
+        robot2/laser_frame:
+          Value: true
+        robot2/map:
+          Value: false
+        robot2/odom:
+          Value: true
+        robot2/vive_frame:
+          Value: true
+        robot2_base:
+          Value: true
+        robot2_camera:
+          Value: true
+        world_frame:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -76,9 +203,41 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        {}
+        map:
+          robot1/map:
+            robot1/beacon1:
+              {}
+            robot1/beacon2:
+              {}
+            robot1/beacon3:
+              {}
+            robot1/odom:
+              robot1/base_footprint:
+                robot1/imu_link:
+                  {}
+                robot1/laser_frame:
+                  {}
+                robot1/vive_frame:
+                  {}
+            robot1/predict:
+              {}
+          robot2/map:
+            robot2/beacon1:
+              {}
+            robot2/beacon2:
+              {}
+            robot2/beacon3:
+              {}
+            robot2/odom:
+              robot2/base_footprint:
+                robot2/imu_link:
+                  {}
+                robot2/laser_frame:
+                  {}
+                robot2/vive_frame:
+                  {}
       Update Interval: 0
-      Value: false
+      Value: true
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /robot1/obstacle_marker
@@ -131,7 +290,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: true
-      Enabled: true
+      Enabled: false
       Head Length: 0.30000001192092896
       Head Radius: 0.10000000149011612
       Name: PoseWithCovariance
@@ -141,7 +300,7 @@ Visualization Manager:
       Shape: Arrow
       Topic: /robot1/ekf_pose
       Unreliable: false
-      Value: true
+      Value: false
     - Angle Tolerance: 0.10000000149011612
       Class: rviz/Odometry
       Covariance:
@@ -261,6 +420,21 @@ Visualization Manager:
       Topic: /robot2/ekf_pose
       Unreliable: false
       Value: true
+    - Class: rviz/TF
+      Enabled: false
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+      Marker Alpha: 1
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        {}
+      Update Interval: 0
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -288,7 +462,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 9.40501880645752
+      Angle: 21.810049057006836
       Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
@@ -298,18 +472,18 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: -121.20823669433594
+      Scale: -220.97718811035156
       Target Frame: <Fixed Frame>
-      X: 2.3758389949798584
-      Y: 1.0685083866119385
+      X: 2.3327436447143555
+      Y: 0.9552817344665527
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1043
+  Height: 1016
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000015600000379fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b00000379000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f00000379fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003b00000379000000a000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007800000003efc0100000002fb0000000800540069006d00650100000000000007800000030700fffffffb0000000800540069006d006501000000000000045000000000000000000000050f0000037900000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd000000040000000000000156000003a2fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b000003a2000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c000002610000000100000307000003a2fc0200000004fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003b00000358000000a000fffffffb0000000800540069006d0065000000003b000003a20000003700fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007800000003efc0100000001fb0000000800540069006d0065010000000000000450000000000000000000000624000003a200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -320,4 +494,4 @@ Window Geometry:
     collapsed: false
   Width: 1920
   X: 0
-  Y: 0
+  Y: 27

@@ -237,9 +237,11 @@ private:
   BeaconRef beacons_[BEACON_NUMBER];
   BeaconRef predict_beacons_[BEACON_NUMBER];
 
-  geometry_msgs::Point ekf_pose_;
+  geometry_msgs::Pose ekf_pose_;
 
   geometry_msgs::Point robot_to_map_vel_;
+
+  bool failed_tf_;
 
   /* ros param */
   bool p_active_;
