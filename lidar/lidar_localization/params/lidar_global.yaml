@@ -48,12 +48,12 @@ obstacle_tracker_to_base:
   active: true
 
   loop_rate: 10.0
-  tracking_duration: 0.5
+  tracking_duration: 0.24
   min_correspondence_cost: 3
   std_correspondence_dev: 0.15
-  process_variance: 5
-  process_rate_variance: 0.1
-  measurement_variance: 1.0
+  process_variance: 0.4
+  process_rate_variance: 1
+  measurement_variance: 0.1
 
 # Obstacle Tracker
 # To -> map
@@ -61,12 +61,12 @@ obstacle_tracker_to_map:
   active: true
 
   loop_rate: 10.0
-  tracking_duration: 0.5
+  tracking_duration: 0.24
   min_correspondence_cost: 3
   std_correspondence_dev: 0.15
-  process_variance: 5
-  process_rate_variance: 0.1
-  measurement_variance: 1.0
+  process_variance: 0.4
+  process_rate_variance: 1
+  measurement_variance: 0.1
 
 # Triangular localization
 lidar_localization: 

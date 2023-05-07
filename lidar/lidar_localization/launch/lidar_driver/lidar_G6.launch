@@ -33,7 +33,7 @@
     <param name="angle_min"    type="double" value="-180" />
     <param name="angle_max"    type="double" value="180" />
     <param name="range_min"    type="double" value="0.01" />
-    <param name="range_max"    type="double" value="4.0" />
+    <param name="range_max"    type="double" value="3.7" />
     <param name="frequency"    type="double" value="10.0"/>
 
     <!-- Offset settings -->
