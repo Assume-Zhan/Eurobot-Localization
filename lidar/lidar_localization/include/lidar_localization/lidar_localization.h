@@ -210,6 +210,9 @@ private:
    */
   void getRobotPose();
 
+  /* Get beacon prediction function */
+  void updateBeacons();
+
   /* ros node */
   ros::NodeHandle nh_;
   ros::NodeHandle nh_local_;
@@ -232,6 +235,7 @@ private:
   /* private variables */
   geometry_msgs::Point beacon_to_map_[BEACON_NUMBER];
   BeaconRef beacons_[BEACON_NUMBER];
+  BeaconRef predict_beacons_[BEACON_NUMBER];
 
   geometry_msgs::Point ekf_pose_;
 
@@ -259,6 +263,7 @@ private:
   std::string p_obstacle_topic_;
   std::string p_toposition_topic_;
   std::string p_beacon_parent_frame_id_;
+  std::string p_predict_frame_id_;
   std::string p_beacon_frame_id_prefix_;
   std::string p_robot_parent_frame_id_;
   std::string p_robot_frame_id_;

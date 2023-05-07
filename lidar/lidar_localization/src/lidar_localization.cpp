@@ -155,6 +155,9 @@ void LidarLocalization::obstacleCallback(const obstacle_detector::Obstacles::Con
   /* Transform beacon to robot frame */
   getBeacontoRobot();
 
+  /* Get update prediction beacons */
+  updateBeacons();
+
   /* Restore the obstacle circles */
   for (const obstacle_detector::CircleObstacle& obstacle : ptr->circles)
   {
@@ -171,6 +174,58 @@ void LidarLocalization::obstacleCallback(const obstacle_detector::Obstacles::Con
 
   findBeacon();
   getRobotPose();
+}
+
+void LidarLocalization::updateBeacons()
+{
+  /* First get ekf_pose + cmd_vel */
+  /* And broadcast the pose to map frame */
+  geometry_msgs::TransformStamped transform;
+  ros::Time now = ros::Time::now();
+  transform.header.stamp = now;
+  transform.header.frame_id = p_robot_parent_frame_id_;
+  transform.child_frame_id = p_predict_frame_id_;
+
+  transform.transform.translation.x = ekf_pose_.x;
+  transform.transform.translation.y = ekf_pose_.y;
+  transform.transform.translation.z = 0;
+
+  tf2::Quaternion yaw_quaternion;
+  yaw_quaternion.setRPY(0, 0, ekf_pose_.z);
+
+  transform.transform.rotation.x = yaw_quaternion.getX();
+  transform.transform.rotation.y = yaw_quaternion.getY();
+  transform.transform.rotation.z = yaw_quaternion.getZ();
+  transform.transform.rotation.w = yaw_quaternion.getW();
+
+  static_broadcaster_.sendTransform(transform);
+
+  /* Get beacon transform from the tf to map */
+  bool tf_ok = true;
+  for (int i = 1; i <= 3; ++i)
+  {
+    try
+    {
+      transform = tf2_buffer_.lookupTransform(p_robot_parent_frame_id_, p_beacon_frame_id_prefix_ + std::to_string(i), ros::Time());
+
+      predict_beacons_[i - 1].ideal.x = transform.transform.translation.x;
+      predict_beacons_[i - 1].ideal.y = transform.transform.translation.y;
+    }
+    catch (const tf2::TransformException& ex)
+    {
+      ROS_WARN_STREAM(ex.what());
+      tf_ok = false;
+    }
+  }
+
+  if (tf_ok)
+  {
+    ROS_INFO_STREAM("[Lidar Localization]: " << "get beacon to map tf ok");
+  }
+  else
+  {
+    ROS_WARN_STREAM("[Lidar Localization]: " << "get beacon to map tf failed");
+  }
 }
 
 void LidarLocalization::setBeacontoMap()
