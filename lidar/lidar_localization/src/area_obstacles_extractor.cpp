@@ -134,7 +134,7 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     // No tracked obstacles -> push in tracked obstacle vector
     for(auto obstacle : obstacle_buffer.circles)
     {
-      TrackedObstacles new_tracked(obstacle, 0.3);
+      TrackedObstacles new_tracked(obstacle, 0.7, p_obstacle_lpf_cur_);
       trackedObstacles.push(new_tracked);
     }
   }
@@ -145,14 +145,14 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     // 2. If matched -> use z to set obstacle flag and update with obstacle
     // 3. Not matched -> update with only time
     int queueSize = trackedObstacles.size();
-    for(int i = 0 ; i < trackedObstacles.size() ; i++)
+    for(int i = 0 ; i < queueSize ; i++)
     {
       TrackedObstacles queueTop = trackedObstacles.front();
       trackedObstacles.pop();
       bool tracked = false;
       for(auto& obstacle : obstacle_buffer.circles)
       {
-        if(queueTop(obstacle) < 0.2)
+        if(length(queueTop.obstacle.center, obstacle.center) < 0.15)
         {
           tracked = true;
           obstacle.center.z = 1;
@@ -166,10 +166,16 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
   }
 
   // Check the timeout obstacles
-  for(int i = 0 ; i < trackedObstacles.size() ; i++)
+  std::queue<TrackedObstacles> trackedBuffer = trackedObstacles;
+  while(!trackedObstacles.empty())
   {
-    TrackedObstacles queueTop = trackedObstacles.front();
     trackedObstacles.pop();
+  }
+
+  while(!trackedBuffer.empty())
+  {
+    TrackedObstacles queueTop = trackedBuffer.front();
+    trackedBuffer.pop();
     if(!queueTop.isTimeout())
     {
       trackedObstacles.push(queueTop);
@@ -181,43 +187,97 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
   {
     if(obstacle.center.z == 0)
     {
-      TrackedObstacles new_trakced(obstacle, 0.3);
+      TrackedObstacles new_trakced(obstacle, 0.7, p_obstacle_lpf_cur_);
       trackedObstacles.push(new_trakced);
     }
   }
 
-  // ( if central ) TODO : Merge 2 robots' closest obstacles
-
-  // ( if central ) TODO : Remove the obstacles which is too closest to robots
-
-  // TODO : publish obstacles
-  for(int i = 0 ; i < trackedObstacles.size() ; i++)
+  // TODO : prevent dulplicate tracked obstacles
+  trackedBuffer = trackedObstacles;
+  while(!trackedObstacles.empty())
   {
-    TrackedObstacles tracked = trackedObstacles.front();
     trackedObstacles.pop();
-
-    output_obstacles_array_.circles.push_back(tracked.obstacle);
-    pushMardedObstacles(ptr->header.stamp, tracked.obstacle, id++);
   }
 
-  // static obstacle_detector::Obstacles prev;
-  // recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
+  while(!trackedBuffer.empty())
+  {
+    TrackedObstacles queueTop = trackedBuffer.front();
+    trackedBuffer.pop();
+    int queueSize = trackedBuffer.size();
+    bool hasTooClose = false;
+    for(int i = 0 ; i < queueSize ; i++)
+    {
+      TrackedObstacles checked = trackedBuffer.front();
+      trackedBuffer.pop();
+      trackedBuffer.push(checked);
+      if(length(checked.obstacle.center, queueTop.obstacle.center) < 0.1)
+      {
+        hasTooClose = true;
+      }
+    }
+    if(!hasTooClose) trackedObstacles.push(queueTop);
+  }
 
-  // // Do low-pass filter
-  // doLowPassFilter(output_obstacles_array_, prev);
-  
-  // // Clear all obstacles
-  // prev.circles.clear();
-  
-  // // Push current obstacles into current array
-  // for(auto obstacle : output_obstacles_array_.circles)
-  // {
-  //   prev.circles.push_back(obstacle);
-  // }
+  // ( if central ) TODO : Merge 2 robots' closest obstacles
+  if(p_central_)
+  {
+    int queueSize = trackedObstacles.size();
+    for(int i = 0 ; i < queueSize ; i++)
+    {
+      TrackedObstacles tracked = trackedObstacles.front();
+      trackedObstacles.pop();
+      trackedObstacles.push(tracked);
 
+      bool track = false;
+      for(auto& ally : ally_obstacles_.circles)
+      {
+        if(length(ally.center, tracked.obstacle.center) < 0.2)
+        {
+          track = true;
 
+          obstacle_detector::CircleObstacle merged = mergeObstacle(ally, tracked.obstacle);
+          if(!checkRobotpose(merged.center))
+          {
+            output_obstacles_array_.circles.push_back(merged);
+            pushMardedObstacles(ptr->header.stamp, merged, id++);
+          }
+
+          ally.center.z = 1;
+        }
+      }
+      if(!track && !checkRobotpose(tracked.obstacle.center)) 
+      {
+        output_obstacles_array_.circles.push_back(tracked.obstacle);
+        pushMardedObstacles(ptr->header.stamp, tracked.obstacle, id++);
+        
+      }
+    }
+
+    for(auto& ally : ally_obstacles_.circles)
+    {
+      if(ally.center.z == 0 && !checkRobotpose(ally.center))
+      {
+        output_obstacles_array_.circles.push_back(ally);
+        pushMardedObstacles(ptr->header.stamp, ally, id++);
+      }
+    }
+  }
+  else
+  {
+    int queueSize = trackedObstacles.size();
+    for(int i = 0 ; i < queueSize ; i++)
+    {
+      TrackedObstacles t = trackedObstacles.front();
+      trackedObstacles.pop();
+      trackedObstacles.push(t);
+
+      output_obstacles_array_.circles.push_back(t.obstacle);
+      pushMardedObstacles(ptr->header.stamp, t.obstacle, id++);
+    }
+  }
+
+  // TODO : publish obstacles
   publishObstacles();
-    
     
   if(p_central_)
   {
@@ -226,82 +286,15 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
   }
 }
 
-void AreaObstaclesExtractor::recordObstacles(obstacle_detector::Obstacles& circles, double time)
+obstacle_detector::CircleObstacle AreaObstaclesExtractor::mergeObstacle(obstacle_detector::CircleObstacle cir1, obstacle_detector::CircleObstacle cir2)
 {
-  // Removing timeout object
-  bool removingTimeout = true;
-  while(!prev_output_obstacles_array_.empty() && removingTimeout)
-  {
-    // Get the front of previous point
-    geometry_msgs::Point checkPoint = prev_output_obstacles_array_.front();
+  obstacle_detector::CircleObstacle merged;
+  merged.center.x = (cir1.center.x + cir2.center.y) / 2;
+  merged.center.y = (cir1.center.y + cir2.center.y) / 2;
+  merged.velocity.x = (cir1.velocity.x + cir2.velocity.x) / 2;
+  merged.velocity.y = (cir1.velocity.y + cir2.velocity.y) / 2;
 
-    // Remove timeout point
-    if(time - checkPoint.z < p_timeout_) removingTimeout = false;
-    else prev_output_obstacles_array_.pop();
-  }
-
-  // Check each point in previous obstacle
-  // If matched the closest obstacle will renew the velocity information
-  int queueSize = prev_output_obstacles_array_.size();
-
-  // Use latest information for getting velocity of obstacles
-  // 1. Iterate all Previous obstacles
-  // 2. Iterate current obstacles
-  for(int i = 0 ; i < queueSize ; i++)
-  {
-    geometry_msgs::Point checkpt = prev_output_obstacles_array_.front();
-
-    for(obstacle_detector::CircleObstacle& circle : circles.circles)
-    {
-
-      // Match the best obstacle
-      if(length(circle.center, checkpt) < p_obstacle_vel_merge_d_)
-      {
-        // Matched the best obstacle
-        // Differentiate position to get velocity
-        try
-        {
-          circle.velocity.x = (circle.center.x - checkpt.x) / (time - checkpt.z);
-          circle.velocity.y = (circle.center.y - checkpt.y) / (time - checkpt.z);
-        }
-        catch (...)
-        {
-          ROS_ERROR_STREAM("[Area Extractor] : " << "Divide zero problem");
-        }
-      }
-    }
-    prev_output_obstacles_array_.pop();
-    prev_output_obstacles_array_.push(checkpt);
-  }
-
-  ROS_INFO_STREAM("[Area Extractor] : Check previous queue size " << queueSize);
-
-  // Put new obstales with timestamp in queue
-  // Use z to store time information
-  for(obstacle_detector::CircleObstacle& circle : circles.circles)
-  {
-    geometry_msgs::Point p;
-    p.x = circle.center.x;
-    p.y = circle.center.y;
-    p.z = time;
-    prev_output_obstacles_array_.push(p);
-  }
-
-}
-
-void AreaObstaclesExtractor::doLowPassFilter(obstacle_detector::Obstacles& curr, obstacle_detector::Obstacles prev)
-{
-  for(auto& cur_obstacle : curr.circles)
-  {
-    for(auto prev_obstacle : prev.circles)
-    {
-      if(length(prev_obstacle.center, cur_obstacle.center) < p_obstacle_error_)
-      {
-        cur_obstacle.velocity.x = cur_obstacle.velocity.x * p_obstacle_lpf_cur_ + prev_obstacle.velocity.x * (1 - p_obstacle_lpf_cur_);
-        cur_obstacle.velocity.y = cur_obstacle.velocity.y * p_obstacle_lpf_cur_ + prev_obstacle.velocity.y * (1 - p_obstacle_lpf_cur_);
-      }
-    }
-  }
+  return merged;
 }
 
 void AreaObstaclesExtractor::allyObstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr){

@@ -59,9 +59,13 @@ typedef struct TrackedObstacles
   double trackedTime;
   double trackedReload;
 
-  TrackedObstacles(obstacle_detector::CircleObstacle obs, double t) : obstacle(obs), trackedTime(t)
+  double lpf_believe_current;
+
+  TrackedObstacles(obstacle_detector::CircleObstacle obs, double t, double lpf_believe_current) : trackedTime(t), lpf_believe_current(lpf_believe_current)
   {
     trackedReload = trackedTime;
+    obstacle.radius = obs.radius;
+    obstacle.center = obs.center;
   }
 
   // Operator overload to calculate error length
@@ -79,7 +83,14 @@ typedef struct TrackedObstacles
   // Update with curren obstacles
   void update(obstacle_detector::CircleObstacle new_obstacle, double dt)
   {
-    obstacle = new_obstacle;
+    double current_velocity_x = (new_obstacle.center.x - obstacle.center.x) / dt;
+    double current_velocity_y = (new_obstacle.center.y - obstacle.center.y) / dt;
+
+    obstacle.velocity.x = current_velocity_x * lpf_believe_current + obstacle.velocity.x * (1 - lpf_believe_current);
+    obstacle.velocity.y = current_velocity_y * lpf_believe_current + obstacle.velocity.y * (1 - lpf_believe_current);
+
+    obstacle.center = new_obstacle.center;
+    trackedReload = trackedTime;
     // TODO : calculate velocity
   }
 
@@ -167,6 +178,8 @@ private:
    *
    */
   void publishMarkers();
+
+  obstacle_detector::CircleObstacle mergeObstacle(obstacle_detector::CircleObstacle cir1, obstacle_detector::CircleObstacle cir2);
 
   bool checkBoundary(geometry_msgs::Point);
   bool checkRobotpose(geometry_msgs::Point);
