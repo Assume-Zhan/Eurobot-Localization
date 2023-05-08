@@ -133,8 +133,6 @@ bool LidarLocalization::updateParams(std_srvs::Empty::Request& req, std_srvs::Em
   checkTFOK();
   getBeacontoMap();
 
-  inited_ = false;
-
   return true;
 }
 
@@ -150,124 +148,9 @@ void LidarLocalization::ekfposeCallback(const geometry_msgs::PoseWithCovarianceS
   this->ekf_pose_ = ptr->pose.pose;
 }
 
-void LidarLocalization::getInitPose(const obstacle_detector::Obstacles::ConstPtr& ptr)
-{
-  /* Record data */
-  double minError = -1;
-  std::vector<geometry_msgs::Point> possibleBeacons;
-
-  /* Start calculating */
-  std::vector<double> idealLength;
-  idealLength.push_back(length(beacon_to_map_[0], beacon_to_map_[1]));
-  idealLength.push_back(length(beacon_to_map_[1], beacon_to_map_[2]));
-  idealLength.push_back(length(beacon_to_map_[0], beacon_to_map_[2]));
-  std::sort(idealLength.begin(), idealLength.end());
-  
-  for(int i = 0 ; i < ptr->circles.size() ; i++)
-  {
-    for(int j = i + 1 ; j < ptr->circles.size() ; j++)
-    {
-      for(int k = j + 1 ; k < ptr->circles.size() ; k++)
-      {
-        /* Find the possible three beacons */
-        /* Get Length */
-        std::vector<double> realLength;
-        realLength.push_back(length(ptr->circles[i].center, ptr->circles[j].center));
-        realLength.push_back(length(ptr->circles[i].center, ptr->circles[k].center));
-        realLength.push_back(length(ptr->circles[k].center, ptr->circles[j].center));
-
-        /* Sort length */
-        std::sort(realLength.begin(), realLength.end());
-
-        /* Calculate error length */
-        double error;
-        for(int x = 0 ; x < 3 ; x++) error += abs(realLength[x] - idealLength[x]);
-
-        /* check error length */
-        if(minError == -1 || minError > error)
-        {
-          minError = error;
-          possibleBeacons.push_back(ptr->circles[i].center);
-          possibleBeacons.push_back(ptr->circles[j].center);
-          possibleBeacons.push_back(ptr->circles[k].center);
-        }
-      }
-    }
-  }
-
-  /* Use the best solution to calculate robot pose */
-  inited_ = true;
-  
-  vector<double> dist_beacon_robot;
-  for (int i = 0; i < 3; ++i)
-  {
-    dist_beacon_robot.push_back(length(possibleBeacons[i]));
-  }
-
-  // least squares method to solve Ax=b
-  // i.e to solve (A^T)Ax=(A^T)b
-  mat A(2, 2);
-  vec b(2);
-  vec X(2);
-
-  A(0, 0) = 2 * (beacon_to_map_[0].x - beacon_to_map_[2].x);
-  A(0, 1) = 2 * (beacon_to_map_[0].y - beacon_to_map_[2].y);
-
-  A(1, 0) = 2 * (beacon_to_map_[1].x - beacon_to_map_[2].x);
-  A(1, 1) = 2 * (beacon_to_map_[1].y - beacon_to_map_[2].y);
-
-  b(0) = (pow(beacon_to_map_[0].x, 2) - pow(beacon_to_map_[2].x, 2)) +
-         (pow(beacon_to_map_[0].y, 2) - pow(beacon_to_map_[2].y, 2)) +
-         (pow(dist_beacon_robot[2], 2) - pow(dist_beacon_robot[0], 2));
-  b(1) = (pow(beacon_to_map_[1].x, 2) - pow(beacon_to_map_[2].x, 2)) +
-         (pow(beacon_to_map_[1].y, 2) - pow(beacon_to_map_[2].y, 2)) +
-         (pow(dist_beacon_robot[2], 2) - pow(dist_beacon_robot[1], 2));
-  try
-  {
-    X = solve(A.t() * A, A.t() * b, solve_opts::no_approx);
-
-    output_robot_pose_.pose.pose.position.x = X(0);
-    output_robot_pose_.pose.pose.position.y = X(1);
-
-    double robot_yaw = 0;
-    double robot_sin = 0;
-    double robot_cos = 0;
-
-    for (int i = 0; i < 3; i++)
-    {
-      double theta = atan2(beacon_to_map_[i].y - output_robot_pose_.pose.pose.position.y,
-                           beacon_to_map_[i].x - output_robot_pose_.pose.pose.position.x) -
-                     atan2(beacons_[i].real.y, beacons_[i].real.x);
-
-      robot_sin += sin(theta);
-      robot_cos += cos(theta);
-    }
-
-    robot_yaw = atan2(robot_sin, robot_cos) + p_theta_ / 180.0 * 3.1415926;
-    tf2::Quaternion q;
-    q.setRPY(0., 0., robot_yaw);
-    output_robot_pose_.pose.pose.orientation = tf2::toMsg(q);
-
-    publishLocation();
-  }
-  catch (const std::runtime_error& ex)
-  {
-    ROS_WARN_STREAM(A);
-    ROS_WARN_STREAM(b);
-    ROS_WARN_STREAM(ex.what());
-  }
-}
-
 /* MAIN */
 void LidarLocalization::obstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr)
 {
-  /* Check init */
-  if(inited_ == false) 
-  {
-    getInitPose(ptr);
-    return;
-  }
-
   /* Remove previous obstacle circles */
   realtime_circles_.clear();
 
