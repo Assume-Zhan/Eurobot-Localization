@@ -47,6 +47,50 @@
 
 namespace lidar_localization
 {
+
+/**
+ * @struct TrackedObstacles
+ * @brief A structure that tracked the obstacles
+ */
+typedef struct TrackedObstacles
+{
+  
+  obstacle_detector::CircleObstacle obstacle;
+  double trackedTime;
+  double trackedReload;
+
+  TrackedObstacles(obstacle_detector::CircleObstacle obs, double t) : obstacle(obs), trackedTime(t)
+  {
+    trackedReload = trackedTime;
+  }
+
+  // Operator overload to calculate error length
+  double operator()(obstacle_detector::CircleObstacle compare)
+  {
+    return length(compare.center, obstacle.center);
+  }
+
+  // Update only time
+  void update(double dt)
+  {
+    trackedReload -= dt;
+  }
+
+  // Update with curren obstacles
+  void update(obstacle_detector::CircleObstacle new_obstacle, double dt)
+  {
+    obstacle = new_obstacle;
+    // TODO : calculate velocity
+  }
+
+  bool isTimeout()
+  {
+    return (trackedReload <= 0);
+  }
+
+} TrackedObstacles;
+
+
 /**
  * @class LidarLocalization
  * @brief A class that use obstacles to localize robot position
@@ -150,7 +194,9 @@ private:
   obstacle_detector::Obstacles ally_obstacles_;
   std_msgs::Bool output_have_obstacles_;
   visualization_msgs::MarkerArray output_marker_array_;
+
   /* private variables */
+  std::queue<TrackedObstacles> trackedObstacles;
 
   /* ros param */
   bool p_active_;

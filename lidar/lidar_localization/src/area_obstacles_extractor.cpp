@@ -109,6 +109,8 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
   output_obstacles_array_.circles.clear();
   output_marker_array_.markers.clear();
 
+  obstacle_detector::Obstacles obstacle_buffer;
+
   int id = 0;
 
   for (const obstacle_detector::CircleObstacle& circle : ptr->circles)
@@ -118,71 +120,100 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
     {
       obstacle_detector::CircleObstacle circle_msg;
       circle_msg = circle;
-	
-      // Central : 
-      // 1. Merge 2 robots' obstacles
-      // 2. Check 2 robots' obstacles
-      // 3. Record and do low pass filter
-      if(p_central_)
-      {
-        for(auto& ally_circle : ally_obstacles_.circles)
-        {
-          if(ally_circle.center.z == 0 && length(ally_circle.center, circle_msg.center) < p_obstacle_merge_d_)
-          {
-            // Average the point
-            circle_msg.center.x = (circle_msg.center.x + ally_circle.center.x) / 2;
-            circle_msg.center.y = (circle_msg.center.y + ally_circle.center.y) / 2;
-            circle_msg.velocity.x = (circle_msg.velocity.x + ally_circle.velocity.x) / 2;
-            circle_msg.velocity.y = (circle_msg.velocity.y + ally_circle.velocity.y) / 2;
-            circle_msg.radius = (circle.radius + ally_circle.radius) / 2;
-            circle_msg.true_radius = (circle.true_radius + ally_circle.true_radius) / 2;
 
-            // Pick the flag
-            ally_circle.center.z = 1;
-          }
-        }
-
-        // Check robot pose
-        if(checkRobotpose(circle_msg.center)) continue;
-
-        pushMardedObstacles(ptr->header.stamp, circle_msg, id++);
-        output_obstacles_array_.circles.push_back(circle_msg);
-      }
+      /* Push in boundary obstacles into obstacle buffer */
+      obstacle_buffer.circles.push_back(circle_msg);
     }
-
   }
 
-  if(p_central_)
+  // TODO : traverse all of the in boundary obstacles and merge the closest
+
+  // TODO : tracked obstacles
+  if(trackedObstacles.empty())
   {
-    for(const obstacle_detector::CircleObstacle& ally_circle : ally_obstacles_.circles)
+    // No tracked obstacles -> push in tracked obstacle vector
+    for(auto obstacle : obstacle_buffer.circles)
     {
-      if(ally_circle.center.z == 0)
+      TrackedObstacles new_tracked(obstacle, 0.3);
+      trackedObstacles.push(new_tracked);
+    }
+  }
+  else
+  {
+    // Track the obstacle
+    // 1. Traverse all of the obstacles with tracked obstacle
+    // 2. If matched -> use z to set obstacle flag and update with obstacle
+    // 3. Not matched -> update with only time
+    int queueSize = trackedObstacles.size();
+    for(int i = 0 ; i < trackedObstacles.size() ; i++)
+    {
+      TrackedObstacles queueTop = trackedObstacles.front();
+      trackedObstacles.pop();
+      bool tracked = false;
+      for(auto& obstacle : obstacle_buffer.circles)
       {
-        if(checkRobotpose(ally_circle.center)) continue;
-
-        output_obstacles_array_.circles.push_back(ally_circle);
-
-        pushMardedObstacles(ptr->header.stamp, ally_circle, id++);
-        
+        if(queueTop(obstacle) < 0.2)
+        {
+          tracked = true;
+          obstacle.center.z = 1;
+          queueTop.update(obstacle, 0.1);
+        }
       }
+
+      if(tracked == false) queueTop.update(0.1);
+      trackedObstacles.push(queueTop);
     }
   }
 
-
-  static obstacle_detector::Obstacles prev;
-  recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
-
-  // Do low-pass filter
-  doLowPassFilter(output_obstacles_array_, prev);
-  
-  // Clear all obstacles
-  prev.circles.clear();
-  
-  // Push current obstacles into current array
-  for(auto obstacle : output_obstacles_array_.circles)
+  // Check the timeout obstacles
+  for(int i = 0 ; i < trackedObstacles.size() ; i++)
   {
-    prev.circles.push_back(obstacle);
+    TrackedObstacles queueTop = trackedObstacles.front();
+    trackedObstacles.pop();
+    if(!queueTop.isTimeout())
+    {
+      trackedObstacles.push(queueTop);
+    }
   }
+
+  // TODO : push untracked obstacle to tracked ( without flag on z )
+  for(auto obstacle : obstacle_buffer.circles)
+  {
+    if(obstacle.center.z == 0)
+    {
+      TrackedObstacles new_trakced(obstacle, 0.3);
+      trackedObstacles.push(new_trakced);
+    }
+  }
+
+  // ( if central ) TODO : Merge 2 robots' closest obstacles
+
+  // ( if central ) TODO : Remove the obstacles which is too closest to robots
+
+  // TODO : publish obstacles
+  for(int i = 0 ; i < trackedObstacles.size() ; i++)
+  {
+    TrackedObstacles tracked = trackedObstacles.front();
+    trackedObstacles.pop();
+
+    output_obstacles_array_.circles.push_back(tracked.obstacle);
+    pushMardedObstacles(ptr->header.stamp, tracked.obstacle, id++);
+  }
+
+  // static obstacle_detector::Obstacles prev;
+  // recordObstacles(output_obstacles_array_, ros::Time::now().toSec());
+
+  // // Do low-pass filter
+  // doLowPassFilter(output_obstacles_array_, prev);
+  
+  // // Clear all obstacles
+  // prev.circles.clear();
+  
+  // // Push current obstacles into current array
+  // for(auto obstacle : output_obstacles_array_.circles)
+  // {
+  //   prev.circles.push_back(obstacle);
+  // }
 
 
   publishObstacles();
