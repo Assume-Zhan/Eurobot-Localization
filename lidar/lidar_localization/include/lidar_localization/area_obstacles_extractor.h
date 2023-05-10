@@ -167,8 +167,6 @@ private:
    * @param curr current obstacles data
    * @param prev previous obstacles data
    */
-  void doLowPassFilter(obstacle_detector::Obstacles& curr, obstacle_detector::Obstacles prev);
-
   void pushMardedObstacles(ros::Time, obstacle_detector::CircleObstacle, int);
 
   /**

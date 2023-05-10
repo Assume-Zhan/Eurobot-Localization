@@ -229,10 +229,10 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
           {
             output_obstacles_array_.circles.push_back(merged);
             pushMardedObstacles(ptr->header.stamp, merged, id++);
+            ally.center.z = 1;
             continue;
           }
 
-          ally.center.z = 1;
         }
       }
       if(!track && !checkRobotpose(trackedTop.obstacle.center)) 
@@ -251,47 +251,6 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
         pushMardedObstacles(ptr->header.stamp, ally, id++);
       }
     }
-
-    // int queueSize = trackedObstacles.size();
-    // for(int i = 0 ; i < queueSize ; i++)
-    // {
-    //   TrackedObstacles tracked = trackedObstacles.front();
-    //   trackedObstacles.pop();
-    //   trackedObstacles.push(tracked);
-
-    //   bool track = false;
-    //   for(auto& ally : ally_obstacles_.circles)
-    //   {
-    //     if(length(ally.center, tracked.obstacle.center) < p_obstacle_merge_d_)
-    //     {
-    //       track = true;
-
-    //       obstacle_detector::CircleObstacle merged = mergeObstacle(ally, tracked.obstacle);
-    //       if(!checkRobotpose(merged.center))
-    //       {
-    //         output_obstacles_array_.circles.push_back(merged);
-    //         pushMardedObstacles(ptr->header.stamp, merged, id++);
-    //       }
-
-    //       ally.center.z = 1;
-    //     }
-    //   }
-    //   if(!track && !checkRobotpose(tracked.obstacle.center)) 
-    //   {
-    //     output_obstacles_array_.circles.push_back(tracked.obstacle);
-    //     pushMardedObstacles(ptr->header.stamp, tracked.obstacle, id++);
-        
-    //   }
-    // }
-
-    // for(auto& ally : ally_obstacles_.circles)
-    // {
-    //   if(ally.center.z == 0 && !checkRobotpose(ally.center))
-    //   {
-    //     output_obstacles_array_.circles.push_back(ally);
-    //     pushMardedObstacles(ptr->header.stamp, ally, id++);
-    //   }
-    // }
   }
   else
   {
