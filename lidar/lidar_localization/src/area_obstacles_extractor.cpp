@@ -102,6 +102,8 @@ bool AreaObstaclesExtractor::updateParams(std_srvs::Empty::Request& req, std_srv
 
 void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles::ConstPtr& ptr)
 {
+  static tf2_ros::TransformListener tfListener(tfBuffer);
+
   output_obstacles_array_.header.stamp = ptr->header.stamp;
   output_obstacles_array_.header.frame_id = p_parent_frame_;
 
@@ -113,14 +115,34 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 
   int id = 0;
 
+  // Get tf transform from base_footprint to map
+  geometry_msgs::TransformStamped transformStamped;
+  try{
+      transformStamped = tfBuffer.lookupTransform(p_parent_frame_, ptr->header.frame_id, ros::Time(0), ros::Duration(1.0));
+  }
+  catch (tf2::TransformException &ex) {
+    ROS_WARN("%s", ex.what());
+    return;
+  }
+
   for (const obstacle_detector::CircleObstacle& circle : ptr->circles)
   {
-    // Check obstacle boundary
-    if (checkBoundary(circle.center))
-    {
-      obstacle_detector::CircleObstacle circle_msg;
-      circle_msg = circle;
+    obstacle_detector::CircleObstacle circle_msg;
+    circle_msg = circle;
 
+    geometry_msgs::PointStamped obstacle_to_base;
+    obstacle_to_base.header.frame_id = ptr->header.frame_id;
+    obstacle_to_base.header.stamp = ptr->header.stamp;
+    obstacle_to_base.point = circle.center;
+
+    geometry_msgs::PointStamped obstacle_to_map;
+    tf2::doTransform(obstacle_to_base, obstacle_to_map, transformStamped);
+
+    circle_msg.center = obstacle_to_map.point;
+
+    // Check obstacle boundary
+    if (checkBoundary(circle_msg.center))
+    {
       /* Push in boundary obstacles into obstacle buffer */
       obstacle_buffer.circles.push_back(circle_msg);
     }
@@ -129,126 +151,94 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
   // TODO : traverse all of the in boundary obstacles and merge the closest
 
   // TODO : tracked obstacles
+  // Track the obstacle
+  // 1. Traverse all of the obstacles with tracked obstacle
+  // 2. If matched -> use z to set obstacle flag and update with obstacle
+  // 3. Not matched -> update with only time
   if(trackedObstacles.empty())
   {
     // No tracked obstacles -> push in tracked obstacle vector
     for(auto obstacle : obstacle_buffer.circles)
     {
-      TrackedObstacles new_tracked(obstacle, 0.7, p_obstacle_lpf_cur_);
-      trackedObstacles.push(new_tracked);
+      TrackedObstacles new_tracked(obstacle, p_timeout_, p_obstacle_lpf_cur_);
+      trackedObstacles.push_back(new_tracked);
     }
   }
   else
   {
-    // Track the obstacle
-    // 1. Traverse all of the obstacles with tracked obstacle
-    // 2. If matched -> use z to set obstacle flag and update with obstacle
-    // 3. Not matched -> update with only time
-    int queueSize = trackedObstacles.size();
-    for(int i = 0 ; i < queueSize ; i++)
+    bool lastIterate = false;
+    for(auto trackedTop = trackedObstacles.begin() ; trackedTop != trackedObstacles.end() ;)
     {
-      TrackedObstacles queueTop = trackedObstacles.front();
-      trackedObstacles.pop();
       bool tracked = false;
       for(auto& obstacle : obstacle_buffer.circles)
       {
-        if(length(queueTop.obstacle.center, obstacle.center) < 0.15)
+        if(length(trackedTop->obstacle.center, obstacle.center) < p_obstacle_vel_merge_d_)
         {
           tracked = true;
+          trackedTop->update(obstacle, 0.1);
           obstacle.center.z = 1;
-          queueTop.update(obstacle, 0.1);
+        }
+        else if(trackedTop == trackedObstacles.end() - 1 && obstacle.center.z != 1)  // Last chance failed in trackedObstacles
+        {
+          tracked = true;
+          lastIterate = true;
+          TrackedObstacles new_trakced(obstacle, p_timeout_, p_obstacle_lpf_cur_);
+          trackedObstacles.push_back(new_trakced);
         }
       }
 
-      if(tracked == false) queueTop.update(0.1);
-      trackedObstacles.push(queueTop);
-    }
-  }
+      if(tracked == false) trackedTop->update(0.1);
 
-  // Check the timeout obstacles
-  std::queue<TrackedObstacles> trackedBuffer = trackedObstacles;
-  while(!trackedObstacles.empty())
-  {
-    trackedObstacles.pop();
-  }
+      if(lastIterate == true) break;
 
-  while(!trackedBuffer.empty())
-  {
-    TrackedObstacles queueTop = trackedBuffer.front();
-    trackedBuffer.pop();
-    if(!queueTop.isTimeout())
-    {
-      trackedObstacles.push(queueTop);
-    }
-  }
-
-  // TODO : push untracked obstacle to tracked ( without flag on z )
-  for(auto obstacle : obstacle_buffer.circles)
-  {
-    if(obstacle.center.z == 0)
-    {
-      TrackedObstacles new_trakced(obstacle, 0.7, p_obstacle_lpf_cur_);
-      trackedObstacles.push(new_trakced);
+      if(trackedTop->isTimeout()) trackedTop = trackedObstacles.erase(trackedTop);
+      else trackedTop++;
     }
   }
 
   // TODO : prevent dulplicate tracked obstacles
-  trackedBuffer = trackedObstacles;
-  while(!trackedObstacles.empty())
+  for(auto trackedTop = trackedObstacles.begin() ; trackedTop != trackedObstacles.end() ; )
   {
-    trackedObstacles.pop();
-  }
-
-  while(!trackedBuffer.empty())
-  {
-    TrackedObstacles queueTop = trackedBuffer.front();
-    trackedBuffer.pop();
-    int queueSize = trackedBuffer.size();
-    bool hasTooClose = false;
-    for(int i = 0 ; i < queueSize ; i++)
+    bool tooClose = false;
+    for(auto trackedDown = trackedTop + 1 ; trackedDown != trackedObstacles.end() ; trackedDown++)
     {
-      TrackedObstacles checked = trackedBuffer.front();
-      trackedBuffer.pop();
-      trackedBuffer.push(checked);
-      if(length(checked.obstacle.center, queueTop.obstacle.center) < 0.1)
+      if(trackedTop != trackedDown && length(trackedTop->obstacle.center, trackedDown->obstacle.center) < 0.01)
       {
-        hasTooClose = true;
+        tooClose = true;
       }
     }
-    if(!hasTooClose) trackedObstacles.push(queueTop);
+
+    if(tooClose) trackedTop = trackedObstacles.erase(trackedTop);
+    else trackedTop++;
   }
 
   // ( if central ) TODO : Merge 2 robots' closest obstacles
   if(p_central_)
   {
-    int queueSize = trackedObstacles.size();
-    for(int i = 0 ; i < queueSize ; i++)
+    for(auto trackedTop : trackedObstacles)
     {
-      TrackedObstacles tracked = trackedObstacles.front();
-      trackedObstacles.pop();
-      trackedObstacles.push(tracked);
-
       bool track = false;
       for(auto& ally : ally_obstacles_.circles)
       {
-        if(length(ally.center, tracked.obstacle.center) < 0.2)
+        if(length(ally.center, trackedTop.obstacle.center) < p_obstacle_merge_d_)
         {
           track = true;
 
-          obstacle_detector::CircleObstacle merged = mergeObstacle(ally, tracked.obstacle);
+          obstacle_detector::CircleObstacle merged = mergeObstacle(ally, trackedTop.obstacle);
           if(!checkRobotpose(merged.center))
           {
             output_obstacles_array_.circles.push_back(merged);
             pushMardedObstacles(ptr->header.stamp, merged, id++);
+            continue;
           }
 
           ally.center.z = 1;
         }
       }
-      if(!track && !checkRobotpose(tracked.obstacle.center)) 
+      if(!track && !checkRobotpose(trackedTop.obstacle.center)) 
       {
-        output_obstacles_array_.circles.push_back(tracked.obstacle);
-        pushMardedObstacles(ptr->header.stamp, tracked.obstacle, id++);
+        output_obstacles_array_.circles.push_back(trackedTop.obstacle);
+        pushMardedObstacles(ptr->header.stamp, trackedTop.obstacle, id++);
         
       }
     }
@@ -261,18 +251,54 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
         pushMardedObstacles(ptr->header.stamp, ally, id++);
       }
     }
+
+    // int queueSize = trackedObstacles.size();
+    // for(int i = 0 ; i < queueSize ; i++)
+    // {
+    //   TrackedObstacles tracked = trackedObstacles.front();
+    //   trackedObstacles.pop();
+    //   trackedObstacles.push(tracked);
+
+    //   bool track = false;
+    //   for(auto& ally : ally_obstacles_.circles)
+    //   {
+    //     if(length(ally.center, tracked.obstacle.center) < p_obstacle_merge_d_)
+    //     {
+    //       track = true;
+
+    //       obstacle_detector::CircleObstacle merged = mergeObstacle(ally, tracked.obstacle);
+    //       if(!checkRobotpose(merged.center))
+    //       {
+    //         output_obstacles_array_.circles.push_back(merged);
+    //         pushMardedObstacles(ptr->header.stamp, merged, id++);
+    //       }
+
+    //       ally.center.z = 1;
+    //     }
+    //   }
+    //   if(!track && !checkRobotpose(tracked.obstacle.center)) 
+    //   {
+    //     output_obstacles_array_.circles.push_back(tracked.obstacle);
+    //     pushMardedObstacles(ptr->header.stamp, tracked.obstacle, id++);
+        
+    //   }
+    // }
+
+    // for(auto& ally : ally_obstacles_.circles)
+    // {
+    //   if(ally.center.z == 0 && !checkRobotpose(ally.center))
+    //   {
+    //     output_obstacles_array_.circles.push_back(ally);
+    //     pushMardedObstacles(ptr->header.stamp, ally, id++);
+    //   }
+    // }
   }
   else
   {
-    int queueSize = trackedObstacles.size();
-    for(int i = 0 ; i < queueSize ; i++)
+    for(auto trackedTop : trackedObstacles)
     {
-      TrackedObstacles t = trackedObstacles.front();
-      trackedObstacles.pop();
-      trackedObstacles.push(t);
-
-      output_obstacles_array_.circles.push_back(t.obstacle);
-      pushMardedObstacles(ptr->header.stamp, t.obstacle, id++);
+      output_obstacles_array_.circles.push_back(trackedTop.obstacle);
+      pushMardedObstacles(ptr->header.stamp, trackedTop.obstacle, id++);
     }
   }
 

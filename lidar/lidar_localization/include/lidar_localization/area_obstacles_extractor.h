@@ -40,6 +40,12 @@
 // Customized utility header fiile
 #include <lidar_localization/util/math_util.h>
 
+// TF2
+#include <tf2_ros/transform_listener.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <geometry_msgs/PointStamped.h>
+#include <geometry_msgs/TransformStamped.h>
+
 // Cpp tools
 #include <vector>
 #include <queue>
@@ -209,7 +215,9 @@ private:
   visualization_msgs::MarkerArray output_marker_array_;
 
   /* private variables */
-  std::queue<TrackedObstacles> trackedObstacles;
+  std::vector<TrackedObstacles> trackedObstacles;
+
+  tf2_ros::Buffer tfBuffer;
 
   /* ros param */
   bool p_active_;
