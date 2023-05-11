@@ -23,10 +23,10 @@ predict_cov_a4: 2.5
 
 # omnidrive model const.
 #predict_const_x: 10
-predict_const_x: 10
+predict_const_x: 0.1
 #predict_const_y: 10
-predict_const_y: 10
-predict_const_theta: 10
+predict_const_y: 0.1
+predict_const_theta: 0.1
 #predict_const_theta: 10
 # predict_const_x: 5
 # predict_const_y: 5
@@ -34,9 +34,9 @@ predict_const_theta: 10
 # predict_const_theta: 1.5
 
 # measurement covariance
-update_cov_1: 0.015
-update_cov_2: 0.015
-update_cov_3: 0.015
+update_cov_1: 0.1
+update_cov_2: 0.1
+update_cov_3: 0.1
 #update_cov_1: 0.015
 #update_cov_2: 0.015
 #update_cov_3: 0.015
