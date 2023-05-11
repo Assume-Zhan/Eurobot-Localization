@@ -4,6 +4,8 @@
 	<arg name="robot_name_slash" default="robot1/"/>
 	<arg name="active_rival_center" default="0"/>
 	<arg name="side" default='0' />
+	<arg name="basketBot" default='1' />  <!-- basketBot == 1 or 2 -->
+
 
     <group ns="$(arg robot_name)">
         <node name="ekf" pkg="eurobot_localization" type="ekf" >
@@ -16,6 +18,8 @@
             <rosparam file="$(find eurobot_localization)/config/global_filter_basic.yaml"/>
 
 			<param name="robot_name" value="$(arg robot_name_slash)"/>
+
+			<param name="basket_bot" value="$(arg basketBot)"/>
 
             <remap from="odom" to="global_filter"/>
         </node>

@@ -30,10 +30,17 @@ using namespace std;
 
 void Ekf::initialize()
 {
+    int basket_bot = 1;
+    int bot_number = -1;
+
     // get parameter
     nh_local_.param<string>("robot_name", p_robot_name_, "");
+    nh_local_.param<int>("basket_bot", basket_bot, 1);
 
-    if(p_robot_name_ == "robot1/")
+    if(p_robot_name_ == "robot1/") bot_number = -1;
+    else bot_number = 1;
+
+    if(!((bot_number + basket_bot) % 3))
     {
         nh_local_.param<double>("robot1_initial_x", p_initial_x_, 0.4);
         nh_local_.param<double>("robot1_initial_y", p_initial_y_, 2.7);
@@ -45,6 +52,8 @@ void Ekf::initialize()
         nh_local_.param<double>("robot2_initial_y", p_initial_y_, 2.7);
         nh_local_.param<double>("robot2_initial_theta", p_initial_theta_deg_, -90.0);
     }
+
+    ROS_WARN_STREAM("[EKF] : " << p_initial_x_);
 
     nh_local_.param<double>("beacon_ax", p_beacon_ax_, 0.05);
     nh_local_.param<double>("beacon_ay", p_beacon_ay_, 3.1);
