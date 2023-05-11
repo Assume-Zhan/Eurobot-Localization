@@ -10,3 +10,19 @@ beacon_by: -0.094
 beacon_cx: 1.5
 beacon_cy: 2.094
 # ------------------
+# Initial pose
+# robot1 blue ( white machine )
+
+robot1_initial_x: 1.125
+robot1_initial_y: 1.750
+robot1_initial_theta: 45
+
+# ------------------
+# Initial pose
+# robot2 blue ( black machine )
+
+robot2_initial_x: 1.875
+robot2_initial_y: 0.250
+robot2_initial_theta: -135
+
+# ------------------

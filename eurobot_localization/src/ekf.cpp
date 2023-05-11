@@ -32,9 +32,19 @@ void Ekf::initialize()
 {
     // get parameter
     nh_local_.param<string>("robot_name", p_robot_name_, "");
-    nh_local_.param<double>("initial_x", p_initial_x_, 0.4);
-    nh_local_.param<double>("initial_y", p_initial_y_, 2.7);
-    nh_local_.param<double>("initial_theta", p_initial_theta_deg_, -90.0);
+
+    if(p_robot_name_ == "robot1/")
+    {
+        nh_local_.param<double>("robot1_initial_x", p_initial_x_, 0.4);
+        nh_local_.param<double>("robot1_initial_y", p_initial_y_, 2.7);
+        nh_local_.param<double>("robot1_initial_theta", p_initial_theta_deg_, -90.0);
+    }
+    else
+    {
+        nh_local_.param<double>("robot2_initial_x", p_initial_x_, 0.4);
+        nh_local_.param<double>("robot2_initial_y", p_initial_y_, 2.7);
+        nh_local_.param<double>("robot2_initial_theta", p_initial_theta_deg_, -90.0);
+    }
 
     nh_local_.param<double>("beacon_ax", p_beacon_ax_, 0.05);
     nh_local_.param<double>("beacon_ay", p_beacon_ay_, 3.1);

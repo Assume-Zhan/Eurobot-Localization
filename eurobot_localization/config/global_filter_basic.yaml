@@ -1,8 +1,7 @@
+# ekf.cpp
+
+# Odometry = ekf_pose frequency
 odom_freq: 100
-# initial pose
-initial_x: 0
-initial_y: 0
-initial_theta: 0
 
 # initial covariance
 initial_cov_x: 0.0001
