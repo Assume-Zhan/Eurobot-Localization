@@ -4,7 +4,7 @@
 	<arg name="robot_name" default="robot1"/>
 	<arg name="robot_name_slash" default="robot1/"/>
 	<arg name="active_rival_center" default="0"/>
-	<arg name="color" default="b"/>
+	<arg name="side" default='0' />
 
 	<include file="$(find local_filter)/launch/local_filter_whole.launch">
 		<arg name="robot_name" value="$(arg robot_name)"/>
@@ -15,7 +15,7 @@
 		<arg name="robot_name" value="$(arg robot_name)"/>
 		<arg name="robot_name_slash" value="$(arg robot_name_slash)"/>
 	    <arg name="active_rival_center" value="$(arg active_rival_center)"/>
-	    <arg name="color" value="$(arg color)"/>
+	    <arg name="side" value="$(arg side)"/>
 	</include>
 
 </launch>
