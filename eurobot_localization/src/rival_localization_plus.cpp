@@ -182,13 +182,13 @@ OdomInfo RivalMulti::tracking(std::string rival_name, OdomInfo last_rival, std::
     }
     double time_delay = Lidar_vec.at(index).header.stamp.toSec() - last_rival.header.stamp.toSec();
  
-    if(time_delay > time_out){
+    if(1){
         // Tracking time out, remove tracking boundary
         std::vector<OdomInfo>::iterator it;
         it = Lidar_vec.begin();
 
         output_vec.push_back(Lidar_vec[index]);
-        Lidar_vec.erase(it+index);
+        // Lidar_vec.erase(it+index);
         printf("%c-0-1-%s time delay : %f\n",rival_name.at(rival_name.size()-1),rival_name.c_str(), time_delay);
         return Lidar_vec[index];
     }
