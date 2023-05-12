@@ -274,10 +274,11 @@ void AreaObstaclesExtractor::obstacleCallback(const obstacle_detector::Obstacles
 obstacle_detector::CircleObstacle AreaObstaclesExtractor::mergeObstacle(obstacle_detector::CircleObstacle cir1, obstacle_detector::CircleObstacle cir2)
 {
   obstacle_detector::CircleObstacle merged;
-  merged.center.x = (cir1.center.x + cir2.center.y) / 2;
+  merged.center.x = (cir1.center.x + cir2.center.x) / 2;
   merged.center.y = (cir1.center.y + cir2.center.y) / 2;
   merged.velocity.x = (cir1.velocity.x + cir2.velocity.x) / 2;
   merged.velocity.y = (cir1.velocity.y + cir2.velocity.y) / 2;
+  merged.radius = cir1.radius;
 
   return merged;
 }
