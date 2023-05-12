@@ -11,7 +11,7 @@
 #include <ros/time.h>
 #include <tf/tf.h>
 #include <obstacle_detector/Obstacles.h>
-
+#include <cmath>
 
 typedef struct ODOMINfO{
     double x, y;
@@ -105,25 +105,39 @@ RivalMulti::RivalMulti(ros::NodeHandle nh_g, ros::NodeHandle nh_p){
 }
 
 void RivalMulti::Rival1_callback(const nav_msgs::Odometry::ConstPtr& rival1_msg){
-    rival1_odom.header.stamp = rival1_msg->header.stamp;
+    if(isnan(rival1_msg->pose.pose.position.x)){
+        rival1_odom.x = 0;
+        rival1_odom.y = 0;
+        rival1_odom.Vx = 0;
+        rival1_odom.Vy = 0;   
+    }
+    else{
+        rival1_odom.header.stamp = rival1_msg->header.stamp;
 
-    rival1_odom.x = rival1_msg->pose.pose.position.x;
-
-    rival1_odom.y = rival1_msg->pose.pose.position.y;
-
-    rival1_odom.Vx = rival1_msg->twist.twist.linear.x;
-    rival1_odom.Vy = rival1_msg->twist.twist.linear.y;
+        rival1_odom.x = rival1_msg->pose.pose.position.x;
+        rival1_odom.y = rival1_msg->pose.pose.position.y;
+        rival1_odom.Vx = rival1_msg->twist.twist.linear.x;
+        rival1_odom.Vy = rival1_msg->twist.twist.linear.y;
+    }
+    
 }
 
 void RivalMulti::Rival2_callback(const nav_msgs::Odometry::ConstPtr& rival2_msg){
-    rival2_odom.header.stamp = rival2_msg->header.stamp;
+    if(isnan(rival2_msg->pose.pose.position.x)){
+        rival2_odom.x = 0;
+        rival2_odom.y = 0;
+        rival2_odom.Vx = 0;
+        rival2_odom.Vy = 0;   
+    }
+    else{
+        rival2_odom.header.stamp = rival2_msg->header.stamp;
 
-    rival2_odom.x = rival2_msg->pose.pose.position.x;
-
-    rival2_odom.y = rival2_msg->pose.pose.position.y;
-
-    rival2_odom.Vx = rival2_msg->twist.twist.linear.x;
-    rival2_odom.Vy = rival2_msg->twist.twist.linear.y;
+        rival2_odom.x = rival2_msg->pose.pose.position.x;
+        rival2_odom.y = rival2_msg->pose.pose.position.y;
+        rival2_odom.Vx = rival2_msg->twist.twist.linear.x;
+        rival2_odom.Vy = rival2_msg->twist.twist.linear.y;
+    }
+    
 }
 
 void RivalMulti::Lidar_callback(const obstacle_detector::Obstacles::ConstPtr& lidar_msg){
