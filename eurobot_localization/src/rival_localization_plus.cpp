@@ -16,6 +16,7 @@
 typedef struct ODOMINfO{
     double x, y;
     double Vx, Vy;
+    bool canUse = false;
     std_msgs::Header header;
 }OdomInfo;
 
@@ -188,9 +189,12 @@ OdomInfo RivalMulti::tracking(std::string rival_name, OdomInfo last_rival, std::
         it = Lidar_vec.begin();
 
         output_vec.push_back(Lidar_vec[index]);
-        // Lidar_vec.erase(it+index);
+
+        OdomInfo temp = Lidar_vec[index];
+
+        Lidar_vec.erase(it+index);
         printf("%c-0-1-%s time delay : %f\n",rival_name.at(rival_name.size()-1),rival_name.c_str(), time_delay);
-        return Lidar_vec[index];
+        return temp;
     }
     else{
         // Not time out check tracking boundary
