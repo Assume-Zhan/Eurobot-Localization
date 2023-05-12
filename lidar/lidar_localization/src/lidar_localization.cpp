@@ -519,7 +519,7 @@ void LidarLocalization::publishLocation()
   for(int i = 0 ; i < 3 ; i++) geometryError += beacons_[i].beaconError;
 
   /* TODO : debug and test */
-  ROS_WARN_STREAM_THROTTLE(2, "[Lidar localization] : current beacons error " << geometryError);
+  // ROS_WARN_STREAM_THROTTLE(2, "[Lidar localization] : current beacons error " << geometryError);
 
   // clang-format off
                                        // x         y         z  pitch roll yaw
