@@ -40,7 +40,7 @@ void Ekf::initialize()
     if(p_robot_name_ == "robot1/") bot_number = -1;
     else bot_number = 1;
 
-    if(!((bot_number + basket_bot) % 3))
+    if(!((bot_number + (3 - basket_bot)) % 3))
     {
         nh_local_.param<double>("robot1_initial_x", p_initial_x_, 0.4);
         nh_local_.param<double>("robot1_initial_y", p_initial_y_, 2.7);
