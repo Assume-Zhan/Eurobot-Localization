@@ -2,7 +2,7 @@
 # -------- Rosserial --------
 # ---------------------------
 rosserial_server_dp: 
-  port: "/dev/USB0-1"
+  port: "/dev/USB0-3"
 
 # ---------------------------
 # ------ Odometry ndoe ------
