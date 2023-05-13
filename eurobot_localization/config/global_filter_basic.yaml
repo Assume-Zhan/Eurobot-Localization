@@ -22,10 +22,10 @@ predict_cov_a4: 2.5
 
 # omnidrive model const.
 #predict_const_x: 10
-predict_const_x: 0.1
+predict_const_x: 0.5
 #predict_const_y: 10
-predict_const_y: 0.1
-predict_const_theta: 0.1
+predict_const_y: 0.5
+predict_const_theta: 0.5
 #predict_const_theta: 10
 # predict_const_x: 5
 # predict_const_y: 5
