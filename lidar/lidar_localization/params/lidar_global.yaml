@@ -74,7 +74,7 @@ lidar_localization:
 
   cov_x: 0.1
   cov_y: 0.1
-  cov_yaw: 1
+  cov_yaw: 0.1
 
   theta: 0
 

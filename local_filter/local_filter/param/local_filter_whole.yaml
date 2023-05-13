@@ -21,9 +21,9 @@ odometry_node:
   covariance_x: 0.001
   covariance_y: 0.001
   covariance_z: 0.001
-  covariance_vx: 0.0012
-  covariance_vy: 0.0012 
-  covariance_vz: 0.003
+  covariance_vx: 0.0042
+  covariance_vy: 0.0042 
+  covariance_vz: 0.005
 
   # Covariance for "multiple" part
   covariance_multi_vx: 0.
