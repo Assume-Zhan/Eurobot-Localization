@@ -15,9 +15,9 @@ beacon_cy: 2.094
 # white + ( bot == 1 )
 # black + ( bot == 2 )
 
-robot2_initial_x: 1.875
-robot2_initial_y: 0.250
-robot2_initial_theta: -135
+robot1_initial_x: 1.875
+robot1_initial_y: 0.250
+robot1_initial_theta: -135
 
 # ------------------
 # Initial pose
@@ -25,8 +25,8 @@ robot2_initial_theta: -135
 # black + ( bot == 1 )
 # white + ( bot == 1 )
 
-robot1_initial_x: 1.125
-robot1_initial_y: 1.750
-robot1_initial_theta: 45
+robot2_initial_x: 1.125
+robot2_initial_y: 1.750
+robot2_initial_theta: 45
 
 # ------------------
