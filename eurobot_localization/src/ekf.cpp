@@ -53,7 +53,7 @@ void Ekf::initialize()
         nh_local_.param<double>("robot2_initial_theta", p_initial_theta_deg_, -90.0);
     }
 
-    ROS_WARN_STREAM("[EKF] : " << p_initial_x_);
+    // ROS_WARN_STREAM("[EKF] : " << p_initial_x_);
 
     nh_local_.param<double>("beacon_ax", p_beacon_ax_, 0.05);
     nh_local_.param<double>("beacon_ay", p_beacon_ay_, 3.1);
@@ -540,9 +540,9 @@ void Ekf::setposeCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstP
     robotstate_.sigma(2, 1) = pose_msg->pose.covariance[31];  // theta-y
     robotstate_.sigma(2, 2) = pose_msg->pose.covariance[35];  // theta-theta
 
-    ROS_INFO_STREAM("set initial x at " << x << "\n");
-    ROS_INFO_STREAM("set initial y at " << y << "\n");
-    ROS_INFO_STREAM("set initial theta at " << yaw << "\n");
+    // ROS_INFO_STREAM("set initial x at " << x << "\n");
+    // ROS_INFO_STREAM("set initial y at " << y << "\n");
+    // ROS_INFO_STREAM("set initial theta at " << yaw << "\n");
 }
 
 void Ekf::odomCallback(const nav_msgs::Odometry::ConstPtr& odom_msg)

@@ -119,8 +119,8 @@ bool LidarLocalization::updateParams(std_srvs::Empty::Request& req, std_srvs::Em
 
   if (get_param_ok)
   {
-    ROS_INFO_STREAM("[Lidar Localization]: "
-                    << "set param ok");
+    // ROS_INFO_STREAM("[Lidar Localization]: "
+    //                 << "set param ok");
   }
   else
   {
@@ -232,7 +232,7 @@ void LidarLocalization::updateBeacons()
 
   if (tf_ok)
   {
-    ROS_INFO_STREAM("[Lidar Localization]: " << "get beacon to map tf ok");
+    // ROS_INFO_STREAM("[Lidar Localization]: " << "get beacon to map tf ok");
   }
   else
   {
@@ -268,8 +268,8 @@ void LidarLocalization::setBeacontoMap()
   transform.transform.translation.y = p_beacon_3_y_;
   static_broadcaster_.sendTransform(transform);
 
-  ROS_INFO_STREAM("[Lidar Localization]: "
-                  << "set beacon tf ok");
+//   ROS_INFO_STREAM("[Lidar Localization]: "
+//                   << "set beacon tf ok");
 }
 
 bool LidarLocalization::checkTFOK()
@@ -332,7 +332,7 @@ void LidarLocalization::getBeacontoMap()
 
   if (tf_ok)
   {
-    ROS_INFO_STREAM("[Lidar Localization]: " << "get beacon to map tf ok");
+    // ROS_INFO_STREAM("[Lidar Localization]: " << "get beacon to map tf ok");
   }
   else
   {
@@ -425,9 +425,9 @@ bool LidarLocalization::validateBeaconGeometry()
   }
   else
   {
-    ROS_INFO_STREAM_THROTTLE(2, "[Lidar Localization] : current beacon tolerance " << tolerance);
-    ROS_INFO_STREAM_THROTTLE(2, "reacon distance: " << real_beacon_distance[0][1] << ", " << real_beacon_distance[0][2] << ", "
-                                        << real_beacon_distance[1][2]);
+    // ROS_INFO_STREAM_THROTTLE(2, "[Lidar Localization] : current beacon tolerance " << tolerance);
+    // ROS_INFO_STREAM_THROTTLE(2, "reacon distance: " << real_beacon_distance[0][1] << ", " << real_beacon_distance[0][2] << ", "
+    //                                     << real_beacon_distance[1][2]);
     ROS_WARN_STREAM_THROTTLE(2, "beacon distance: " << beacon_distance[0][1] << ", " << beacon_distance[0][2] << ", "
                                         << beacon_distance[1][2]);
     return false;

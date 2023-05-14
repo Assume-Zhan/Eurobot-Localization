@@ -165,11 +165,11 @@ bool RivalMulti::Rival_match(std::string name, OdomInfo rival_data, std::vector<
 
             it = Lidar_vec.erase(it);
             // Lidar_vec.erase(remove(Lidar_vec.begin(), Lidar_vec.end(), *it), Lidar_vec.end());
-            printf("%s match successful : %f\n", name.c_str(), match_error);
+            // printf("%s match successful : %f\n", name.c_str(), match_error);
             return true;
         }
     }
-    printf("%s match failed.\n", name.c_str());
+    // printf("%s match failed.\n", name.c_str());
     return false;
 }
 
@@ -207,7 +207,7 @@ OdomInfo RivalMulti::tracking(std::string rival_name, OdomInfo last_rival, std::
         OdomInfo temp = Lidar_vec[index];
 
         Lidar_vec.erase(it+index);
-        printf("%c-0-1-%s time delay : %f\n",rival_name.at(rival_name.size()-1),rival_name.c_str(), time_delay);
+        // printf("%c-0-1-%s time delay : %f\n",rival_name.at(rival_name.size()-1),rival_name.c_str(), time_delay);
         return temp;
     }
     else{
@@ -219,7 +219,7 @@ OdomInfo RivalMulti::tracking(std::string rival_name, OdomInfo last_rival, std::
 
             output_vec.push_back(Lidar_vec[index]);
             Lidar_vec.erase(it+index);
-            printf("%c-0-1-%s time delay : %f\n",rival_name.at(rival_name.size()-1),rival_name.c_str(),time_delay);
+            // printf("%c-0-1-%s time delay : %f\n",rival_name.at(rival_name.size()-1),rival_name.c_str(),time_delay);
             return Lidar_vec[index];
         }
         // Obstacle object outside of tracking boundary, maybe not detect rival
@@ -252,7 +252,7 @@ bool RivalMulti::publish_obstacle(std::vector<OdomInfo>& output_vec){
         obstacle_object.true_radius = 0.12;
         Obstacles_vec.circles.push_back(obstacle_object);
     }
-    ROS_INFO_STREAM("Obstacles detector nums : " << Obstacles_vec.circles.max_size() << "\n");
+    // ROS_INFO_STREAM("Obstacles detector nums : " << Obstacles_vec.circles.max_size() << "\n");
     lidar_pub.publish(Obstacles_vec);
     return true;
 }
@@ -276,10 +276,10 @@ bool RivalMulti::distribute_rival_odom(bool rival1_ok, bool rival2_ok, std::vect
                 time_delay = ros::Time::now().toSec() - rival1_odom.header.stamp.toSec();
                 if(boundary_ok && time_delay < time_out){
                     output_vec.push_back(rival1_odom);
-                    printf("1-1-0-rival1 time delay : %f\n",time_delay);
+                    // printf("1-1-0-rival1 time delay : %f\n",time_delay);
                 }
                 // Lidar & tracker is not available
-                else printf("1-0-0-rival1 localization failure\n");
+                // else printf("1-0-0-rival1 localization failure\n");
             }
             else last_rival1 = tracking("rival1", last_rival1, Lidar_vec);
             rival1_ok = true;
@@ -298,9 +298,9 @@ bool RivalMulti::distribute_rival_odom(bool rival1_ok, bool rival2_ok, std::vect
                 time_delay = ros::Time::now().toSec() - rival2_odom.header.stamp.toSec();
                 if(boundary_ok && time_delay < time_out){
                     output_vec.push_back(rival2_odom);
-                    printf("2-1-0-rival2 time delay : %f\n",time_delay);
+                    // printf("2-1-0-rival2 time delay : %f\n",time_delay);
                 }
-                else printf("2-0-0-rival2 localization failure\n");
+                // else printf("2-0-0-rival2 localization failure\n");
             }
             else last_rival2 = tracking("rival2",last_rival2, Lidar_vec);
             rival2_ok = true;
@@ -347,7 +347,7 @@ int main(int argc, char** argv){
             // If matched, lidar vector will contain only none-matched obstacle data
 
             distribute_ok = rivalmulti.distribute_rival_odom(rival1_ok, rival2_ok, Lidar_vec);
-            if(!distribute_ok) printf("distribute failure\n");
+            // if(!distribute_ok) printf("distribute failure\n");
         }
         else{
             // Just use tracker data
@@ -363,7 +363,7 @@ int main(int argc, char** argv){
                     break;
                 }
                 output_vec.push_back(rival1_odom);
-                printf("1-1-0-rival1 time delay : %f\n",time_delay1);
+                // printf("1-1-0-rival1 time delay : %f\n",time_delay1);
                 num++;
             }
             if(rival2_active){
@@ -372,7 +372,7 @@ int main(int argc, char** argv){
                     break;
                 }
                 output_vec.push_back(rival2_odom);
-                printf("2-1-0-rival1 time delay : %f\n",time_delay2);
+                // printf("2-1-0-rival1 time delay : %f\n",time_delay2);
                 num++;
             }
             if (num != 0 )
